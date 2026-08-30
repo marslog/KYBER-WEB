@@ -6,7 +6,10 @@
     "dev": "next dev --hostname 0.0.0.0 --port 3001",
     "build": "next build",
     "start": "next start",
-    "capture-screenshots": "node scripts/capture-marsloq-screenshots.mjs"
+    "capture-screenshots": "node scripts/capture-marsloq-screenshots.mjs",
+    "setup:deploy": "powershell -ExecutionPolicy Bypass -File scripts/setup-deploy.ps1",
+    "deploy:preview": "vercel",
+    "deploy:prod": "vercel --prod"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
@@ -17,6 +20,7 @@
     "nodemailer": "^9.0.6",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "resend": "^6.25.0",
     "three": "^0.185.1"
   },
   "devDependencies": {
@@ -29,6 +33,7 @@
     "eslint-config-next": "16.3.3",
     "playwright": "^1.62.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^59.10.0"
   }
 }

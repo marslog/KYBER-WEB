@@ -20,7 +20,7 @@ export const products: Product[] = [
     category: "Infrastructure",
     tagline: "The Future of Hyper-Converged Infrastructure",
     description:
-      "Unified platform for modern data center management — compute, networking, SDS with Ceph, cluster nodes, built-in security, and backup & DR.",
+      "Unified HCI platform for modern data centers — enterprise hypervisor, networking, software-defined storage, cluster HA, security, and backup on standard x86 servers.",
     capabilities: [
       "Home Dashboard & Utilization Metrics",
       "VMware / Hyper-V / XenServer / Proxmox Migration",
@@ -125,7 +125,7 @@ export const products: Product[] = [
     category: "Observability",
     tagline: "Log Automation, Monitoring & Local AI",
     description:
-      "Automated log ingestion, SNMP/ICMP network monitoring, AI security analytics, and privacy-first Thai LLM chatbot with Digital Law compliance.",
+      "Centralized log management with syslog ingestion, SNMP/ICMP monitoring, AI security analytics, and an on-premise Thai LLM assistant — built for regulated enterprises.",
     capabilities: [
       "Log Automation & Grok Tools",
       "120+ Device Monitoring Templates",

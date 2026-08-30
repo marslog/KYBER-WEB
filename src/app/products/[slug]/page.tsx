@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProductPageContent from "@/components/sections/ProductPageContent";
 import { getAllProductSlugs, getProductBySlug } from "@/lib/productCatalog";
+import { createPageMetadata, PRODUCT_KEYWORDS } from "@/lib/siteSeo";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -18,10 +19,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const product = getProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
 
-  return {
+  return createPageMetadata({
     title: `${product.name} — KYBER`,
     description: product.description,
-  };
+    path: `/products/${slug}`,
+    keywords: PRODUCT_KEYWORDS[slug] ?? [],
+  });
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {

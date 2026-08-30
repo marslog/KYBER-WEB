@@ -65,7 +65,7 @@ export const KYBER_HCI_PRESENTATION: PresentationProduct = {
   eyebrow: "Infrastructure",
   tagline: "The future of hyper-converged infrastructure",
   summary:
-    "Compute, storage, networking, security, and backup — unified in one console. Run production workloads on a software-defined stack that scales node by node without separate silos for storage, hypervisor, or management.",
+    "Enterprise HCI with an integrated hypervisor — compute, storage, networking, security, and backup in one console. Scale node by node on standard x86 without separate silos for storage or virtualization.",
   lead: "Deploy on any x86 hardware from Dell, HPE, Lenovo, or Cisco. Operate with enterprise-grade control, synchronous replication, and automatic failover from day one.",
   logo: "/assets/logos/kyber-hci-logo.png",
   logoAlt: "KYBER HCI logo",
@@ -161,7 +161,7 @@ export const MARSLOQ_PRESENTATION: PresentationProduct = {
   eyebrow: "Observability",
   tagline: "Next-generation centralized logging",
   summary:
-    "Log automation, network monitoring, AI security, and Thai LLM — unified in one on-premise platform. Ingest, parse, index, and investigate telemetry without sending data off-site.",
+    "Centralized log management with syslog ingestion, network monitoring, AI security analytics, and on-premise Thai LLM — ingest, parse, index, and investigate telemetry without sending data off-site.",
   lead: "Grok parsing pipelines, OpenSearch-backed search, and 120+ SNMP templates ship ready to deploy. Investigate faster with AI that never leaves your network.",
   logo: "/assets/logos/marsloq-logo.png",
   logoAlt: "MARSLOQ logo",

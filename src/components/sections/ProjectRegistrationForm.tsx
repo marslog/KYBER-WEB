@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { CheckCircle2, Send } from "lucide-react";
 import { COMPANY_INFO } from "@/data/platformData";
-import { PROJECT_INTERESTS } from "@/lib/projectRegistration";
+import {
+  PROJECT_INTERESTS,
+  PROJECT_REGISTRATION_PAUSED_MESSAGE,
+  PROJECT_REGISTRATION_SUBMISSION_ENABLED,
+} from "@/lib/projectRegistration";
 
 type FormVariant = "full" | "compact";
 
@@ -24,6 +28,7 @@ export default function ProjectRegistrationForm({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!PROJECT_REGISTRATION_SUBMISSION_ENABLED) return;
     setSubmitting(true);
     setError(null);
 
@@ -42,6 +47,7 @@ export default function ProjectRegistrationForm({
           phone: formData.get("phone"),
           productInterest: formData.get("productInterest"),
           projectDescription: formData.get("projectDescription"),
+          website: formData.get("website"),
         }),
       });
 
@@ -127,6 +133,15 @@ export default function ProjectRegistrationForm({
         </>
       )}
 
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-0 w-0 opacity-0 pointer-events-none"
+      />
+
       <div className={isCompact ? "space-y-4" : "grid sm:grid-cols-2 gap-5"}>
         <Field label="Project name" htmlFor={`${id}-projectName`} fullWidth={isCompact}>
           <input
@@ -210,7 +225,23 @@ export default function ProjectRegistrationForm({
         </p>
       )}
 
-      <button type="submit" disabled={submitting} className="kyber-btn-primary gap-2 w-full sm:w-auto">
+      {!PROJECT_REGISTRATION_SUBMISSION_ENABLED && (
+        <p className="text-sm text-[var(--text-secondary)] rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] px-4 py-3">
+          {PROJECT_REGISTRATION_PAUSED_MESSAGE}{" "}
+          <a
+            href={`mailto:${COMPANY_INFO.supportEmail}`}
+            className="text-[var(--brand)] hover:underline"
+          >
+            {COMPANY_INFO.supportEmail}
+          </a>
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={submitting || !PROJECT_REGISTRATION_SUBMISSION_ENABLED}
+        className="kyber-btn-primary gap-2 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+      >
         {submitting ? "Submitting…" : (
           <>
             <Send className="w-4 h-4" />

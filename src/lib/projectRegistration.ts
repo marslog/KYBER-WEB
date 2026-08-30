@@ -1,5 +1,11 @@
 export const PROJECT_REGISTRATION_RECIPIENT = "supawat@kyber-it.com";
 
+/** Set to true when SMTP/Resend is configured and ready for production submissions. */
+export const PROJECT_REGISTRATION_SUBMISSION_ENABLED = false;
+
+export const PROJECT_REGISTRATION_PAUSED_MESSAGE =
+  "Online registration is temporarily unavailable. Please email us directly and we will respond shortly.";
+
 export const PROJECT_INTERESTS = ["KYBER HCI", "MARSLOQ"] as const;
 
 export interface ProjectRegistrationPayload {

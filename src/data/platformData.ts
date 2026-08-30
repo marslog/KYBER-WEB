@@ -573,7 +573,8 @@ export const HERO_CONTENT: HeroContent = {
   badge: "KYBER HCI & MARSLOQ",
   headline: "The Future of",
   headlineAccent: "Hyper-Converged Infrastructure.",
-  subheadline: "Unified infrastructure and log intelligence — on any hardware.",
+  subheadline:
+    "Enterprise HCI, hypervisor, and centralized syslog — unified on any x86 hardware.",
   primaryCta: { label: "Explore Products", href: "#product-highlights" },
   secondaryCta: { label: "MARSLOQ", href: "/products/marsloq" },
 };

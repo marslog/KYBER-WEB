@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import SolutionPageContent from "@/components/sections/SolutionPageContent";
 import { getAllSolutionSlugs, getSolutionBySlug } from "@/lib/solutionsCatalog";
+import { createPageMetadata, SOLUTION_KEYWORDS } from "@/lib/siteSeo";
 
 interface SolutionPageProps {
   params: Promise<{ slug: string }>;
@@ -18,10 +19,12 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
   const solution = getSolutionBySlug(slug);
   if (!solution) return { title: "Solution Not Found" };
 
-  return {
+  return createPageMetadata({
     title: `${solution.title} — KYBER Solutions`,
     description: solution.description,
-  };
+    path: `/solutions/${slug}`,
+    keywords: SOLUTION_KEYWORDS[slug] ?? [],
+  });
 }
 
 export default async function SolutionPage({ params }: SolutionPageProps) {

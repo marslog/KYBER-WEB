@@ -1,3 +1,4 @@
+import { Resend } from "resend";
 import nodemailer from "nodemailer";
 import {
   PROJECT_REGISTRATION_RECIPIENT,
@@ -23,33 +24,95 @@ function getSmtpConfig() {
   };
 }
 
-export async function sendProjectRegistrationEmail(
+function getFromAddress(): string {
+  return (
+    process.env.EMAIL_FROM ||
+    process.env.SMTP_FROM ||
+    `KYBER Web <${process.env.SMTP_USER || "noreply@kyber-it.com"}>`
+  );
+}
+
+function getRecipient(): string {
+  return process.env.PROJECT_REGISTRATION_TO || PROJECT_REGISTRATION_RECIPIENT;
+}
+
+async function sendViaResend(
   data: ProjectRegistrationPayload,
-): Promise<{ ok: true } | { ok: false; error: string }> {
-  const smtp = getSmtpConfig();
-  if (!smtp) {
-    return {
-      ok: false,
-      error:
-        "Email is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS environment variables.",
-    };
+  subject: string,
+  html: string,
+  text: string,
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error("RESEND_API_KEY is not set");
   }
 
-  const to = process.env.PROJECT_REGISTRATION_TO || PROJECT_REGISTRATION_RECIPIENT;
-  const from =
-    process.env.SMTP_FROM || `KYBER Web <${process.env.SMTP_USER || "noreply@kyber-it.com"}>`;
-  const { subject, text, html } = formatProjectRegistrationEmail(data);
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send({
+    from: getFromAddress(),
+    to: [getRecipient()],
+    replyTo: data.email,
+    subject,
+    html,
+    text,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function sendViaSmtp(
+  data: ProjectRegistrationPayload,
+  subject: string,
+  html: string,
+  text: string,
+): Promise<void> {
+  const smtp = getSmtpConfig();
+  if (!smtp) {
+    throw new Error("SMTP is not configured");
+  }
 
   const transporter = nodemailer.createTransport(smtp);
-
   await transporter.sendMail({
-    from,
-    to,
+    from: getFromAddress(),
+    to: getRecipient(),
     replyTo: data.email,
     subject,
     text,
     html,
   });
+}
+
+export async function sendProjectRegistrationEmail(
+  data: ProjectRegistrationPayload,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const { subject, text, html } = formatProjectRegistrationEmail(data);
+
+  const hasResend = Boolean(process.env.RESEND_API_KEY);
+  const hasSmtp = Boolean(getSmtpConfig());
+
+  if (!hasResend && !hasSmtp) {
+    return {
+      ok: false,
+      error:
+        "Email is not configured. Set RESEND_API_KEY on Vercel, or SMTP_HOST, SMTP_USER, and SMTP_PASS for Google Workspace.",
+    };
+  }
+
+  try {
+    if (hasResend) {
+      await sendViaResend(data, subject, html, text);
+    } else {
+      await sendViaSmtp(data, subject, html, text);
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown email error";
+    return {
+      ok: false,
+      error: `Failed to send email: ${message}`,
+    };
+  }
 
   return { ok: true };
 }

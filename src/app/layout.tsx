@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Inter } from "next/font/google";
+import JsonLd from "@/components/seo/JsonLd";
+import { ROOT_METADATA } from "@/lib/siteSeo";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -15,15 +17,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "KYBER — Enterprise Infrastructure & Observability",
-  description:
-    "KYBER delivers hyper-converged infrastructure (HCI, KSV, KSAN), ransomware defense (KRG), and intelligent observability (MARSLOQ) — one unified platform on any hardware.",
-  openGraph: {
-    title: "KYBER — Enterprise Infrastructure & Observability",
-    description:
-      "Modern virtualization, distributed storage, security, and intelligent observability — built into one unified KYBER ecosystem for enterprise teams.",
-    type: "website",
-  },
+  ...ROOT_METADATA,
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://www.kyber-it.com",
+  ),
 };
 
 export default function RootLayout({
@@ -34,9 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} ${inter.variable} antialiased font-sans`}>
+        <JsonLd />
         {children}
       </body>
     </html>
   );
 }
-
