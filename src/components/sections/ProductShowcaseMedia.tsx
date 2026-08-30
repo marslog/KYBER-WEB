@@ -1,56 +1,36 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Layers, Monitor, Play } from "lucide-react";
 import type { PresentationProduct, ShowcaseViewId } from "@/data/presentationContent";
 import { PRODUCT_HERO_SHOWCASE_ASPECT } from "@/data/presentationContent";
 import PlatformArchitectureDiagram from "@/components/sections/PlatformArchitectureDiagram";
 import ShowcaseVideo from "@/components/media/ShowcaseVideo";
 
-const VIEW_META: Record<
-  ShowcaseViewId,
-  { label: string; shortLabel: string; icon: typeof Layers }
-> = {
-  architecture: { label: "Architecture", shortLabel: "Arch", icon: Layers },
-  ui: { label: "Product UI", shortLabel: "UI", icon: Monitor },
-  video: { label: "Demo video", shortLabel: "Video", icon: Play },
-};
-
 const MEDIA_ASPECT = PRODUCT_HERO_SHOWCASE_ASPECT.replace("/", " / ");
 
-function availableViews(product: PresentationProduct): ShowcaseViewId[] {
-  const views: ShowcaseViewId[] = ["architecture"];
-  if (product.showcaseUiSlides?.length) views.push("ui");
-  if (product.video) views.push("video");
-  return views;
+interface ProductShowcaseMediaProps {
+  product: PresentationProduct;
+  activeView: ShowcaseViewId;
 }
 
-export default function ProductShowcaseMedia({ product }: { product: PresentationProduct }) {
-  const views = useMemo(() => availableViews(product), [product]);
-  const [activeView, setActiveView] = useState<ShowcaseViewId>(views[0] ?? "architecture");
+export default function ProductShowcaseMedia({ product, activeView }: ProductShowcaseMediaProps) {
   const [uiIndex, setUiIndex] = useState(0);
 
   const uiSlides = product.showcaseUiSlides ?? [];
   const activeUiSlide = uiSlides[uiIndex] ?? uiSlides[0];
   const videoAspect = product.videoAspect?.replace("/", " / ") ?? MEDIA_ASPECT;
 
-  function selectView(view: ShowcaseViewId) {
-    setActiveView(view);
-    if (view === "ui") setUiIndex(0);
-  }
-
-  const tabGridStyle = {
-    "--showcase-tab-count": views.length,
-  } as CSSProperties;
+  useEffect(() => {
+    if (activeView === "ui") setUiIndex(0);
+  }, [activeView, product.id]);
 
   return (
     <div className="product-showcase-media">
       <div
         id={`${product.id}-showcase-panel`}
         role="tabpanel"
-        aria-labelledby={`${product.id}-showcase-tab-${activeView}`}
         className={`product-showcase-media__panel product-showcase-media__panel--${activeView}`}
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -150,38 +130,6 @@ export default function ProductShowcaseMedia({ product }: { product: Presentatio
 
       {activeUiSlide && activeView === "ui" && (
         <p className="product-showcase-media__caption">{activeUiSlide.title}</p>
-      )}
-
-      {views.length > 1 && (
-        <div
-          className="product-showcase-media__tabs"
-          role="tablist"
-          aria-label={`${product.name} showcase views`}
-          style={tabGridStyle}
-        >
-          {views.map((viewId) => {
-            const meta = VIEW_META[viewId];
-            const Icon = meta.icon;
-            const selected = activeView === viewId;
-
-            return (
-              <button
-                key={viewId}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                aria-controls={`${product.id}-showcase-panel`}
-                id={`${product.id}-showcase-tab-${viewId}`}
-                onClick={() => selectView(viewId)}
-                className={`product-showcase-media__tab ${selected ? "is-active" : ""}`}
-              >
-                <Icon className="product-showcase-media__tab-icon" strokeWidth={1.75} aria-hidden />
-                <span className="product-showcase-media__tab-label">{meta.label}</span>
-                <span className="product-showcase-media__tab-label-short">{meta.shortLabel}</span>
-              </button>
-            );
-          })}
-        </div>
       )}
     </div>
   );

@@ -164,16 +164,77 @@
   border-color: color-mix(in srgb, var(--marsloq-accent) 35%, var(--border));
 }
 
-/* Row divider between platforms */
-.platform-showcase__row-divider {
+/* Row divider — unified digital stack + shared view switcher */
+.platform-showcase__unified-stack {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 0.65rem 1.5rem;
+  padding: 1rem 1.5rem;
   background: var(--bg-subtle);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+
+.platform-showcase__unified-stack-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 36rem;
+}
+
+.platform-showcase__unified-views {
+  display: grid;
+  grid-template-columns: repeat(var(--showcase-tab-count, 3), minmax(0, 1fr));
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0.3rem;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.platform-showcase__unified-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.platform-showcase__unified-view:hover {
+  color: var(--text);
+  background: var(--bg-subtle);
+}
+
+.platform-showcase__unified-view.is-active {
+  color: var(--text);
+  background: var(--bg-subtle);
+  border-color: var(--border);
+}
+
+.platform-showcase__unified-view-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
 }
 
 .platform-showcase__row-divider-line {
@@ -337,91 +398,26 @@
   text-overflow: ellipsis;
 }
 
-.product-showcase-media__tabs {
-  display: grid;
-  grid-template-columns: repeat(var(--showcase-tab-count, 3), minmax(0, 1fr));
-  gap: 0.25rem;
-  width: 100%;
-  margin-top: 0.125rem;
-  padding: 0.3rem;
-  border-radius: 0.75rem;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-}
-
-.product-showcase-media__tab {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  width: 100%;
-  min-height: 2.375rem;
-  padding: 0.5rem 0.65rem;
-  border-radius: 0.5rem;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.2;
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-.product-showcase-media__tab:hover {
-  color: var(--text);
-  background: var(--bg-subtle);
-}
-
-.product-showcase-media__tab.is-active {
-  color: var(--text);
-  background: var(--bg-subtle);
-  border-color: var(--border);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--border) 60%, transparent);
-}
-
-.product-showcase-media__tab-icon {
-  width: 0.875rem;
-  height: 0.875rem;
-  flex-shrink: 0;
-}
-
-.product-showcase-media__tab-label-short {
-  display: none;
-}
-
-.platform-product-row[data-product="marsloq"] .product-showcase-media__tab.is-active {
-  border-color: color-mix(in srgb, var(--marsloq-accent) 35%, var(--border));
-}
-
 .platform-product-row[data-product="marsloq"] .product-showcase-media__ui-thumb.is-active {
   border-color: var(--marsloq-accent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--marsloq-accent) 22%, transparent);
 }
 
 @media (max-width: 640px) {
-  .product-showcase-media__tab-label {
-    display: none;
-  }
-
-  .product-showcase-media__tab-label-short {
-    display: inline;
-  }
-
-  .product-showcase-media__tab {
-    min-height: 2.25rem;
-    padding: 0.45rem 0.4rem;
-    gap: 0.3rem;
-  }
-
   .product-showcase-media__ui-nav {
     grid-template-columns: repeat(auto-fit, minmax(3.75rem, 1fr));
+  }
+
+  .platform-showcase__unified-stack {
+    padding: 0.85rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .platform-showcase__unified-view {
+    min-height: 2rem;
+    padding: 0.4rem 0.35rem;
+    font-size: 0.6875rem;
+    gap: 0.25rem;
   }
 }
 

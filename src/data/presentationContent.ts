@@ -36,6 +36,15 @@ export interface ShowcaseUiSlide {
 
 export type ShowcaseViewId = "architecture" | "ui" | "video";
 
+export const PLATFORM_SHOWCASE_VIEWS: {
+  id: ShowcaseViewId;
+  label: string;
+}[] = [
+  { id: "architecture", label: "Diagram" },
+  { id: "ui", label: "Interface" },
+  { id: "video", label: "Demo" },
+];
+
 export interface PresentationProduct {
   id: string;
   name: string;
