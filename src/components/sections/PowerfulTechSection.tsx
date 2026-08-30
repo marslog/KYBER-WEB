@@ -121,7 +121,7 @@ export default function PowerfulTechSection() {
             <div className="hardware-showcase__actions">
               <Link href="/products/marsloq" className="kyber-btn-primary gap-2">
                 Explore MARSLOQ
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="kyber-arrow w-4 h-4" />
               </Link>
             </div>
           </motion.div>

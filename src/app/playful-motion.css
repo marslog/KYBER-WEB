@@ -1,0 +1,168 @@
+/* Playful ambient motion — subtle, purposeful, never cluttered */
+
+/* ---- Banner aurora drift ---- */
+@keyframes banner-aurora-shift {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.04) translate(1.5%, -1%);
+  }
+}
+
+.platform-showcase-banner__bg::after {
+  content: "";
+  position: absolute;
+  inset: -15%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 45% 40% at 75% 35%, rgba(0, 87, 184, 0.22), transparent 70%),
+    radial-gradient(ellipse 35% 35% at 25% 75%, rgba(212, 120, 26, 0.14), transparent 65%);
+  animation: banner-aurora-shift 16s ease-in-out infinite;
+}
+
+/* ---- Pillar & bridge micro-pulse ---- */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.7;
+  }
+}
+
+@keyframes bridge-node-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 25%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, currentColor 40%, transparent),
+      0 0 12px color-mix(in srgb, currentColor 35%, transparent);
+  }
+}
+
+.platform-showcase__pillar-dot {
+  animation: dot-pulse 3s ease-in-out infinite;
+}
+
+.platform-showcase__pillar--hci .platform-showcase__pillar-dot {
+  animation-delay: 0s;
+}
+
+.platform-showcase__pillar--marsloq .platform-showcase__pillar-dot {
+  animation-delay: 1s;
+}
+
+.platform-showcase__pillar--neutral .platform-showcase__pillar-dot {
+  animation-delay: 2s;
+}
+
+.platform-showcase__bridge-node {
+  animation: bridge-node-glow 3.5s ease-in-out infinite;
+}
+
+.platform-showcase__bridge-node--marsloq {
+  animation-delay: 1.75s;
+}
+
+/* ---- Resource cards ---- */
+.resource-card__image {
+  overflow: hidden;
+}
+
+.resource-card__image img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.resource-card:hover .resource-card__image img {
+  transform: scale(1.05);
+}
+
+/* ---- Shared arrow nudge on hover ---- */
+.kyber-arrow {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kyber-btn-primary:hover .kyber-arrow,
+.kyber-btn-on-dark:hover .kyber-arrow,
+.kyber-link:hover .kyber-arrow,
+.group:hover > .kyber-arrow,
+.group:hover .kyber-arrow {
+  transform: translateX(3px);
+}
+
+/* ---- Button press feedback ---- */
+.kyber-btn-primary,
+.kyber-btn-on-dark,
+.kyber-btn-secondary {
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kyber-btn-primary:hover,
+.kyber-btn-on-dark:hover {
+  transform: translateY(-1px);
+}
+
+.kyber-btn-primary:active,
+.kyber-btn-on-dark:active,
+.kyber-btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---- Logo tile playful hover ---- */
+.kyber-ref__tile {
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kyber-ref__tile:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .platform-showcase-banner__bg::after,
+  .platform-showcase__pillar-dot,
+  .platform-showcase__bridge-node {
+    animation: none;
+  }
+
+  .resource-card:hover .resource-card__image img {
+    transform: none;
+  }
+
+  .kyber-btn-primary:hover,
+  .kyber-btn-on-dark:hover,
+  .kyber-ref__tile:hover,
+  .platform-showcase-banner__card:hover .platform-showcase-banner__card-inner {
+    transform: none;
+  }
+
+  .kyber-btn-primary:active,
+  .kyber-btn-on-dark:active,
+  .kyber-btn-secondary:active {
+    transform: none;
+  }
+
+  .kyber-btn-primary:hover .kyber-arrow,
+  .kyber-btn-on-dark:hover .kyber-arrow,
+  .kyber-link:hover .kyber-arrow,
+  .group:hover > .kyber-arrow,
+  .group:hover .kyber-arrow {
+    transform: none;
+  }
+}

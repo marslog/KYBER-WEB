@@ -1,12 +1,17 @@
 "use client";
 
 import { Fragment } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   KYBER_HCI_PRESENTATION,
   MARSLOQ_PRESENTATION,
 } from "@/data/presentationContent";
 import ProductShowcaseCard from "@/components/sections/ProductShowcaseCard";
+import {
+  staggerContainer,
+  staggerItem,
+  staggerItemReduced,
+} from "@/lib/motion";
 
 const PRODUCTS = [
   { product: KYBER_HCI_PRESENTATION, href: "/products/hci", reversed: false },
@@ -20,6 +25,8 @@ const PLATFORM_PILLARS = [
 ];
 
 export default function ProductHighlightsSection() {
+  const reducedMotion = useReducedMotion();
+
   return (
     <section id="product-highlights" className="platform-showcase">
       <div className="platform-showcase__header section-shell">
@@ -38,17 +45,25 @@ export default function ProductHighlightsSection() {
           <p className="platform-showcase__lede">
             Two platforms, one vision — unified digital infrastructure for every workload.
           </p>
-          <ul className="platform-showcase__pillars" aria-label="Platform capabilities">
+          <motion.ul
+            className="platform-showcase__pillars"
+            aria-label="Platform capabilities"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+          >
             {PLATFORM_PILLARS.map((pillar) => (
-              <li
+              <motion.li
                 key={pillar.label}
+                variants={reducedMotion ? staggerItemReduced : staggerItem}
                 className={`platform-showcase__pillar platform-showcase__pillar--${pillar.tone}`}
               >
                 <span className="platform-showcase__pillar-dot" aria-hidden />
                 {pillar.label}
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
         </motion.div>
 
         <div className="platform-showcase__bridge" aria-hidden>

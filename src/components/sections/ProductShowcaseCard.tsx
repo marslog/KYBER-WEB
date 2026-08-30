@@ -112,7 +112,7 @@ export default function ProductShowcaseCard({
           <div className="platform-product-row__actions">
             <Link href={href} className="kyber-btn-primary gap-2">
               Explore {product.name}
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="kyber-arrow w-4 h-4" />
             </Link>
             {product.licensing && (
               <div className="platform-product-row__tiers">

@@ -5,6 +5,7 @@
 @import "./marsloq-observability.css";
 @import "./platform-effects.css";
 @import "./hardware-ref-effects.css";
+@import "./playful-motion.css";
 
 :root {
   /* Enterprise neutral surfaces */
@@ -400,7 +401,6 @@ h1, h2, h3, h4, h5, h6 {
 .kyber-ref-tile:hover {
   border-color: var(--brand);
   box-shadow: var(--shadow-brand);
-  transform: translateY(-2px);
 }
 
 .technit-card {
@@ -1329,7 +1329,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .platform-showcase-banner__card {
   position: absolute;
-  width: min(82vw, 420px);
+  width: min(88vw, 425px);
 }
 
 .platform-showcase-banner__card--hci {
@@ -1352,13 +1352,24 @@ h1, h2, h3, h4, h5, h6 {
     0 0 0 1px rgba(255, 255, 255, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
+  transition:
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.platform-showcase-banner__card:hover .platform-showcase-banner__card-inner {
+  transform: translateY(-3px);
+  box-shadow:
+    0 28px 52px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .platform-showcase-banner__card-chrome {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 10px 14px;
+  gap: 6px;
+  padding: 8px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.25);
 }
@@ -1381,7 +1392,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 1023px) {
   .platform-showcase-banner__card {
-    width: min(78vw, 340px);
+    width: min(84vw, 345px);
   }
 
   .platform-showcase-banner__card--hci {
