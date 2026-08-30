@@ -16,4 +16,6 @@ export const KYBER_REF_LOGOS: KyberRefLogo[] = [
   { name: "Secure Serve", src: "/assets/references/secure-serve-clean.png" },
   { name: "Thai Lab", src: "/assets/references/thai-lab-clean.png" },
   { name: "TVI", src: "/assets/references/tvi-clean.png" },
+  { name: "KST Hotel Supply", src: "/assets/references/kst-hotel-supply-clean.png" },
+  { name: "Leonian", src: "/assets/references/leonian-clean.png" },
 ];

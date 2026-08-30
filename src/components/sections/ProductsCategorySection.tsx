@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { KYBER_REF_TITLE } from "@/data/platformData";
-import { KYBER_REF_LOGOS } from "@/data/kyberRefLogos";
 import { KYBER_REF_CONTENT } from "@/data/kyberRefContent";
+import ReferenceLogoMarquee from "@/components/sections/ReferenceLogoMarquee";
 
 export default function ProductsCategorySection() {
   return (
@@ -50,29 +49,7 @@ export default function ProductsCategorySection() {
           <span className="kyber-ref__divider-line" />
         </div>
 
-        <div className="kyber-ref__grid">
-          {KYBER_REF_LOGOS.map((logo, index) => (
-            <motion.div
-              key={logo.name}
-              className="kyber-ref-tile kyber-ref__tile"
-              title={logo.name}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-24px" }}
-              transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4) }}
-            >
-              <div className="relative h-16 md:h-[4.5rem] w-full">
-                <Image
-                  src={logo.src}
-                  alt={logo.name}
-                  fill
-                  className="object-contain object-center"
-                  sizes="(max-width: 640px) 50vw, 220px"
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <ReferenceLogoMarquee />
       </div>
     </section>
   );

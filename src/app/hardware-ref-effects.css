@@ -383,6 +383,80 @@
   white-space: nowrap;
 }
 
+/* Animated reference logo marquee */
+.kyber-ref-marquee {
+  position: relative;
+  margin-inline: -0.25rem;
+}
+
+.kyber-ref-marquee__viewport {
+  overflow: hidden;
+  padding-block: 0.15rem;
+}
+
+.kyber-ref-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: max-content;
+  animation: kyber-ref-marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.kyber-ref-marquee:hover .kyber-ref-marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes kyber-ref-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.kyber-ref-marquee__tile {
+  flex: none;
+}
+
+.kyber-ref-marquee__fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(2rem, 6vw, 4rem);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.kyber-ref-marquee__fade--left {
+  left: 0;
+  background: linear-gradient(90deg, #fff 15%, transparent);
+}
+
+.kyber-ref-marquee__fade--right {
+  right: 0;
+  background: linear-gradient(270deg, #fff 15%, transparent);
+}
+
+.kyber-ref-marquee--static .kyber-ref-marquee__viewport {
+  overflow: visible;
+}
+
+.kyber-ref-marquee--static .kyber-ref-marquee__track {
+  animation: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .kyber-ref-marquee--static .kyber-ref-marquee__track {
+    gap: 0.85rem;
+  }
+}
+
 .kyber-ref__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -455,5 +529,9 @@
   .kyber-ref__metric:hover,
   .kyber-ref__pillar:hover {
     transform: none;
+  }
+
+  .kyber-ref-marquee__track {
+    animation: none;
   }
 }
