@@ -220,7 +220,7 @@ export const APPLIANCE_SHOWCASE_ASPECT = "16/9";
 export const MARSLOQ_LOG_APPLIANCE = {
   eyebrow: "Hardware",
   title: "MARSLOQ Log Appliances",
-  description: "Edge and enterprise appliances for on-premise log intelligence.",
+  description: "Edge and enterprise appliances for on-premise log management, syslog ingestion, and centralized logging.",
   models: [
     {
       name: "MARSLOQ Edge",

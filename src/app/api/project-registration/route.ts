@@ -11,7 +11,7 @@ import {
 export async function POST(request: Request) {
   if (!PROJECT_REGISTRATION_SUBMISSION_ENABLED) {
     return NextResponse.json(
-      { error: "Project registration is temporarily unavailable. Please contact us by email." },
+      { error: "Quotation requests are temporarily unavailable online. Please contact us by email or phone." },
       { status: 503 },
     );
   }

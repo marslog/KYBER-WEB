@@ -96,10 +96,10 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-semibold mb-3">Start your deployment</h2>
           <p className="text-sm text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
-            Register your project to receive tailored documentation and architect support.
+            Request a quotation to receive tailored documentation and architect support.
           </p>
-          <Link href="/contact" className="kyber-btn-primary inline-flex items-center gap-2">
-            Register project <ArrowRight className="w-4 h-4" />
+          <Link href="/contact#get-a-quote" className="kyber-btn-primary inline-flex items-center gap-2">
+            Get a quote <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>

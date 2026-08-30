@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Send } from "lucide-react";
+import { CheckCircle2, Mail, Send } from "lucide-react";
+import Link from "next/link";
 import { COMPANY_INFO } from "@/data/platformData";
 import {
   PROJECT_INTERESTS,
   PROJECT_REGISTRATION_PAUSED_MESSAGE,
   PROJECT_REGISTRATION_SUBMISSION_ENABLED,
+  buildQuotationMailto,
 } from "@/lib/projectRegistration";
 
 type FormVariant = "full" | "compact";
@@ -18,17 +20,19 @@ interface ProjectRegistrationFormProps {
 
 export default function ProjectRegistrationForm({
   variant = "full",
-  id = "project-registration",
+  id = "get-a-quote",
 }: ProjectRegistrationFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const isCompact = variant === "compact";
+  const submissionEnabled = PROJECT_REGISTRATION_SUBMISSION_ENABLED;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!PROJECT_REGISTRATION_SUBMISSION_ENABLED) return;
+    if (!submissionEnabled) return;
+
     setSubmitting(true);
     setError(null);
 
@@ -67,6 +71,25 @@ export default function ProjectRegistrationForm({
     }
   }
 
+  function handleEmailQuotation(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    const mailto = buildQuotationMailto([
+      `Product interest: ${String(formData.get("productInterest") || "")}`,
+      `Organization: ${String(formData.get("organization") || "")}`,
+      `Contact name: ${String(formData.get("contactName") || "")}`,
+      `Email: ${String(formData.get("email") || "")}`,
+      `Phone: ${String(formData.get("phone") || "")}`,
+      `Project / use case: ${String(formData.get("projectName") || "")}`,
+      "",
+      "Requirements:",
+      String(formData.get("projectDescription") || ""),
+    ]);
+
+    window.location.href = mailto;
+  }
+
   if (submitted) {
     return (
       <div
@@ -89,10 +112,11 @@ export default function ProjectRegistrationForm({
           />
         </div>
         <h3 className={`font-semibold ${isCompact ? "" : "text-lg mb-2"}`}>
-          Registration received
+          Quotation request received
         </h3>
         <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto">
-          Our team will review your project and respond shortly. For urgent enquiries, email{" "}
+          Our team will prepare a tailored quotation and respond shortly. For urgent enquiries,
+          call us or email{" "}
           <a
             href={`mailto:${COMPANY_INFO.supportEmail}`}
             className="text-[var(--brand)] hover:underline"
@@ -108,7 +132,7 @@ export default function ProjectRegistrationForm({
   return (
     <form
       id={id}
-      onSubmit={handleSubmit}
+      onSubmit={submissionEnabled ? handleSubmit : handleEmailQuotation}
       className={
         isCompact
           ? "space-y-4"
@@ -117,18 +141,27 @@ export default function ProjectRegistrationForm({
     >
       {!isCompact && (
         <div>
-          <h3 className="text-lg font-semibold">Project registration</h3>
+          <h3 className="text-lg font-semibold">Request a quotation</h3>
           <p className="text-sm text-[var(--text-secondary)] mt-1">
-            Share your project scope and we&apos;ll connect you with a KYBER architect.
+            Tell us about your HCI or MARSLOQ requirements and we&apos;ll send a tailored
+            quotation. Prefer a call?{" "}
+            <Link href="/contact#request-callback" className="text-[var(--brand)] hover:underline">
+              Request a callback
+            </Link>
+            .
           </p>
         </div>
       )}
 
       {isCompact && (
         <>
-          <h3 className="text-lg font-semibold mb-1">Register your project</h3>
+          <h3 className="text-lg font-semibold mb-1">Request a quotation</h3>
           <p className="text-sm text-[var(--text-muted)] mb-2">
-            Tell us about your infrastructure goals.
+            Share your scope for a tailored quote, or{" "}
+            <Link href="/contact#request-callback" className="text-[var(--brand)] hover:underline">
+              request a callback
+            </Link>
+            .
           </p>
         </>
       )}
@@ -143,13 +176,13 @@ export default function ProjectRegistrationForm({
       />
 
       <div className={isCompact ? "space-y-4" : "grid sm:grid-cols-2 gap-5"}>
-        <Field label="Project name" htmlFor={`${id}-projectName`} fullWidth={isCompact}>
+        <Field label="Project / use case" htmlFor={`${id}-projectName`} fullWidth={isCompact}>
           <input
             id={`${id}-projectName`}
             name="projectName"
             required
             className="kyber-input"
-            placeholder="e.g. Regional hospital HCI rollout"
+            placeholder="e.g. Hospital HCI cluster + syslog"
           />
         </Field>
         <Field label="Organization" htmlFor={`${id}-organization`} fullWidth={isCompact}>
@@ -180,7 +213,7 @@ export default function ProjectRegistrationForm({
             placeholder="jane@company.com"
           />
         </Field>
-        <Field label="Phone" htmlFor={`${id}-phone`} fullWidth={isCompact}>
+        <Field label="Phone (for callback)" htmlFor={`${id}-phone`} fullWidth={isCompact}>
           <input
             id={`${id}-phone`}
             name="phone"
@@ -208,14 +241,14 @@ export default function ProjectRegistrationForm({
         </Field>
       </div>
 
-      <Field label="Project description" htmlFor={`${id}-projectDescription`} fullWidth>
+      <Field label="Requirements for quotation" htmlFor={`${id}-projectDescription`} fullWidth>
         <textarea
           id={`${id}-projectDescription`}
           name="projectDescription"
           rows={isCompact ? 3 : 4}
           required
           className="kyber-input resize-y"
-          placeholder="Scope, timeline, workload count, compliance needs, or other requirements…"
+          placeholder="Scope, node count, syslog sources, timeline, compliance needs…"
         />
       </Field>
 
@@ -225,27 +258,28 @@ export default function ProjectRegistrationForm({
         </p>
       )}
 
-      {!PROJECT_REGISTRATION_SUBMISSION_ENABLED && (
+      {!submissionEnabled && (
         <p className="text-sm text-[var(--text-secondary)] rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] px-4 py-3">
-          {PROJECT_REGISTRATION_PAUSED_MESSAGE}{" "}
-          <a
-            href={`mailto:${COMPANY_INFO.supportEmail}`}
-            className="text-[var(--brand)] hover:underline"
-          >
-            {COMPANY_INFO.supportEmail}
-          </a>
+          {PROJECT_REGISTRATION_PAUSED_MESSAGE}
         </p>
       )}
 
       <button
         type="submit"
-        disabled={submitting || !PROJECT_REGISTRATION_SUBMISSION_ENABLED}
+        disabled={submitting}
         className="kyber-btn-primary gap-2 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {submitting ? "Submitting…" : (
+        {submitting ? (
+          "Submitting…"
+        ) : submissionEnabled ? (
           <>
             <Send className="w-4 h-4" />
-            Submit registration
+            Submit quotation request
+          </>
+        ) : (
+          <>
+            <Mail className="w-4 h-4" />
+            Email quotation request
           </>
         )}
       </button>

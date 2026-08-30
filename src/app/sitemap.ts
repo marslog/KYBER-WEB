@@ -21,11 +21,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: product.href.includes("/hci") || product.href.includes("/marsloq") ? 0.9 : 0.7,
   }));
 
+  const logManagementAlias: MetadataRoute.Sitemap = [
+    {
+      url: absoluteUrl("/products/log-management"),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: absoluteUrl("/products/siem"),
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+  ];
+
   const solutions: MetadataRoute.Sitemap = NAV_STRUCTURE.solutions.map((solution) => ({
     url: absoluteUrl(solution.href),
     lastModified: now,
     changeFrequency: "monthly",
-    priority: 0.75,
+    priority: solution.href.includes("secops-log-management") ? 0.9 : 0.75,
   }));
 
   const resources: MetadataRoute.Sitemap = getAllResourceSlugs().map((slug) => ({
@@ -42,5 +57,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...products, ...solutions, ...resources, ...company];
+  return [...staticPages, ...products, ...logManagementAlias, ...solutions, ...resources, ...company];
 }

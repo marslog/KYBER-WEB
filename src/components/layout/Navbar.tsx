@@ -90,8 +90,8 @@ export default function Navbar({ overDarkHero = false }: NavbarProps) {
             >
               Platform
             </Link>
-            <Link href="/contact" className="kyber-btn-primary text-sm py-2 px-4">
-              Register Project
+            <Link href="/contact#get-a-quote" className="kyber-btn-primary text-sm py-2 px-4">
+              Get a Quote
             </Link>
           </div>
 
@@ -188,8 +188,8 @@ export default function Navbar({ overDarkHero = false }: NavbarProps) {
               {item.name}
             </Link>
           ))}
-          <Link href="/contact" onClick={() => setMobileOpen(false)} className="kyber-btn-primary w-full justify-center gap-2">
-            Register Project <ArrowRight className="w-4 h-4" />
+          <Link href="/contact#get-a-quote" onClick={() => setMobileOpen(false)} className="kyber-btn-primary w-full justify-center gap-2">
+            Get a Quote <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       )}

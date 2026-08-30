@@ -78,15 +78,23 @@ export default function SecurityPage() {
         </div>
       </section>
 
-      <section id="project-registration" className="section-shell bg-[var(--bg-subtle)]">
+      <section id="get-a-quote" className="section-shell bg-[var(--bg-subtle)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-semibold mb-3">Discuss your security requirements</h2>
           <p className="text-sm text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
-            Talk to a KYBER architect about compliance, data residency, and ransomware resilience.
+            Request a quotation or schedule a callback to discuss compliance, data residency, and ransomware resilience.
           </p>
-          <Link href="/contact" className="kyber-btn-primary inline-flex items-center gap-2">
-            Contact us <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link href="/contact#get-a-quote" className="kyber-btn-primary inline-flex items-center gap-2">
+              Get a quote <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/contact#request-callback"
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-5 py-2.5 text-sm font-medium hover:border-[var(--brand)] transition-colors"
+            >
+              Request callback
+            </Link>
+          </div>
         </div>
       </section>
 

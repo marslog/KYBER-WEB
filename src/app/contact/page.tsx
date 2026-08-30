@@ -3,13 +3,17 @@ import { MapPin, Phone, Mail, Clock, Globe } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProjectRegistrationForm from "@/components/sections/ProjectRegistrationForm";
+import CallbackCard from "@/components/sections/CallbackCard";
 import { COMPANY_INFO } from "@/data/platformData";
+import { createPageMetadata } from "@/lib/siteSeo";
 
-export const metadata: Metadata = {
-  title: "Contact KYBER — Project Registration",
+export const metadata: Metadata = createPageMetadata({
+  title: "Contact KYBER — Request a Quotation or Callback",
   description:
-    "Register your infrastructure project with KYBER platform architects. HCI, MARSLOQ, and full-platform deployments.",
-};
+    "Request a tailored quotation for KYBER HCI or MARSLOQ, or call our team to schedule a callback with a platform architect.",
+  path: "/contact",
+  keywords: ["quotation", "callback", "contact KYBER"],
+});
 
 export default function ContactPage() {
   return (
@@ -20,11 +24,11 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="section-eyebrow mb-3">Contact</p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight max-w-2xl">
-            Register your project
+            Request a quotation or callback
           </h1>
           <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mt-5 max-w-2xl">
-            Share your scope, timeline, and requirements. A KYBER architect will review your
-            submission and follow up with next steps.
+            Get a tailored quotation for KYBER HCI or MARSLOQ, or call us to speak with a platform
+            architect. We typically respond within one business day.
           </p>
         </div>
       </section>
@@ -35,56 +39,62 @@ export default function ContactPage() {
             <ProjectRegistrationForm />
 
             <div className="space-y-5">
-              <h2 className="text-lg font-semibold">Contact details</h2>
-              <ul className="space-y-4 text-sm text-[var(--text-secondary)]">
-                <ContactRow icon={<MapPin className="w-4 h-4" />} label="Address">
-                  {COMPANY_INFO.address}
-                </ContactRow>
-                <ContactRow icon={<MapPin className="w-4 h-4" />} label="Tax ID">
-                  {COMPANY_INFO.taxId}
-                </ContactRow>
-                <ContactRow icon={<Phone className="w-4 h-4" />} label="Phone">
-                  <a href={`tel:${COMPANY_INFO.phoneTel}`} className="hover:text-[var(--brand)] transition-colors">
-                    {COMPANY_INFO.phone}
-                  </a>
-                  <span className="mx-1">·</span>
-                  <a
-                    href={`tel:${COMPANY_INFO.phoneSecondaryTel}`}
-                    className="hover:text-[var(--brand)] transition-colors"
-                  >
-                    {COMPANY_INFO.phoneSecondary}
-                  </a>
-                </ContactRow>
-                <ContactRow icon={<Phone className="w-4 h-4" />} label="Installation">
-                  <a
-                    href={`tel:${COMPANY_INFO.installationPhoneTel}`}
-                    className="hover:text-[var(--brand)] transition-colors"
-                  >
-                    {COMPANY_INFO.installationPhone}
-                  </a>
-                </ContactRow>
-                <ContactRow icon={<Mail className="w-4 h-4" />} label="Email">
-                  <a
-                    href={`mailto:${COMPANY_INFO.supportEmail}`}
-                    className="hover:text-[var(--brand)] transition-colors"
-                  >
-                    {COMPANY_INFO.supportEmail}
-                  </a>
-                </ContactRow>
-                <ContactRow icon={<Globe className="w-4 h-4" />} label="Website">
-                  <a
-                    href={COMPANY_INFO.websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-[var(--brand)] transition-colors"
-                  >
-                    {COMPANY_INFO.website}
-                  </a>
-                </ContactRow>
-                <ContactRow icon={<Clock className="w-4 h-4" />} label="Hours">
-                  {COMPANY_INFO.hours}
-                </ContactRow>
-              </ul>
+              <CallbackCard />
+              <div className="rounded-xl border border-[var(--border)] bg-white p-6">
+                <h2 className="text-lg font-semibold mb-4">Contact details</h2>
+                <ul className="space-y-4 text-sm text-[var(--text-secondary)]">
+                  <ContactRow icon={<MapPin className="w-4 h-4" />} label="Address">
+                    {COMPANY_INFO.address}
+                  </ContactRow>
+                  <ContactRow icon={<MapPin className="w-4 h-4" />} label="Tax ID">
+                    {COMPANY_INFO.taxId}
+                  </ContactRow>
+                  <ContactRow icon={<Phone className="w-4 h-4" />} label="Sales">
+                    <a
+                      href={`tel:${COMPANY_INFO.phoneTel}`}
+                      className="hover:text-[var(--brand)] transition-colors"
+                    >
+                      {COMPANY_INFO.phone}
+                    </a>
+                    <span className="mx-1">·</span>
+                    <a
+                      href={`tel:${COMPANY_INFO.phoneSecondaryTel}`}
+                      className="hover:text-[var(--brand)] transition-colors"
+                    >
+                      {COMPANY_INFO.phoneSecondary}
+                    </a>
+                  </ContactRow>
+                  <ContactRow icon={<Phone className="w-4 h-4" />} label="Installation">
+                    <a
+                      href={`tel:${COMPANY_INFO.installationPhoneTel}`}
+                      className="hover:text-[var(--brand)] transition-colors"
+                    >
+                      {COMPANY_INFO.installationPhone}
+                    </a>
+                  </ContactRow>
+                  <ContactRow icon={<Mail className="w-4 h-4" />} label="Email">
+                    <a
+                      href={`mailto:${COMPANY_INFO.supportEmail}`}
+                      className="hover:text-[var(--brand)] transition-colors"
+                    >
+                      {COMPANY_INFO.supportEmail}
+                    </a>
+                  </ContactRow>
+                  <ContactRow icon={<Globe className="w-4 h-4" />} label="Website">
+                    <a
+                      href={COMPANY_INFO.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[var(--brand)] transition-colors"
+                    >
+                      {COMPANY_INFO.website}
+                    </a>
+                  </ContactRow>
+                  <ContactRow icon={<Clock className="w-4 h-4" />} label="Hours">
+                    {COMPANY_INFO.hours}
+                  </ContactRow>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

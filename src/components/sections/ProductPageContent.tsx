@@ -142,15 +142,23 @@ export default function ProductPageContent({ product }: { product: ProductPageDa
         </section>
       )}
 
-      <section id="project-registration" className="py-16 md:py-20 bg-[var(--bg-subtle)]">
+      <section id="get-a-quote" className="py-16 md:py-20 bg-[var(--bg-subtle)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-semibold mb-3">See {product.name} in action</h2>
           <p className="text-sm text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
-            Register your project for a live demonstration tailored to your infrastructure.
+            Request a quotation or schedule a callback with a KYBER architect.
           </p>
-          <Link href="/contact" className="kyber-btn-primary inline-flex items-center gap-2">
-            Register project <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link href="/contact#get-a-quote" className="kyber-btn-primary inline-flex items-center gap-2">
+              Get a quote <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/contact#request-callback"
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-5 py-2.5 text-sm font-medium hover:border-[var(--brand)] transition-colors"
+            >
+              Request callback
+            </Link>
+          </div>
         </div>
       </section>
     </div>

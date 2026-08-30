@@ -97,7 +97,7 @@ export const NAV_STRUCTURE = {
     { title: "VMware Migration", desc: "Import OVA/OVF/VMDK workloads directly to KYBER KSV", href: "/solutions/vmware-migration" },
     { title: "Enterprise HCI", desc: "Consolidate compute and storage into a high-availability cluster", href: "/solutions/enterprise-hci" },
     { title: "Ransomware Resilience", desc: "Proactive behavioral protection and immutable backup recovery", href: "/solutions/ransomware-resilience" },
-    { title: "Security Operations & Logs", desc: "Centralize log streams into MARSLOQ with OpenSearch analytics", href: "/solutions/secops-log-management" },
+    { title: "Security Operations & Log Management", desc: "Enterprise log management with syslog ingestion, centralized logging, and OpenSearch analytics in MARSLOQ", href: "/solutions/secops-log-management" },
     { title: "Legacy Hardware Modernization", desc: "Reuse existing x86 servers and eliminate unnecessary hardware cycles", href: "/solutions/legacy-hardware-modernization" },
   ],
   resources: [
@@ -326,10 +326,10 @@ export const SOLUTIONS_JOURNEYS: SolutionItem[] = [
   },
   {
     id: "intelligent-observability",
-    title: "Modernize Infrastructure Operations",
-    tagline: "Stream all cluster, network, and security telemetry into MARSLOQ AI intelligence",
+    title: "Modernize Infrastructure Operations with Log Management",
+    tagline: "Stream logs, metrics, and security telemetry into MARSLOQ centralized log management",
     description:
-      "Eliminate operational blind spots by aggregating infrastructure logs, system metrics, and security signals into one real-time observability platform.",
+      "Eliminate operational blind spots with enterprise log management — aggregate infrastructure logs, syslog streams, system metrics, and security signals into one real-time observability platform.",
     iconName: "Activity",
     href: "/solutions/secops-log-management",
     journeySteps: [
@@ -574,14 +574,14 @@ export const HERO_CONTENT: HeroContent = {
   headline: "The Future of",
   headlineAccent: "Hyper-Converged Infrastructure.",
   subheadline:
-    "Enterprise HCI, hypervisor, and centralized syslog — unified on any x86 hardware.",
+    "Enterprise HCI, hypervisor, and centralized log management — syslog, logs, and observability unified on any x86 hardware.",
   primaryCta: { label: "Explore Products", href: "#product-highlights" },
   secondaryCta: { label: "MARSLOQ", href: "/products/marsloq" },
 };
 
 export const FEATURED_ANNOUNCEMENT: FeaturedAnnouncement = {
   eyebrow: "MARSLOQ",
-  title: "Log, Monitor & AI — On-Premise",
+  title: "Log, Monitor & AI — On-Premise Log Management",
   description: "",
   cta: { label: "Discover MARSLOQ", href: "/products/marsloq" },
   accentColor: "#14b8a6",
@@ -905,7 +905,7 @@ export const COMPANY_INFO = {
   taxId: "0125569011951",
   hours: "Mon - Fri: 09:00 - 18:00 (ICT)",
   tagline:
-    "KYBER delivers hyper-converged infrastructure, ransomware defense, and intelligent observability — one unified platform for the modern enterprise.",
+    "KYBER delivers hyper-converged infrastructure, enterprise log management, ransomware defense, and intelligent observability — one unified platform for the modern enterprise.",
 };
 
 export const FOOTER_LEGAL_LINKS = [

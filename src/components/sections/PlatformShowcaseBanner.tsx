@@ -70,15 +70,15 @@ export default function PlatformShowcaseBanner() {
               <span className="text-[var(--brand-light)]">Hyper-Converged</span> Infrastructure.
             </h2>
             <p className="mt-4 text-sm sm:text-base text-[var(--text-muted-on-dark)] leading-relaxed max-w-md">
-              Unified infrastructure and log intelligence — on any hardware.
+              Enterprise HCI plus centralized log management — ingest syslog and infrastructure logs on any hardware.
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-8">
               <Link href="#product-highlights" className="kyber-btn-primary gap-2">
                 Explore Products
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/products/marsloq" className="kyber-btn-on-dark">
-                MARSLOQ
+              <Link href="/products/log-management" className="kyber-btn-on-dark">
+                Log Management
               </Link>
             </div>
           </motion.div>

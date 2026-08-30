@@ -34,7 +34,7 @@ export const RESOURCE_PAGES: ResourcePage[] = [
     links: [
       { label: "KYBER HCI product page", href: "/products/hci" },
       { label: "MARSLOQ product page", href: "/products/marsloq" },
-      { label: "Register a project", href: "/contact" },
+      { label: "Request a quotation", href: "/contact#get-a-quote" },
     ],
   },
   {
@@ -141,11 +141,11 @@ export const RESOURCE_PAGES: ResourcePage[] = [
       {
         heading: "Licensing & access",
         body:
-          "Download access is provided to registered customers and partners. Register your project to request credentials and release channels.",
+          "Download access is provided to registered customers and partners. Request a quotation to obtain credentials and release channels.",
       },
     ],
     links: [
-      { label: "Register for download access", href: "/contact" },
+      { label: "Request download access", href: "/contact#get-a-quote" },
       { label: "Talk to an architect", href: "/contact" },
     ],
   },
@@ -174,12 +174,12 @@ export const RESOURCE_PAGES: ResourcePage[] = [
       {
         heading: "Support & services",
         body:
-          "KYBER provides installation support, architecture reviews, and ongoing platform guidance. Register your project to start the conversation.",
+          "KYBER provides installation support, architecture reviews, and ongoing platform guidance. Request a quotation or callback to start the conversation.",
       },
     ],
     links: [
       { label: "VMware Migration solution", href: "/solutions/vmware-migration" },
-      { label: "Register your project", href: "/contact" },
+      { label: "Get a quotation", href: "/contact#get-a-quote" },
     ],
   },
 ];

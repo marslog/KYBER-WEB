@@ -159,9 +159,9 @@ export const MARSLOQ_PRESENTATION: PresentationProduct = {
   id: "marsloq",
   name: "MARSLOQ",
   eyebrow: "Observability",
-  tagline: "Next-generation centralized logging",
+  tagline: "Next-generation centralized log management",
   summary:
-    "Centralized log management with syslog ingestion, network monitoring, AI security analytics, and on-premise Thai LLM — ingest, parse, index, and investigate telemetry without sending data off-site.",
+    "Enterprise log management with syslog ingestion, centralized logging, network monitoring, AI security analytics, and on-premise Thai LLM — ingest, parse, index, and investigate logs without sending data off-site.",
   lead: "Grok parsing pipelines, OpenSearch-backed search, and 120+ SNMP templates ship ready to deploy. Investigate faster with AI that never leaves your network.",
   logo: "/assets/logos/marsloq-logo.png",
   logoAlt: "MARSLOQ logo",
