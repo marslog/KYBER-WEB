@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import * as LucideNS from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { PresentationProduct, ShowcaseViewId } from "@/data/presentationContent";
+import type { PresentationProduct } from "@/data/presentationContent";
 import ProductShowcaseMedia from "@/components/sections/ProductShowcaseMedia";
 import { getIcon } from "@/lib/icons";
 
@@ -18,13 +18,11 @@ export default function ProductShowcaseCard({
   href,
   index = 0,
   reversed = false,
-  activeView,
 }: {
   product: PresentationProduct;
   href: string;
   index?: number;
   reversed?: boolean;
-  activeView: ShowcaseViewId;
 }) {
   const rich = Boolean(product.showcaseHighlights?.length);
 
@@ -40,7 +38,7 @@ export default function ProductShowcaseCard({
       <div className="platform-product-row__media">
         <div className="platform-product-row__ambient" aria-hidden />
         <div className={`platform-product-row__frame platform-product-row__frame--${product.id}`}>
-          <ProductShowcaseMedia product={product} activeView={activeView} />
+          <ProductShowcaseMedia product={product} />
         </div>
       </div>
 

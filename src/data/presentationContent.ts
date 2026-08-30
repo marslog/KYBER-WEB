@@ -32,6 +32,8 @@ export interface ShowcaseUiSlide {
   title: string;
   image: string;
   imageAlt: string;
+  width: number;
+  height: number;
 }
 
 export type ShowcaseViewId = "architecture" | "ui" | "video";
@@ -152,18 +154,24 @@ export const KYBER_HCI_PRESENTATION: PresentationProduct = {
       title: "Cluster dashboard",
       image: "/assets/screenshots/kyber-hci-dashboard.png",
       imageAlt: "KYBER HCI cluster dashboard with health, VMs, and storage metrics",
+      width: 1440,
+      height: 1065,
     },
     {
       id: "migration",
       title: "VM migration wizard",
       image: "/assets/screenshots/kyber-vm-migration-wizard.png",
       imageAlt: "KYBER HCI VM migration wizard importing workloads",
+      width: 1594,
+      height: 801,
     },
     {
       id: "console",
       title: "Management console",
       image: "/assets/screenshots/kyber-hci-hero-showcase.jpg",
       imageAlt: "KYBER HCI unified management console",
+      width: 1440,
+      height: 810,
     },
   ],
   stackLayers: [
@@ -261,24 +269,32 @@ export const MARSLOQ_PRESENTATION: PresentationProduct = {
       title: "Admin dashboard",
       image: "/assets/screenshots/marsloq-admin-dashboard.png",
       imageAlt: "MARSLOQ admin dashboard with live events and severity analytics",
+      width: 1440,
+      height: 1065,
     },
     {
       id: "log-search",
       title: "Log search",
       image: "/assets/screenshots/marsloq-log-search.png",
       imageAlt: "MARSLOQ centralized log search interface",
+      width: 1440,
+      height: 668,
     },
     {
       id: "threat-intel",
       title: "Threat intelligence",
       image: "/assets/screenshots/marsloq-threat-intelligence.png",
       imageAlt: "MARSLOQ security risk index and incident trends",
+      width: 976,
+      height: 662,
     },
     {
       id: "device-monitoring",
       title: "Device monitoring",
       image: "/assets/screenshots/marsloq-device-monitoring.png",
       imageAlt: "MARSLOQ SNMP device monitoring and interface history",
+      width: 1870,
+      height: 946,
     },
   ],
   stackLayers: [

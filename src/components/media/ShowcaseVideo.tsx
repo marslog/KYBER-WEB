@@ -10,6 +10,9 @@ type ShowcaseVideoProps = {
   className?: string;
   priority?: boolean;
   ariaLabel?: string;
+  variant?: "fill" | "responsive";
+  width?: number;
+  height?: number;
 };
 
 export default function ShowcaseVideo({
@@ -20,6 +23,9 @@ export default function ShowcaseVideo({
   className = "",
   priority = false,
   ariaLabel,
+  variant = "fill",
+  width,
+  height,
 }: ShowcaseVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -55,6 +61,8 @@ export default function ShowcaseVideo({
       ref={videoRef}
       src={src}
       poster={poster}
+      width={variant === "responsive" ? width : undefined}
+      height={variant === "responsive" ? height : undefined}
       autoPlay
       loop
       muted
@@ -62,7 +70,11 @@ export default function ShowcaseVideo({
       preload={priority ? "auto" : "metadata"}
       aria-label={ariaLabel}
       aria-hidden={!ariaLabel}
-      className={`showcase-video absolute inset-0 h-full w-full ${objectFit === "contain" ? "object-contain" : "object-cover"} ${className}`}
+      className={
+        variant === "responsive"
+          ? `showcase-video showcase-video--responsive ${className}`.trim()
+          : `showcase-video absolute inset-0 h-full w-full ${objectFit === "contain" ? "object-contain" : "object-cover"} ${className}`
+      }
       style={{ objectPosition }}
     />
   );

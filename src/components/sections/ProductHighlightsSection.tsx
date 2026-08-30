@@ -1,14 +1,12 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { motion } from "framer-motion";
 import {
   KYBER_HCI_PRESENTATION,
   MARSLOQ_PRESENTATION,
-  type ShowcaseViewId,
 } from "@/data/presentationContent";
 import ProductShowcaseCard from "@/components/sections/ProductShowcaseCard";
-import UnifiedDigitalStackBar from "@/components/sections/UnifiedDigitalStackBar";
 
 const PRODUCTS = [
   { product: KYBER_HCI_PRESENTATION, href: "/products/hci", reversed: false },
@@ -22,8 +20,6 @@ const PLATFORM_PILLARS = [
 ];
 
 export default function ProductHighlightsSection() {
-  const [activeView, setActiveView] = useState<ShowcaseViewId>("architecture");
-
   return (
     <section id="product-highlights" className="platform-showcase">
       <div className="platform-showcase__header section-shell">
@@ -66,14 +62,17 @@ export default function ProductHighlightsSection() {
         {PRODUCTS.map(({ product, href, reversed }, index) => (
           <Fragment key={product.id}>
             {index > 0 && (
-              <UnifiedDigitalStackBar activeView={activeView} onViewChange={setActiveView} />
+              <div className="platform-showcase__row-divider" aria-hidden>
+                <span className="platform-showcase__row-divider-line" />
+                <span className="platform-showcase__row-divider-label">Unified digital stack</span>
+                <span className="platform-showcase__row-divider-line" />
+              </div>
             )}
             <ProductShowcaseCard
               product={product}
               href={href}
               index={index}
               reversed={reversed}
-              activeView={activeView}
             />
           </Fragment>
         ))}

@@ -1222,8 +1222,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .showcase-video {
-  image-rendering: -webkit-optimize-contrast;
   backface-visibility: hidden;
+}
+
+.showcase-video:not(.showcase-video--responsive) {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.showcase-video--responsive {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
 }
 
 .platform-product-row__frame .showcase-video-crisp {
@@ -1297,13 +1307,13 @@ h1, h2, h3, h4, h5, h6 {
   filter: contrast(1.08) saturate(1.05) brightness(1.02);
 }
 
-/* 3D SaaS platform showcase banner */
-.platform-3d-banner {
+/* Platform showcase banner */
+.platform-showcase-banner {
   background: var(--bg-dark);
   color: var(--text-on-dark);
 }
 
-.platform-3d-banner__bg {
+.platform-showcase-banner__bg {
   position: absolute;
   inset: 0;
   background:
@@ -1313,57 +1323,26 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-.platform-3d-banner__scene {
-  perspective: 1200px;
-  touch-action: none;
+.platform-showcase-banner__media {
+  position: relative;
 }
 
-.platform-3d-banner__stage {
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.platform-3d-banner__grid-floor {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 140%;
-  height: 55%;
-  transform: translateX(-50%) rotateX(72deg);
-  transform-origin: center bottom;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: linear-gradient(to top, black 20%, transparent 85%);
-  pointer-events: none;
-}
-
-.platform-3d-banner__card {
+.platform-showcase-banner__card {
   position: absolute;
   width: min(82vw, 420px);
-  transform-style: preserve-3d;
 }
 
-.platform-3d-banner__card--hci {
-  animation: platform-card-float-hci 6s ease-in-out infinite;
+.platform-showcase-banner__card--hci {
+  top: 4%;
+  right: 0;
 }
 
-.platform-3d-banner__card--marsloq {
-  animation: platform-card-float-marsloq 7s ease-in-out infinite 0.5s;
+.platform-showcase-banner__card--marsloq {
+  bottom: 0;
+  left: 0;
 }
 
-@keyframes platform-card-float-hci {
-  0%, 100% { transform: translate3d(-24%, -14%, 90px) translateY(0); }
-  50% { transform: translate3d(-24%, -14%, 90px) translateY(-14px); }
-}
-
-@keyframes platform-card-float-marsloq {
-  0%, 100% { transform: translate3d(28%, 22%, 50px) translateY(0); }
-  50% { transform: translate3d(28%, 22%, 50px) translateY(12px); }
-}
-
-.platform-3d-banner__card-inner {
+.platform-showcase-banner__card-inner {
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1375,7 +1354,7 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: blur(8px);
 }
 
-.platform-3d-banner__card-chrome {
+.platform-showcase-banner__card-chrome {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -1384,14 +1363,14 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(0, 0, 0, 0.25);
 }
 
-.platform-3d-banner__dot {
+.platform-showcase-banner__dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
 }
 
-.platform-3d-banner__card-label {
+.platform-showcase-banner__card-label {
   margin-left: auto;
   font-size: 11px;
   font-weight: 600;
@@ -1400,52 +1379,18 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--card-accent, var(--brand));
 }
 
-.platform-3d-banner__orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(40px);
-  pointer-events: none;
-}
-
-.platform-3d-banner__orb--blue {
-  width: 160px;
-  height: 160px;
-  top: 8%;
-  right: 2%;
-  background: var(--kyber-accent);
-}
-
-.platform-3d-banner__orb--amber {
-  width: 120px;
-  height: 120px;
-  bottom: 12%;
-  left: 8%;
-  background: var(--marsloq-accent);
-}
-
 @media (max-width: 1023px) {
-  .platform-3d-banner__card {
+  .platform-showcase-banner__card {
     width: min(78vw, 340px);
   }
 
-  @keyframes platform-card-float-hci {
-    0%, 100% { transform: translate3d(-16%, -10%, 70px) translateY(0); }
-    50% { transform: translate3d(-16%, -10%, 70px) translateY(-10px); }
+  .platform-showcase-banner__card--hci {
+    top: 0;
+    right: 4%;
   }
 
-  @keyframes platform-card-float-marsloq {
-    0%, 100% { transform: translate3d(20%, 18%, 40px) translateY(0); }
-    50% { transform: translate3d(20%, 18%, 40px) translateY(8px); }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .platform-3d-banner__card,
-  .platform-3d-banner__orb {
-    animation: none !important;
-  }
-
-  .platform-3d-banner__stage {
-    transform: none !important;
+  .platform-showcase-banner__card--marsloq {
+    bottom: 4%;
+    left: 4%;
   }
 }
