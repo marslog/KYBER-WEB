@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PortalAccessPanel from "@/components/sections/PortalAccessPanel";
 import { getAllResourceSlugs, getResourcePage } from "@/data/resourcesContent";
 
 interface ResourcePageProps {
@@ -48,6 +49,12 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
 
       <section className="section-shell bg-[var(--bg-subtle)] border-b border-[var(--border)]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {slug === "kb" && (
+            <div className="mb-8">
+              <PortalAccessPanel />
+            </div>
+          )}
+
           <div className="grid gap-4">
             {page.sections.map((section) => (
               <div

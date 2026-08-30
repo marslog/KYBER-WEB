@@ -912,4 +912,5 @@ export const FOOTER_LEGAL_LINKS = [
   { label: "Security & Compliance", href: "/security" },
   { label: "Contact", href: "/contact" },
   { label: "Documentation", href: "/resources/docs" },
+  { label: "Knowledge Base", href: "/resources/kb" },
 ] as const;

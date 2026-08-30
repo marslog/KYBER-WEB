@@ -41,5 +41,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# portal RBAC user store (runtime)
+/data/portal-users.json
+
 .vercel
 .env*

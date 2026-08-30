@@ -1,27 +1,59 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ChevronDown, Menu, X, Search, ArrowRight } from "lucide-react";
 import { NAV_STRUCTURE } from "@/data/platformData";
+import PortalLoginMenu from "@/components/layout/PortalLoginMenu";
+import { usePortalAuth } from "@/hooks/usePortalAuth";
+import { KNOWLEDGE_BASE_HREF } from "@/data/portalAccess";
+import { ACCOUNT_MANAGEMENT_NAV, KNOWLEDGE_BASE_NAV } from "@/lib/portalSession";
 
 type NavbarProps = {
   overDarkHero?: boolean;
 };
 
-export default function Navbar({ overDarkHero = false }: NavbarProps) {
+function filterResourcesForAuth(authenticated: boolean) {
+  return NAV_STRUCTURE.resources.filter(
+    (item) => authenticated || item.href !== KNOWLEDGE_BASE_HREF,
+  );
+}
+
+function NavbarContent({ overDarkHero = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const darkNav = overDarkHero && !scrolled;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const { authenticated, isAdmin, logout } = usePortalAuth();
+  const searchParams = useSearchParams();
+  const visibleResources = filterResourcesForAuth(authenticated);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("login") === "required") {
+      setLoginOpen(true);
+    }
+  }, [searchParams]);
+
+  const navLinkClass = (active: boolean) =>
+    `flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors rounded-md ${
+      darkNav
+        ? active
+          ? "text-white bg-white/10"
+          : "text-white/80 hover:text-white"
+        : active
+          ? "text-[var(--text)] bg-[var(--bg-subtle)]"
+          : "text-[var(--text-secondary)] hover:text-[var(--text)]"
+    }`;
 
   return (
     <header
@@ -50,22 +82,22 @@ export default function Navbar({ overDarkHero = false }: NavbarProps) {
           <nav className="hidden lg:flex items-center gap-1">
             {(["products", "solutions", "resources", "company"] as const).map((key) => (
               <div key={key} onMouseEnter={() => setActiveMenu(key)}>
-                <button
-                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium capitalize transition-colors rounded-md ${
-                    darkNav
-                      ? activeMenu === key
-                        ? "text-white bg-white/10"
-                        : "text-white/80 hover:text-white"
-                      : activeMenu === key
-                        ? "text-[var(--text)] bg-[var(--bg-subtle)]"
-                        : "text-[var(--text-secondary)] hover:text-[var(--text)]"
-                  }`}
-                >
+                <button className={navLinkClass(activeMenu === key)}>
                   {key}
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === key ? "rotate-180" : ""}`} />
                 </button>
               </div>
             ))}
+            {authenticated && (
+              <Link href={KNOWLEDGE_BASE_NAV.href} className={navLinkClass(false)}>
+                {KNOWLEDGE_BASE_NAV.label}
+              </Link>
+            )}
+            {isAdmin && (
+              <Link href={ACCOUNT_MANAGEMENT_NAV.href} className={navLinkClass(false)}>
+                {ACCOUNT_MANAGEMENT_NAV.label}
+              </Link>
+            )}
           </nav>
 
           <div className="hidden lg:flex items-center gap-3">
@@ -93,6 +125,13 @@ export default function Navbar({ overDarkHero = false }: NavbarProps) {
             <Link href="/contact#contact-form" className="kyber-btn-primary text-sm py-2 px-4">
               Contact
             </Link>
+            <PortalLoginMenu
+              darkNav={darkNav}
+              open={loginOpen}
+              onOpenChange={setLoginOpen}
+              authenticated={authenticated}
+              onLogout={logout}
+            />
           </div>
 
           <button
@@ -148,7 +187,7 @@ export default function Navbar({ overDarkHero = false }: NavbarProps) {
             )}
             {activeMenu === "resources" && (
               <div className="grid grid-cols-3 gap-4">
-                {NAV_STRUCTURE.resources.map((item) => (
+                {visibleResources.map((item) => (
                   <Link key={item.href} href={item.href} onClick={() => setActiveMenu(null)} className="p-4 rounded-lg border border-[var(--border)] hover:border-[var(--brand)] hover:bg-[var(--brand-soft)] transition-colors">
                     <div className="text-sm font-medium">{item.title}</div>
                     <div className="text-xs text-[var(--text-muted)] mt-1">{item.desc}</div>
@@ -188,6 +227,38 @@ export default function Navbar({ overDarkHero = false }: NavbarProps) {
               {item.name}
             </Link>
           ))}
+          {authenticated && (
+            <Link
+              href={KNOWLEDGE_BASE_NAV.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
+            >
+              {KNOWLEDGE_BASE_NAV.label}
+            </Link>
+          )}
+          {isAdmin && (
+            <Link
+              href={ACCOUNT_MANAGEMENT_NAV.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
+            >
+              {ACCOUNT_MANAGEMENT_NAV.label}
+            </Link>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              if (authenticated) {
+                void logout();
+              } else {
+                setLoginOpen(true);
+              }
+            }}
+            className={`block text-sm ${darkNav ? "text-white/90" : "text-[var(--text)]"}`}
+          >
+            {authenticated ? "Logout" : "Login"}
+          </button>
           <Link href="/contact#contact-form" onClick={() => setMobileOpen(false)} className="kyber-btn-primary w-full justify-center gap-2">
             Contact <ArrowRight className="w-4 h-4" />
           </Link>
@@ -213,5 +284,13 @@ export default function Navbar({ overDarkHero = false }: NavbarProps) {
         </div>
       )}
     </header>
+  );
+}
+
+export default function Navbar(props: NavbarProps) {
+  return (
+    <Suspense fallback={<header className="fixed top-0 left-0 right-0 z-50 h-[72px] bg-white/90 border-b border-[var(--border)]" />}>
+      <NavbarContent {...props} />
+    </Suspense>
   );
 }
