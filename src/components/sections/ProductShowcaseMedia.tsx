@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Layers, Monitor, Play } from "lucide-react";
 import type { PresentationProduct, ShowcaseViewId } from "@/data/presentationContent";
+import { PRODUCT_HERO_SHOWCASE_ASPECT } from "@/data/presentationContent";
 import PlatformArchitectureDiagram from "@/components/sections/PlatformArchitectureDiagram";
 import ShowcaseVideo from "@/components/media/ShowcaseVideo";
 
@@ -16,6 +17,8 @@ const VIEW_META: Record<
   ui: { label: "Product UI", shortLabel: "UI", icon: Monitor },
   video: { label: "Demo video", shortLabel: "Video", icon: Play },
 };
+
+const MEDIA_ASPECT = PRODUCT_HERO_SHOWCASE_ASPECT.replace("/", " / ");
 
 function availableViews(product: PresentationProduct): ShowcaseViewId[] {
   const views: ShowcaseViewId[] = ["architecture"];
@@ -31,42 +34,19 @@ export default function ProductShowcaseMedia({ product }: { product: Presentatio
 
   const uiSlides = product.showcaseUiSlides ?? [];
   const activeUiSlide = uiSlides[uiIndex] ?? uiSlides[0];
-  const videoAspect = product.videoAspect?.replace("/", " / ") ?? "16 / 9";
+  const videoAspect = product.videoAspect?.replace("/", " / ") ?? MEDIA_ASPECT;
 
   function selectView(view: ShowcaseViewId) {
     setActiveView(view);
     if (view === "ui") setUiIndex(0);
   }
 
+  const tabGridStyle = {
+    "--showcase-tab-count": views.length,
+  } as CSSProperties;
+
   return (
     <div className="product-showcase-media">
-      {views.length > 1 && (
-        <div className="product-showcase-media__tabs" role="tablist" aria-label={`${product.name} showcase views`}>
-          {views.map((viewId) => {
-            const meta = VIEW_META[viewId];
-            const Icon = meta.icon;
-            const selected = activeView === viewId;
-
-            return (
-              <button
-                key={viewId}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                aria-controls={`${product.id}-showcase-panel`}
-                id={`${product.id}-showcase-tab-${viewId}`}
-                onClick={() => selectView(viewId)}
-                className={`product-showcase-media__tab ${selected ? "is-active" : ""}`}
-              >
-                <Icon className="product-showcase-media__tab-icon" strokeWidth={1.75} aria-hidden />
-                <span className="product-showcase-media__tab-label">{meta.label}</span>
-                <span className="product-showcase-media__tab-label-short">{meta.shortLabel}</span>
-              </button>
-            );
-          })}
-        </div>
-      )}
-
       <div
         id={`${product.id}-showcase-panel`}
         role="tabpanel"
@@ -96,7 +76,10 @@ export default function ProductShowcaseMedia({ product }: { product: Presentatio
               exit={{ opacity: 0, scale: 0.985 }}
               transition={{ duration: 0.22 }}
             >
-              <div className="platform-product-row__zoom product-showcase-media__zoom">
+              <div
+                className="platform-product-row__zoom product-showcase-media__zoom"
+                style={{ aspectRatio: MEDIA_ASPECT }}
+              >
                 <Image
                   src={activeUiSlide.image}
                   alt={activeUiSlide.imageAlt}
@@ -108,7 +91,6 @@ export default function ProductShowcaseMedia({ product }: { product: Presentatio
                   priority={uiIndex === 0}
                 />
               </div>
-              <p className="product-showcase-media__caption">{activeUiSlide.title}</p>
             </motion.div>
           )}
 
@@ -157,12 +139,48 @@ export default function ProductShowcaseMedia({ product }: { product: Presentatio
                   fill
                   unoptimized
                   className="object-cover object-top"
-                  sizes="80px"
+                  sizes="72px"
                 />
               </span>
               <span className="product-showcase-media__ui-thumb-label">{slide.title}</span>
             </button>
           ))}
+        </div>
+      )}
+
+      {activeUiSlide && activeView === "ui" && (
+        <p className="product-showcase-media__caption">{activeUiSlide.title}</p>
+      )}
+
+      {views.length > 1 && (
+        <div
+          className="product-showcase-media__tabs"
+          role="tablist"
+          aria-label={`${product.name} showcase views`}
+          style={tabGridStyle}
+        >
+          {views.map((viewId) => {
+            const meta = VIEW_META[viewId];
+            const Icon = meta.icon;
+            const selected = activeView === viewId;
+
+            return (
+              <button
+                key={viewId}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                aria-controls={`${product.id}-showcase-panel`}
+                id={`${product.id}-showcase-tab-${viewId}`}
+                onClick={() => selectView(viewId)}
+                className={`product-showcase-media__tab ${selected ? "is-active" : ""}`}
+              >
+                <Icon className="product-showcase-media__tab-icon" strokeWidth={1.75} aria-hidden />
+                <span className="product-showcase-media__tab-label">{meta.label}</span>
+                <span className="product-showcase-media__tab-label-short">{meta.shortLabel}</span>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
