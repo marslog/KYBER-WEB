@@ -44,7 +44,7 @@ const MARSLOQ_SHOTS: ProductScreenshot[] = [
     id: "device-monitoring",
     title: "Device Monitoring",
     description:
-      "Network device inventory with latency tracking, SNMP metrics, and interface history.",
+      "Infrastructure overview with service map, firewall load gauges, interface status, and top host utilization.",
     image: "/assets/screenshots/marsloq-device-monitoring.png",
     category: "Devices",
   },
@@ -105,11 +105,11 @@ const MARSLOQ_SHOTS: ProductScreenshot[] = [
     category: "Collection",
   },
   {
-    id: "reports",
-    title: "Report Center",
+    id: "custom-report",
+    title: "Custom Report",
     description:
-      "Generate compliance and operational reports from centralized log streams.",
-    image: "/assets/marsloq/marslog-8885/05-report.png",
+      "Generate tailored daily canvas reports with severity breakdowns, host analytics, and source or destination IP trends.",
+    image: "/assets/screenshots/marsloq-custom-report.png",
     category: "Reports",
   },
 ];
