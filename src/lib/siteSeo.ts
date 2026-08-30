@@ -199,7 +199,7 @@ export const ORGANIZATION_JSON_LD = {
   },
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+66-99-153-888",
+    telephone: "+66-99-105-3888",
     contactType: "sales",
     email: "supawat@kyber-it.com",
     areaServed: "TH",

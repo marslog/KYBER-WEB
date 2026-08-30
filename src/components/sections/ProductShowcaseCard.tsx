@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import * as LucideNS from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PresentationProduct } from "@/data/presentationContent";
-import PlatformArchitectureDiagram from "@/components/sections/PlatformArchitectureDiagram";
+import ProductShowcaseMedia from "@/components/sections/ProductShowcaseMedia";
 import { getIcon } from "@/lib/icons";
 
 const L = LucideNS as unknown as Record<string, LucideIcon>;
@@ -38,7 +38,7 @@ export default function ProductShowcaseCard({
       <div className="platform-product-row__media">
         <div className="platform-product-row__ambient" aria-hidden />
         <div className={`platform-product-row__frame platform-product-row__frame--${product.id}`}>
-          <PlatformArchitectureDiagram product={product} />
+          <ProductShowcaseMedia product={product} />
         </div>
       </div>
 

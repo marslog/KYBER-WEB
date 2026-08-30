@@ -883,8 +883,8 @@ export const TESTIMONIALS = [
 export const COMPANY_INFO = {
   legalName: "KYBER Technology Co., Ltd.",
   legalNameTh: "บริษัท ไคเบอร์ เทคโนโลยี จำกัด",
-  phone: "099-153-888",
-  phoneTel: "+6699153888",
+  phone: "099-105-3888",
+  phoneTel: "+66991053888",
   phoneSecondary: "064-642-3617",
   phoneSecondaryTel: "+66646423617",
   installationPhone: "064-642-3617",

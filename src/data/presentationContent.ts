@@ -27,6 +27,15 @@ export interface ShowcaseHighlight {
   icon: string;
 }
 
+export interface ShowcaseUiSlide {
+  id: string;
+  title: string;
+  image: string;
+  imageAlt: string;
+}
+
+export type ShowcaseViewId = "architecture" | "ui" | "video";
+
 export interface PresentationProduct {
   id: string;
   name: string;
@@ -52,6 +61,7 @@ export interface PresentationProduct {
   showcaseMetrics?: ShowcaseMetric[];
   showcaseHighlights?: ShowcaseHighlight[];
   showcaseBullets?: string[];
+  showcaseUiSlides?: ShowcaseUiSlide[];
 }
 
 export const PRODUCT_SHOWCASE_IMAGE_ASPECT = "1440/1065";
@@ -126,6 +136,26 @@ export const KYBER_HCI_PRESENTATION: PresentationProduct = {
     "Synchronous replication with automatic failover",
     "Migrate VMs from VMware, Hyper-V, and KVM",
     "RBAC, licensing, and cluster admin from one pane",
+  ],
+  showcaseUiSlides: [
+    {
+      id: "dashboard",
+      title: "Cluster dashboard",
+      image: "/assets/screenshots/kyber-hci-dashboard.png",
+      imageAlt: "KYBER HCI cluster dashboard with health, VMs, and storage metrics",
+    },
+    {
+      id: "migration",
+      title: "VM migration wizard",
+      image: "/assets/screenshots/kyber-vm-migration-wizard.png",
+      imageAlt: "KYBER HCI VM migration wizard importing workloads",
+    },
+    {
+      id: "console",
+      title: "Management console",
+      image: "/assets/screenshots/kyber-hci-hero-showcase.jpg",
+      imageAlt: "KYBER HCI unified management console",
+    },
   ],
   stackLayers: [
     {
@@ -215,6 +245,32 @@ export const MARSLOQ_PRESENTATION: PresentationProduct = {
     "OpenSearch indexing with hot, warm, and cold retention",
     "AI-driven alerting and correlation in real time",
     "Fully on-premise — no cloud dependency required",
+  ],
+  showcaseUiSlides: [
+    {
+      id: "admin-dashboard",
+      title: "Admin dashboard",
+      image: "/assets/screenshots/marsloq-admin-dashboard.png",
+      imageAlt: "MARSLOQ admin dashboard with live events and severity analytics",
+    },
+    {
+      id: "log-search",
+      title: "Log search",
+      image: "/assets/screenshots/marsloq-log-search.png",
+      imageAlt: "MARSLOQ centralized log search interface",
+    },
+    {
+      id: "threat-intel",
+      title: "Threat intelligence",
+      image: "/assets/screenshots/marsloq-threat-intelligence.png",
+      imageAlt: "MARSLOQ security risk index and incident trends",
+    },
+    {
+      id: "device-monitoring",
+      title: "Device monitoring",
+      image: "/assets/screenshots/marsloq-device-monitoring.png",
+      imageAlt: "MARSLOQ SNMP device monitoring and interface history",
+    },
   ],
   stackLayers: [
     {

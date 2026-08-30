@@ -77,9 +77,18 @@ async function sendViaSmtp(
     throw new Error("SMTP is not configured");
   }
 
+  const smtpUser = process.env.SMTP_USER;
   const transporter = nodemailer.createTransport(smtp);
   await transporter.sendMail({
     from: getFromAddress(),
+    ...(smtpUser
+      ? {
+          envelope: {
+            from: smtpUser,
+            to: getRecipient(),
+          },
+        }
+      : {}),
     to: getRecipient(),
     replyTo: data.email,
     subject,
@@ -100,15 +109,15 @@ export async function sendContactEmail(
     return {
       ok: false,
       error:
-        "Email is not configured. Set RESEND_API_KEY on Vercel, or SMTP_HOST, SMTP_USER, and SMTP_PASS for Google Workspace.",
+        "Email is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS, or RESEND_API_KEY on Vercel.",
     };
   }
 
   try {
-    if (hasResend) {
-      await sendViaResend(data, subject, html, text);
-    } else {
+    if (hasSmtp) {
       await sendViaSmtp(data, subject, html, text);
+    } else {
+      await sendViaResend(data, subject, html, text);
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown email error";
