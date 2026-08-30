@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import { MapPin, Phone, Mail, Clock, Globe } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import ProjectRegistrationForm from "@/components/sections/ProjectRegistrationForm";
+import ContactForm from "@/components/sections/ContactForm";
 import CallbackCard from "@/components/sections/CallbackCard";
 import { COMPANY_INFO } from "@/data/platformData";
 import { createPageMetadata } from "@/lib/siteSeo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Contact KYBER — Request a Quotation or Callback",
+  title: "Contact KYBER — Get in Touch",
   description:
-    "Request a tailored quotation for KYBER HCI or MARSLOQ, or call our team to schedule a callback with a platform architect.",
+    "Contact KYBER for HCI, MARSLOQ log management, quotations, or support. Messages are sent directly to our team at supawat@kyber-it.com.",
   path: "/contact",
-  keywords: ["quotation", "callback", "contact KYBER"],
+  keywords: ["contact KYBER", "quotation", "callback", "support"],
 });
 
 export default function ContactPage() {
@@ -24,11 +24,11 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="section-eyebrow mb-3">Contact</p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight max-w-2xl">
-            Request a quotation or callback
+            Contact us
           </h1>
           <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mt-5 max-w-2xl">
-            Get a tailored quotation for KYBER HCI or MARSLOQ, or call us to speak with a platform
-            architect. We typically respond within one business day.
+            Send a message about KYBER HCI, MARSLOQ, or general enquiries. We typically respond
+            within one business day.
           </p>
         </div>
       </section>
@@ -36,7 +36,7 @@ export default function ContactPage() {
       <section className="section-shell bg-[var(--bg-subtle)]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1.6fr_1fr] gap-8 lg:gap-12 items-start">
-            <ProjectRegistrationForm />
+            <ContactForm />
 
             <div className="space-y-5">
               <CallbackCard />

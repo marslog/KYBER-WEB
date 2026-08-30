@@ -238,7 +238,7 @@ export const MARSLOQ_SOFTWARE_JSON_LD = {
   url: absoluteUrl("/products/marsloq"),
   offers: {
     "@type": "Offer",
-    url: absoluteUrl("/contact#get-a-quote"),
+    url: absoluteUrl("/contact#contact-form"),
     availability: "https://schema.org/InStock",
   },
   provider: {

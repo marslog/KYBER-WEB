@@ -1,10 +1,10 @@
 import { Resend } from "resend";
 import nodemailer from "nodemailer";
 import {
-  PROJECT_REGISTRATION_RECIPIENT,
-  type ProjectRegistrationPayload,
-  formatProjectRegistrationEmail,
-} from "@/lib/projectRegistration";
+  CONTACT_RECIPIENT,
+  type ContactFormPayload,
+  formatContactEmail,
+} from "@/lib/contactForm";
 
 function getSmtpConfig() {
   const host = process.env.SMTP_HOST;
@@ -33,11 +33,15 @@ function getFromAddress(): string {
 }
 
 function getRecipient(): string {
-  return process.env.PROJECT_REGISTRATION_TO || PROJECT_REGISTRATION_RECIPIENT;
+  return (
+    process.env.CONTACT_TO ||
+    process.env.PROJECT_REGISTRATION_TO ||
+    CONTACT_RECIPIENT
+  );
 }
 
 async function sendViaResend(
-  data: ProjectRegistrationPayload,
+  data: ContactFormPayload,
   subject: string,
   html: string,
   text: string,
@@ -63,7 +67,7 @@ async function sendViaResend(
 }
 
 async function sendViaSmtp(
-  data: ProjectRegistrationPayload,
+  data: ContactFormPayload,
   subject: string,
   html: string,
   text: string,
@@ -84,10 +88,10 @@ async function sendViaSmtp(
   });
 }
 
-export async function sendProjectRegistrationEmail(
-  data: ProjectRegistrationPayload,
+export async function sendContactEmail(
+  data: ContactFormPayload,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const { subject, text, html } = formatProjectRegistrationEmail(data);
+  const { subject, text, html } = formatContactEmail(data);
 
   const hasResend = Boolean(process.env.RESEND_API_KEY);
   const hasSmtp = Boolean(getSmtpConfig());
@@ -115,4 +119,11 @@ export async function sendProjectRegistrationEmail(
   }
 
   return { ok: true };
+}
+
+/** @deprecated Use sendContactEmail */
+export async function sendProjectRegistrationEmail(
+  data: ContactFormPayload,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  return sendContactEmail(data);
 }

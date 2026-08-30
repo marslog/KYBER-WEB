@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
 import { COMPANY_INFO } from "@/data/platformData";
-import ProjectRegistrationForm from "@/components/sections/ProjectRegistrationForm";
+import ContactForm from "@/components/sections/ContactForm";
 import CallbackCard from "@/components/sections/CallbackCard";
 
 export default function CTASection() {
   return (
-    <section id="get-a-quote" className="py-24 bg-[var(--bg-dark)] text-[var(--text-on-dark)]">
+    <section id="contact-form" className="py-24 bg-[var(--bg-dark)] text-[var(--text-on-dark)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16">
           <div className="space-y-8">
@@ -17,12 +17,12 @@ export default function CTASection() {
                 Get started
               </p>
               <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight leading-tight">
-                Request a quotation or callback
+                Contact our team
               </h2>
             </div>
             <p className="text-[var(--text-muted-on-dark)] leading-relaxed">
-              Share your HCI or MARSLOQ requirements for a tailored quotation, or call our team
-              to schedule a callback with a KYBER architect.
+              Questions about HCI, log management, or MARSLOQ? Send a message or call us to schedule
+              a callback with a KYBER architect.
             </p>
             <CallbackCard variant="dark" />
             <div className="space-y-4 text-sm">
@@ -49,7 +49,7 @@ export default function CTASection() {
           </div>
 
           <div className="bg-white text-[var(--text)] rounded-lg p-8 border border-[var(--border)]">
-            <ProjectRegistrationForm variant="compact" id="homepage-get-a-quote" />
+            <ContactForm variant="compact" id="homepage-contact-form" />
           </div>
         </div>
       </div>

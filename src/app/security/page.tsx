@@ -85,8 +85,8 @@ export default function SecurityPage() {
             Request a quotation or schedule a callback to discuss compliance, data residency, and ransomware resilience.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link href="/contact#get-a-quote" className="kyber-btn-primary inline-flex items-center gap-2">
-              Get a quote <ArrowRight className="w-4 h-4" />
+            <Link href="/contact#contact-form" className="kyber-btn-primary inline-flex items-center gap-2">
+              Contact us <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/contact#request-callback"

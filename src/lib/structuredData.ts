@@ -36,7 +36,7 @@ export function buildSoftwareApplicationJsonLd(options: {
       price: "0",
       priceCurrency: "THB",
       availability: "https://schema.org/InStock",
-      url: absoluteUrl("/contact#get-a-quote"),
+      url: absoluteUrl("/contact#contact-form"),
     },
     provider: {
       "@type": "Organization",
