@@ -1,0 +1,314 @@
+/* Platform section — ambient visuals, motion, and micro-interactions */
+
+/* ---- Intro header atmosphere ---- */
+.platform-showcase__header {
+  position: relative;
+  overflow: hidden;
+}
+
+.platform-showcase__header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 18% 0%,
+      color-mix(in srgb, var(--brand) 7%, transparent),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 82% 100%,
+      color-mix(in srgb, var(--marsloq-accent) 6%, transparent),
+      transparent 65%
+    );
+}
+
+.platform-showcase__intro {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dual-platform bridge (intro → product rows) */
+.platform-showcase__bridge {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 0 1rem 1.75rem;
+}
+
+.platform-showcase__bridge-node {
+  flex: none;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 25%, transparent);
+}
+
+.platform-showcase__bridge-node--hci {
+  color: var(--brand);
+  background: var(--brand);
+}
+
+.platform-showcase__bridge-node--marsloq {
+  color: var(--marsloq-accent);
+  background: var(--marsloq-accent);
+}
+
+.platform-showcase__bridge-line {
+  flex: 1;
+  height: 2px;
+  min-width: 4rem;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border) 0,
+    var(--border) 8px,
+    transparent 8px,
+    transparent 14px
+  );
+  position: relative;
+}
+
+.platform-showcase__bridge-line::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 28%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--marsloq-accent));
+  transform: translateY(-50%);
+  border-radius: 2px;
+  animation: platform-bridge-flow 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes platform-bridge-flow {
+  0% {
+    left: 0;
+    opacity: 0.85;
+  }
+  50% {
+    left: 72%;
+    opacity: 1;
+  }
+  100% {
+    left: 0;
+    opacity: 0.85;
+  }
+}
+
+/* Trust pillars below lede */
+.platform-showcase__pillars {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.35rem;
+  padding: 0;
+  list-style: none;
+}
+
+.platform-showcase__pillar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg-subtle) 80%, #fff);
+  color: var(--text-secondary);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.platform-showcase__pillar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.platform-showcase__pillar--hci .platform-showcase__pillar-dot {
+  background: var(--brand);
+}
+
+.platform-showcase__pillar--marsloq .platform-showcase__pillar-dot {
+  background: var(--marsloq-accent);
+}
+
+.platform-showcase__pillar--neutral .platform-showcase__pillar-dot {
+  background: var(--text-muted);
+}
+
+.platform-showcase__pillar:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.platform-showcase__pillar--hci:hover {
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--border));
+}
+
+.platform-showcase__pillar--marsloq:hover {
+  border-color: color-mix(in srgb, var(--marsloq-accent) 35%, var(--border));
+}
+
+/* Row divider between platforms */
+.platform-showcase__row-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.65rem 1.5rem;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.platform-showcase__row-divider-line {
+  flex: 1;
+  max-width: 6rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+}
+
+.platform-showcase__row-divider-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Diagram column ambient */
+.platform-product-row__media {
+  position: relative;
+}
+
+.platform-product-row__ambient {
+  position: absolute;
+  inset: 8% 5%;
+  border-radius: 24px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.platform-product-row[data-product="kyber-hci"] .platform-product-row__ambient {
+  background:
+    radial-gradient(
+      ellipse 85% 75% at 72% 48%,
+      color-mix(in srgb, var(--brand) 11%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(circle at 30% 80%, color-mix(in srgb, var(--brand) 5%, transparent), transparent 45%);
+}
+
+.platform-product-row[data-product="marsloq"] .platform-product-row__ambient {
+  background:
+    radial-gradient(
+      ellipse 85% 75% at 28% 48%,
+      color-mix(in srgb, var(--marsloq-accent) 12%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(circle at 70% 80%, color-mix(in srgb, var(--marsloq-accent) 5%, transparent), transparent 45%);
+}
+
+.platform-product-row__frame {
+  position: relative;
+  z-index: 1;
+}
+
+/* Connector pulse on architecture diagrams */
+@keyframes platform-node-pulse {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.2);
+    box-shadow: 0 0 0 7px color-mix(in srgb, currentColor 6%, transparent);
+  }
+}
+
+.khci__connector,
+.mqobs__connector {
+  color: var(--product-accent, var(--brand));
+}
+
+.khci__connector::after,
+.mqobs__connector::after {
+  color: inherit;
+  background: currentColor;
+  animation: platform-node-pulse 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.khci__connector--right::after,
+.mqobs__connector--right::after {
+  animation-delay: 1.2s;
+}
+
+/* Rich card micro-interactions */
+.platform-product-row--rich .platform-product-row__metric {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.platform-product-row--rich .platform-product-row__metric:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: color-mix(in srgb, var(--product-accent) 28%, var(--border));
+}
+
+.platform-product-row--rich .platform-product-row__highlight {
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.platform-product-row--rich .platform-product-row__highlight:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.platform-product-row--rich .kyber-btn-primary {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.platform-product-row--rich .kyber-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-brand);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .platform-showcase__bridge-line::after,
+  .khci__connector::after,
+  .mqobs__connector::after {
+    animation: none;
+  }
+
+  .platform-product-row--rich .platform-product-row__metric:hover,
+  .platform-product-row--rich .platform-product-row__highlight:hover,
+  .platform-product-row--rich .kyber-btn-primary:hover,
+  .platform-showcase__pillar:hover {
+    transform: none;
+  }
+}

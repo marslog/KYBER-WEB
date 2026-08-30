@@ -1,21 +1,29 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "KYBER - Enterprise Security & Infrastructure Solutions",
+  title: "KYBER — Enterprise Infrastructure & Observability",
   description:
-    "KYBER delivers MARSLOG AIOps Log Management and KYBER HCI Hyper-Converged Infrastructure solutions for enterprise.",
+    "KYBER delivers hyper-converged infrastructure (HCI, KSV, KSAN), ransomware defense (KRG), and intelligent observability (MARSLOQ) — one unified platform on any hardware.",
+  openGraph: {
+    title: "KYBER — Enterprise Infrastructure & Observability",
+    description:
+      "Modern virtualization, distributed storage, security, and intelligent observability — built into one unified KYBER ecosystem for enterprise teams.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -24,12 +32,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0e2a] text-white`}
-      >
+    <html lang="en">
+      <body className={`${outfit.variable} ${inter.variable} antialiased font-sans`}>
         {children}
       </body>
     </html>
   );
 }
+

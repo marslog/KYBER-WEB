@@ -1,0 +1,372 @@
+/* KYBER HCI cluster diagram — 2 Node + Witness, on-brand, container-responsive */
+
+.khci {
+  container-type: inline-size;
+  --khci-ink: var(--text);
+  --khci-ink2: #35577f;
+  --khci-brand: var(--brand);
+  --khci-brand-soft: var(--brand-soft);
+  --khci-border: var(--border);
+  --khci-navy: var(--bg-dark);
+  --khci-navy-2: var(--bg-dark-elevated);
+  width: 100%;
+  max-width: var(--platform-diagram-width, 100%);
+  margin-left: auto;
+  margin-right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  padding: 0.25rem 0;
+  color: var(--khci-ink);
+  font-family: var(--font-sans);
+}
+
+/* ---- Cloud ---- */
+.khci__cloud {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-pill);
+  background: var(--khci-brand-soft);
+  border: 1px solid color-mix(in srgb, var(--khci-brand) 24%, transparent);
+  color: var(--khci-brand);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.khci__cloud-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.khci__stem {
+  align-self: center;
+  width: 2px;
+  height: 1.1rem;
+  background: color-mix(in srgb, var(--khci-brand) 45%, transparent);
+}
+
+/* ---- Cluster title ---- */
+.khci__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+.khci__title-main {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.05rem, 2.8cqi, 1.2rem);
+  letter-spacing: -0.02em;
+  color: var(--khci-brand);
+}
+.khci__title-sub {
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--khci-ink2);
+}
+
+/* ---- Cluster: Node | Witness | Node ---- */
+.khci__cluster {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  align-items: stretch;
+  column-gap: 0.35rem;
+  margin-top: 0.25rem;
+  position: relative;
+}
+
+.khci__node {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.85rem 0.75rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--khci-border);
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+.khci__node-name {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--khci-brand);
+}
+.khci__layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.khci__layer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 9px;
+  background: var(--bg-subtle);
+  font-size: clamp(0.72rem, 2.2cqi, 0.8rem);
+  font-weight: 500;
+  color: var(--khci-ink);
+  line-height: 1.3;
+}
+.khci__layer-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--khci-brand);
+  flex: none;
+}
+
+/* Witness spine — centered column with horizontal connectors */
+.khci__spine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  z-index: 2;
+  padding: 0 0.15rem;
+  margin: 0 -0.35rem;
+}
+
+.khci__connector {
+  flex: none;
+  width: clamp(0.65rem, 2.5cqi, 1.1rem);
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--khci-brand) 55%, transparent),
+    var(--khci-brand)
+  );
+  position: relative;
+}
+.khci__connector--right {
+  background: linear-gradient(
+    90deg,
+    var(--khci-brand),
+    color-mix(in srgb, var(--khci-brand) 55%, transparent)
+  );
+}
+.khci__connector::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--khci-brand);
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--khci-brand) 18%, transparent);
+}
+.khci__connector--left::after {
+  right: -1px;
+}
+.khci__connector--right::after {
+  left: -1px;
+}
+
+.khci__witness {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  width: clamp(4.5rem, 14cqi, 5.5rem);
+  padding: 0.65rem 0.45rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--khci-navy-2), var(--khci-navy));
+  color: #fff;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  border: 1px solid color-mix(in srgb, var(--brand-light) 25%, transparent);
+}
+.khci__witness-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--brand-light);
+}
+.khci__witness-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.khci__witness-note {
+  font-size: 0.6rem;
+  color: var(--text-muted-on-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* ---- Replication bar between nodes ---- */
+.khci__repl-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 0.1rem;
+}
+.khci__repl-arm {
+  flex: 1;
+  max-width: 5.5rem;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--khci-brand) 50%, transparent) 0,
+    color-mix(in srgb, var(--khci-brand) 50%, transparent) 6px,
+    transparent 6px,
+    transparent 11px
+  );
+}
+.khci__link {
+  flex: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.khci__link--repl {
+  color: var(--khci-brand);
+  background: var(--khci-brand-soft);
+  border: 1px solid color-mix(in srgb, var(--khci-brand) 20%, transparent);
+}
+
+.khci__failover {
+  margin: 0;
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--khci-ink2);
+}
+
+/* ---- Distributed storage ---- */
+.khci__storage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  border: 1px dashed color-mix(in srgb, var(--khci-brand) 28%, var(--border));
+  background: color-mix(in srgb, var(--khci-brand-soft) 45%, #fff);
+}
+.khci__storage-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--khci-ink2);
+}
+.khci__disks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.khci__disk {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 1.65rem;
+  border-radius: 6px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.khci__disk--ssd {
+  background: var(--khci-brand);
+}
+.khci__disk--hdd {
+  background: var(--khci-navy-2);
+}
+
+/* ---- Shared services ---- */
+.khci__services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+.khci__service {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.36rem 0.7rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--khci-border);
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--khci-ink);
+}
+.khci__service-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--khci-brand);
+  flex: none;
+}
+
+/* ---- Narrow container: stack nodes, witness between ---- */
+@container (max-width: 380px) {
+  .khci__cluster {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0.5rem;
+  }
+  .khci__spine {
+    order: 2;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .khci__connector {
+    width: 2px;
+    height: 0.75rem;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--khci-brand) 55%, transparent),
+      var(--khci-brand)
+    );
+  }
+  .khci__connector--right {
+    background: linear-gradient(
+      180deg,
+      var(--khci-brand),
+      color-mix(in srgb, var(--khci-brand) 55%, transparent)
+    );
+  }
+  .khci__connector--left::after {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -1px;
+    transform: translateX(-50%);
+  }
+  .khci__connector--right::after {
+    left: 50%;
+    top: -1px;
+    transform: translateX(-50%);
+  }
+  .khci__witness {
+    width: auto;
+    flex-direction: row;
+    padding: 0.55rem 1rem;
+    gap: 0.5rem;
+  }
+  .khci__witness-note {
+    display: none;
+  }
+  .khci__repl-arm {
+    max-width: 3rem;
+  }
+}

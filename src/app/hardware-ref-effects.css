@@ -1,0 +1,459 @@
+/* MARSLOQ Log Appliances + KYBER Ref section enhancements */
+
+/* ---- MARSLOQ Log Appliances ---- */
+.hardware-showcase {
+  position: relative;
+  overflow: hidden;
+}
+
+.hardware-showcase__atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 15% 30%,
+      color-mix(in srgb, var(--marsloq-accent) 7%, transparent),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 85% 80%,
+      color-mix(in srgb, var(--brand) 4%, transparent),
+      transparent 65%
+    );
+}
+
+.hardware-showcase__visuals {
+  position: relative;
+}
+
+.hardware-showcase__ambient {
+  position: absolute;
+  inset: 5% 0;
+  border-radius: 24px;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 50%,
+    color-mix(in srgb, var(--marsloq-accent) 10%, transparent),
+    transparent 72%
+  );
+}
+
+.hardware-showcase__item {
+  position: relative;
+  z-index: 1;
+}
+
+.hardware-showcase__badge {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  z-index: 2;
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #fff;
+  background: color-mix(in srgb, var(--marsloq-accent) 88%, var(--bg-dark));
+  border: 1px solid color-mix(in srgb, #fff 20%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
+.hardware-showcase__stage {
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.hardware-showcase__item:hover .hardware-showcase__stage {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--marsloq-accent) 35%, var(--border));
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--marsloq-accent) 12%, transparent);
+}
+
+.hardware-showcase__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.hardware-showcase__title {
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.hardware-showcase__lede {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 34rem;
+  margin: 0;
+}
+
+.hardware-showcase__metrics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.hardware-showcase__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  background: var(--marsloq-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--marsloq-accent) 18%, var(--border));
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hardware-showcase__metric:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.hardware-showcase__metric-value {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--marsloq-accent);
+  letter-spacing: -0.02em;
+}
+
+.hardware-showcase__metric-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.hardware-showcase__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.hardware-showcase__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--border);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hardware-showcase__chip:hover {
+  border-color: color-mix(in srgb, var(--marsloq-accent) 35%, var(--border));
+  transform: translateY(-1px);
+}
+
+.hardware-showcase__chip-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--marsloq-accent);
+  flex: none;
+}
+
+.hardware-showcase__tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+.hardware-showcase__tile-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.hardware-showcase__tile-factor {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--marsloq-accent);
+}
+
+.hardware-showcase__tile-desc {
+  margin: 0.45rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.hardware-showcase__bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.hardware-showcase__bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.hardware-showcase__bullet-icon {
+  flex: none;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-top: 0.1rem;
+  color: var(--marsloq-accent);
+}
+
+.hardware-showcase__actions {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ---- KYBER Ref ---- */
+.kyber-ref {
+  position: relative;
+  overflow: hidden;
+}
+
+.kyber-ref__atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 55% 45% at 12% 20%,
+      color-mix(in srgb, var(--brand) 6%, transparent),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 45% 40% at 88% 75%,
+      color-mix(in srgb, var(--marsloq-accent) 4%, transparent),
+      transparent 65%
+    );
+}
+
+.kyber-ref__header {
+  max-width: 42rem;
+  margin-bottom: 0;
+}
+
+.kyber-ref__metrics {
+  list-style: none;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  max-width: 28rem;
+}
+
+.kyber-ref__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  padding: 0.6rem 0.45rem;
+  border-radius: 10px;
+  text-align: center;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.kyber-ref__metric:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: color-mix(in srgb, var(--brand) 25%, var(--border));
+}
+
+.kyber-ref__metric-value {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+}
+
+.kyber-ref__metric-label {
+  font-size: 0.58rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.kyber-ref__pillars {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.kyber-ref__pillar {
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: #fff;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.kyber-ref__pillar--health {
+  color: #0d6b4f;
+  border-color: color-mix(in srgb, #0d6b4f 22%, var(--border));
+  background: color-mix(in srgb, #0d6b4f 6%, #fff);
+}
+
+.kyber-ref__pillar--industry {
+  color: var(--marsloq-accent-hover);
+  border-color: color-mix(in srgb, var(--marsloq-accent) 22%, var(--border));
+  background: color-mix(in srgb, var(--marsloq-accent-soft) 55%, #fff);
+}
+
+.kyber-ref__pillar--enterprise {
+  color: var(--brand);
+  border-color: color-mix(in srgb, var(--brand) 22%, var(--border));
+  background: color-mix(in srgb, var(--brand-soft) 55%, #fff);
+}
+
+.kyber-ref__pillar:hover {
+  transform: translateY(-1px);
+}
+
+.kyber-ref__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0 1.5rem;
+}
+
+.kyber-ref__divider-line {
+  flex: 1;
+  max-width: 8rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+}
+
+.kyber-ref__divider-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.kyber-ref__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .kyber-ref__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .kyber-ref__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+.kyber-ref__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 0.85rem 1rem;
+}
+
+.kyber-ref__tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 50% 0%,
+    color-mix(in srgb, var(--brand) 8%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.kyber-ref__tile {
+  position: relative;
+  overflow: hidden;
+}
+
+.kyber-ref__tile:hover::before {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .hardware-showcase__metrics,
+  .kyber-ref__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .hardware-showcase__tiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hardware-showcase__item:hover .hardware-showcase__stage,
+  .hardware-showcase__metric:hover,
+  .hardware-showcase__chip:hover,
+  .kyber-ref__metric:hover,
+  .kyber-ref__pillar:hover {
+    transform: none;
+  }
+}

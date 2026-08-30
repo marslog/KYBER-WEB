@@ -1,0 +1,391 @@
+/* KYBER HCI control-plane / hybrid architecture diagram */
+
+.cpd {
+  --cpd-brand: var(--brand);
+  --cpd-brand-soft: var(--brand-soft);
+  --cpd-ink: var(--text);
+  --cpd-ink2: #35577f; /* secondary text tinted from brand hue */
+  --cpd-surface: #ffffff;
+  --cpd-border: var(--border);
+  --cpd-radius: 16px;
+  width: 100%;
+  color: var(--cpd-ink);
+  font-family: var(--font-sans);
+}
+
+/* ---------- Management plane ---------- */
+.cpd__plane {
+  display: grid;
+  grid-template-columns: auto auto auto auto 1fr;
+  align-items: center;
+  gap: clamp(0.5rem, 1.4vw, 1.25rem);
+}
+
+.cpd__actor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  min-width: 6.5rem;
+}
+
+.cpd__actor-badge {
+  display: grid;
+  place-items: center;
+  width: clamp(3.5rem, 6vw, 4.75rem);
+  height: clamp(3.5rem, 6vw, 4.75rem);
+  border-radius: var(--radius-pill);
+  color: var(--cpd-brand);
+  background: var(--cpd-brand-soft);
+  border: 1.5px solid color-mix(in srgb, var(--cpd-brand) 30%, transparent);
+}
+
+.cpd__actor-icon {
+  width: 46%;
+  height: 46%;
+}
+
+.cpd__actor-label {
+  font-weight: 600;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  color: var(--cpd-brand);
+}
+
+.cpd__link {
+  display: grid;
+  place-items: center;
+  color: color-mix(in srgb, var(--cpd-brand) 65%, var(--text-muted));
+}
+
+.cpd__link-icon {
+  width: clamp(1.1rem, 1.8vw, 1.5rem);
+  height: clamp(1.1rem, 1.8vw, 1.5rem);
+}
+
+.cpd__tools {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--cpd-border);
+  border-radius: var(--cpd-radius);
+  background: var(--cpd-surface);
+  min-width: 8.5rem;
+}
+
+.cpd__tools-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: -0.01em;
+}
+
+.cpd__tools-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--cpd-brand);
+}
+
+.cpd__tools-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--cpd-ink2);
+}
+
+/* ---------- Stack: services + manager + fabric ---------- */
+.cpd__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.cpd__services {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr 1.2fr;
+  gap: 0.75rem;
+}
+
+.cpd__service {
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--cpd-border);
+  border-radius: 12px;
+  background: var(--bg-subtle);
+}
+
+.cpd__service-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: -0.01em;
+}
+
+.cpd__service-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--cpd-brand);
+  flex: none;
+}
+
+.cpd__service-items {
+  margin: 0.3rem 0 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--cpd-ink2);
+}
+
+.cpd__manager {
+  border: 1.5px solid color-mix(in srgb, var(--cpd-brand) 28%, transparent);
+  border-radius: var(--cpd-radius);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--cpd-brand-soft) 70%, #fff),
+    #fff 82%
+  );
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cpd__manager-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: -0.02em;
+  color: var(--cpd-brand);
+  max-width: 6.5rem;
+}
+
+.cpd__manager-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.cpd__quadrants {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.cpd__quadrant {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--cpd-border);
+  border-radius: 12px;
+  background: var(--cpd-surface);
+}
+
+.cpd__quadrant-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: -0.01em;
+}
+
+.cpd__quadrant-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--cpd-brand);
+  flex: none;
+}
+
+.cpd__quadrant-items {
+  margin: 0.25rem 0 0;
+  font-size: 0.72rem;
+  color: var(--cpd-ink2);
+}
+
+.cpd__fabric {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  background: var(--cpd-brand);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.cpd__fabric-icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: none;
+}
+
+/* ---------- Edge / on-premises band ---------- */
+.cpd__edge {
+  margin-top: 1.1rem;
+  padding: 1.25rem clamp(1rem, 2.5vw, 2rem) 1.4rem;
+  border-radius: var(--cpd-radius);
+  background: var(--bg-subtle);
+  border: 1px solid var(--cpd-border);
+}
+
+.cpd__edge-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cpd-brand);
+}
+
+.cpd__edge-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: end;
+}
+
+.cpd__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.cpd__workloads {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.cpd__workload {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 7px;
+  background: var(--cpd-surface);
+  border: 1px solid color-mix(in srgb, var(--cpd-brand) 22%, var(--border));
+  color: var(--cpd-brand);
+}
+
+.cpd__workload svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+/* Server rack drawn from stacked units (geometry, not illustration) */
+.cpd__rack {
+  width: 100%;
+  max-width: 8.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 5px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--bg-dark-elevated), var(--bg-dark));
+  box-shadow: var(--shadow-md);
+}
+
+.cpd__rack-unit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 0.85rem;
+  padding: 0 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, #fff 8%, transparent);
+}
+
+.cpd__rack-unit i {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: var(--brand-light);
+  opacity: 0.85;
+}
+
+.cpd__rack-unit i:last-child {
+  margin-left: auto;
+  width: 1.6rem;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--brand-light) 45%, transparent);
+}
+
+.cpd__edge-note {
+  margin: 1.1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--cpd-ink2);
+}
+
+/* ---------- Reveal motion (one authored moment) ----------
+   Base state is fully visible so content never depends on JS.
+   The reveal is an enhancement: .is-visible replays a keyframe. */
+@keyframes cpd-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cpd.is-visible .cpd__plane > *,
+  .cpd.is-visible .cpd__edge {
+    animation: cpd-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .cpd.is-visible .cpd__plane > *:nth-child(1) { animation-delay: 0.02s; }
+  .cpd.is-visible .cpd__plane > *:nth-child(2) { animation-delay: 0.08s; }
+  .cpd.is-visible .cpd__plane > *:nth-child(3) { animation-delay: 0.14s; }
+  .cpd.is-visible .cpd__plane > *:nth-child(4) { animation-delay: 0.2s; }
+  .cpd.is-visible .cpd__plane > *:nth-child(5) { animation-delay: 0.26s; }
+  .cpd.is-visible .cpd__edge { animation-delay: 0.34s; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .cpd__plane {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "actor tools"
+      "link  link"
+      "stack stack";
+    row-gap: 0.9rem;
+  }
+  .cpd__actor { grid-area: actor; flex-direction: row; min-width: 0; }
+  .cpd__actor-label { text-align: left; }
+  .cpd__tools { grid-area: tools; }
+  .cpd__plane > .cpd__link { display: none; }
+  .cpd__stack { grid-area: stack; }
+  .cpd__manager { grid-template-columns: 1fr; }
+  .cpd__manager-title { flex-direction: row; max-width: none; }
+}
+
+@media (max-width: 680px) {
+  .cpd__services { grid-template-columns: 1fr; }
+  .cpd__quadrants { grid-template-columns: 1fr; }
+  .cpd__edge-grid { grid-template-columns: repeat(2, 1fr); row-gap: 1.75rem; }
+}
