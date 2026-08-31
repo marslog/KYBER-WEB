@@ -47,6 +47,14 @@ export const PLATFORM_SHOWCASE_VIEWS: {
   { id: "video", label: "Demo" },
 ];
 
+/** Auto-play timings for Diagram → Interface → Demo carousel (ms) */
+export const SHOWCASE_AUTOPLAY_MS = {
+  architecture: 6000,
+  uiSlide: 4500,
+  video: 9000,
+  resumeAfterInteraction: 12000,
+} as const;
+
 export interface PresentationProduct {
   id: string;
   name: string;
