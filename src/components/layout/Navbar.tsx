@@ -9,7 +9,7 @@ import { NAV_STRUCTURE } from "@/data/platformData";
 import PortalLoginMenu from "@/components/layout/PortalLoginMenu";
 import { usePortalAuth } from "@/hooks/usePortalAuth";
 import { KNOWLEDGE_BASE_HREF } from "@/data/portalAccess";
-import { ACCOUNT_MANAGEMENT_NAV, KNOWLEDGE_BASE_NAV } from "@/lib/portalSession";
+import { ACCOUNT_MANAGEMENT_NAV, KNOWLEDGE_BASE_NAV, REGISTER_NAV } from "@/lib/portalSession";
 
 type NavbarProps = {
   overDarkHero?: boolean;
@@ -91,6 +91,11 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
             {authenticated && (
               <Link href={KNOWLEDGE_BASE_NAV.href} className={navLinkClass(false)}>
                 {KNOWLEDGE_BASE_NAV.label}
+              </Link>
+            )}
+            {authenticated && (
+              <Link href={REGISTER_NAV.href} className={navLinkClass(false)}>
+                {REGISTER_NAV.label}
               </Link>
             )}
             {isAdmin && (
@@ -234,6 +239,15 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
               className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
             >
               {KNOWLEDGE_BASE_NAV.label}
+            </Link>
+          )}
+          {authenticated && (
+            <Link
+              href={REGISTER_NAV.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
+            >
+              {REGISTER_NAV.label}
             </Link>
           )}
           {isAdmin && (

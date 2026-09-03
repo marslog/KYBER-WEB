@@ -16,6 +16,12 @@ export const ACCOUNT_MANAGEMENT_NAV = {
   description: "Manage user accounts, roles, and passwords (RBAC)",
 } as const;
 
+export const REGISTER_NAV = {
+  label: "Register",
+  href: "/register",
+  description: "Partner and End-User registration",
+} as const;
+
 export interface PortalSession {
   username: string;
   role: PortalRole;

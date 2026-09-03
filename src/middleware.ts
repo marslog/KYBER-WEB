@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import {
   ACCOUNT_MANAGEMENT_NAV,
   KNOWLEDGE_BASE_NAV,
+  REGISTER_NAV,
   PORTAL_SESSION_COOKIE,
   parsePortalSessionToken,
 } from "@/lib/portalSession";
@@ -21,6 +22,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
+  if (pathname === REGISTER_NAV.href) {
+    if (session) return NextResponse.next();
+
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/";
+    redirectUrl.searchParams.set("login", "required");
+    return NextResponse.redirect(redirectUrl);
+  }
+
   if (pathname === ACCOUNT_MANAGEMENT_NAV.href) {
     if (session?.role === "admin") return NextResponse.next();
 
@@ -34,5 +44,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/resources/kb", "/account-management"],
+  matcher: ["/resources/kb", "/account-management", "/register"],
 };
