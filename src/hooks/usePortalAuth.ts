@@ -53,7 +53,7 @@ export function usePortalAuth() {
       method: "DELETE",
       credentials: "include",
     });
-    window.location.reload();
+    window.location.href = "/";
   }, []);
 
   return { authenticated, username, role, isAdmin, loading, refresh, logout };
