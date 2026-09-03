@@ -3,6 +3,7 @@ import { isAllowedOrigin } from "@/lib/apiSecurity";
 import { deletePortalUser, updatePortalUser, type PortalRole } from "@/lib/portalUserStore";
 import { getPortalSessionFromCookies } from "@/lib/portalSessionServer";
 import { isPortalAdmin } from "@/lib/portalSession";
+import { readPartnerProfile } from "@/lib/partnerProfile";
 
 const NO_STORE = { "Cache-Control": "no-store" };
 
@@ -44,11 +45,12 @@ export async function PATCH(request: Request, context: RouteContext) {
     body && typeof body === "object" ? (body as Record<string, unknown>).role : undefined;
   const role: PortalRole | undefined =
     roleRaw === "admin" ? "admin" : roleRaw === "user" ? "user" : undefined;
+  const partner = readPartnerProfile(body);
 
   try {
     const user = await updatePortalUser(
       id,
-      { username, password: password || undefined, role },
+      { username, password: password || undefined, role, ...partner },
       session.username,
     );
     return NextResponse.json({ ok: true, user }, { headers: NO_STORE });

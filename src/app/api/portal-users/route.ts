@@ -7,6 +7,7 @@ import {
 } from "@/lib/portalUserStore";
 import { getPortalSessionFromCookies } from "@/lib/portalSessionServer";
 import { isPortalAdmin } from "@/lib/portalSession";
+import { readPartnerProfile } from "@/lib/partnerProfile";
 
 const NO_STORE = { "Cache-Control": "no-store" };
 
@@ -49,9 +50,10 @@ export async function POST(request: Request) {
   const roleRaw =
     body && typeof body === "object" ? (body as Record<string, unknown>).role : undefined;
   const role: PortalRole = roleRaw === "admin" ? "admin" : "user";
+  const partner = readPartnerProfile(body);
 
   try {
-    const user = await createPortalUser({ username, password, role });
+    const user = await createPortalUser({ username, password, role, ...partner });
     return NextResponse.json({ ok: true, user }, { status: 201, headers: NO_STORE });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to create user.";

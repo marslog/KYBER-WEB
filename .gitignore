@@ -43,6 +43,7 @@ next-env.d.ts
 
 # portal RBAC user store (runtime)
 /data/portal-users.json
+/data/registrations.json
 
 .vercel
 .env*

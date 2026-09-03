@@ -3,8 +3,15 @@ import { cookies } from "next/headers";
 import {
   PORTAL_SESSION_COOKIE,
   parsePortalSessionToken,
+  isPortalAdmin,
 } from "@/lib/portalSession";
 import { parseRegistrationBody, formatRegistrationEmail } from "@/lib/registrationForm";
+import {
+  createRegistration,
+  listRegistrations,
+  listRegistrationsByUsername,
+} from "@/lib/registrationStore";
+import { getPortalUserByUsername } from "@/lib/portalUserStore";
 import { sendContactEmail } from "@/lib/email";
 import {
   checkRateLimit,
@@ -13,17 +20,41 @@ import {
   isHoneypotTriggered,
 } from "@/lib/apiSecurity";
 
+const NO_STORE = { "Cache-Control": "no-store" };
+
+export async function GET() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(PORTAL_SESSION_COOKIE)?.value;
+  const session = await parsePortalSessionToken(token);
+
+  if (!session) {
+    return NextResponse.json({ error: "Authentication required." }, { status: 401, headers: NO_STORE });
+  }
+
+  const registrations = isPortalAdmin(session)
+    ? await listRegistrations()
+    : await listRegistrationsByUsername(session.username);
+
+  return NextResponse.json(
+    {
+      registrations,
+      canManageStatus: isPortalAdmin(session),
+    },
+    { headers: NO_STORE },
+  );
+}
+
 export async function POST(request: Request) {
   const cookieStore = await cookies();
   const token = cookieStore.get(PORTAL_SESSION_COOKIE)?.value;
-  const session = parsePortalSessionToken(token);
+  const session = await parsePortalSessionToken(token);
 
   if (!session) {
-    return NextResponse.json({ error: "Authentication required." }, { status: 401 });
+    return NextResponse.json({ error: "Authentication required." }, { status: 401, headers: NO_STORE });
   }
 
   if (!isAllowedOrigin(request)) {
-    return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+    return NextResponse.json({ error: "Forbidden." }, { status: 403, headers: NO_STORE });
   }
 
   const clientIp = getClientIp(request);
@@ -33,9 +64,10 @@ export async function POST(request: Request) {
       { error: "Too many requests. Please try again later." },
       {
         status: 429,
-        headers: rate.retryAfterSec
-          ? { "Retry-After": String(rate.retryAfterSec) }
-          : undefined,
+        headers: {
+          ...NO_STORE,
+          ...(rate.retryAfterSec ? { "Retry-After": String(rate.retryAfterSec) } : {}),
+        },
       },
     );
   }
@@ -44,7 +76,7 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid JSON body." }, { status: 400, headers: NO_STORE });
   }
 
   if (
@@ -52,34 +84,43 @@ export async function POST(request: Request) {
     typeof body === "object" &&
     isHoneypotTriggered((body as Record<string, unknown>).website)
   ) {
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true }, { headers: NO_STORE });
   }
 
-  const parsed = parseRegistrationBody(body);
+  const account = await getPortalUserByUsername(session.username);
+  const partnerName = account?.partnerName?.trim() || "";
+  if (!partnerName) {
+    return NextResponse.json(
+      { error: "Partner name is missing on this account. Please contact an administrator." },
+      { status: 400, headers: NO_STORE },
+    );
+  }
+
+  const payload =
+    body && typeof body === "object"
+      ? { ...(body as Record<string, unknown>), partnerName }
+      : { partnerName };
+
+  const parsed = parseRegistrationBody(payload);
   if (!parsed.ok) {
-    return NextResponse.json({ error: parsed.error }, { status: 400 });
+    return NextResponse.json({ error: parsed.error }, { status: 400, headers: NO_STORE });
   }
 
-  const { subject, text, html } = formatRegistrationEmail(parsed.data);
+  const record = await createRegistration(parsed.data, session.username);
+
+  const { text } = formatRegistrationEmail(parsed.data);
 
   try {
-    const result = await sendContactEmail({
+    await sendContactEmail({
       name: parsed.data.partnerContact,
       email: parsed.data.partnerEmail,
       phone: parsed.data.partnerMobile,
       topic: "General enquiry",
       message: text,
     });
-
-    if (!result.ok) {
-      return NextResponse.json({ error: result.error }, { status: 503 });
-    }
   } catch {
-    return NextResponse.json(
-      { error: "Failed to send registration. Please try again or email us directly." },
-      { status: 500 },
-    );
+    // Persist succeeded; email is best-effort.
   }
 
-  return NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
+  return NextResponse.json({ ok: true, registration: record }, { headers: NO_STORE });
 }

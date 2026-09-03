@@ -4,13 +4,14 @@ import {
   ACCOUNT_MANAGEMENT_NAV,
   KNOWLEDGE_BASE_NAV,
   REGISTER_NAV,
+  REGISTER_LIST_NAV,
   PORTAL_SESSION_COOKIE,
   parsePortalSessionToken,
 } from "@/lib/portalSession";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const token = request.cookies.get(PORTAL_SESSION_COOKIE)?.value;
-  const session = parsePortalSessionToken(token);
+  const session = await parsePortalSessionToken(token);
   const pathname = request.nextUrl.pathname;
 
   if (pathname === KNOWLEDGE_BASE_NAV.href) {
@@ -22,7 +23,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (pathname === REGISTER_NAV.href) {
+  if (pathname === REGISTER_NAV.href || pathname === REGISTER_LIST_NAV.href || pathname.startsWith("/register/")) {
     if (session) return NextResponse.next();
 
     const redirectUrl = request.nextUrl.clone();
@@ -44,5 +45,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/resources/kb", "/account-management", "/register"],
+  matcher: ["/resources/kb", "/account-management", "/register", "/register/:path*"],
 };

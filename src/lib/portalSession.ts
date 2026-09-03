@@ -1,4 +1,3 @@
-import { createHmac, timingSafeEqual } from "crypto";
 import type { PortalRole } from "@/lib/portalUserStore";
 
 export const PORTAL_SESSION_COOKIE = "kyber_portal_session";
@@ -22,6 +21,25 @@ export const REGISTER_NAV = {
   description: "Partner and End-User registration",
 } as const;
 
+export const REGISTER_LIST_NAV = {
+  label: "Registration List",
+  href: "/register/list",
+  description: "Track registration approval status",
+} as const;
+
+export const REGISTER_NAV_ITEMS = [
+  {
+    label: "New Registration",
+    href: REGISTER_NAV.href,
+    description: "Submit a partner and end-user registration",
+  },
+  {
+    label: REGISTER_LIST_NAV.label,
+    href: REGISTER_LIST_NAV.href,
+    description: REGISTER_LIST_NAV.description,
+  },
+] as const;
+
 export interface PortalSession {
   username: string;
   role: PortalRole;
@@ -38,15 +56,62 @@ function getSessionSecret(): string {
   return "kyber-dev-portal-session";
 }
 
-function sign(encodedPayload: string): string {
-  return createHmac("sha256", getSessionSecret()).update(encodedPayload).digest("base64url");
+/* ── Web Crypto helpers (Edge-compatible) ── */
+
+const enc = new TextEncoder();
+
+function base64urlEncode(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf);
+  let binary = "";
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-function safeEqual(a: string, b: string): boolean {
-  const left = Buffer.from(a);
-  const right = Buffer.from(b);
-  if (left.length !== right.length) return false;
-  return timingSafeEqual(left, right);
+async function getCryptoKey(): Promise<CryptoKey> {
+  return crypto.subtle.importKey(
+    "raw",
+    enc.encode(getSessionSecret()),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign", "verify"],
+  );
+}
+
+async function signPayload(encodedPayload: string): Promise<string> {
+  const key = await getCryptoKey();
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(encodedPayload));
+  return base64urlEncode(sig);
+}
+
+async function verifySignature(encodedPayload: string, signature: string): Promise<boolean> {
+  const expected = await signPayload(encodedPayload);
+  if (expected.length !== signature.length) return false;
+  let result = 0;
+  for (let i = 0; i < expected.length; i++) {
+    result |= expected.charCodeAt(i) ^ signature.charCodeAt(i);
+  }
+  return result === 0;
+}
+
+function base64urlToUtf8(b64: string): string {
+  const padded = b64.replace(/-/g, "+").replace(/_/g, "/");
+  return decodeURIComponent(
+    atob(padded)
+      .split("")
+      .map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
+      .join(""),
+  );
+}
+
+function utf8ToBase64url(str: string): string {
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/gi, (_, hex) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    ),
+  )
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 }
 
 export function getPortalAdminCredentials(): { username: string; password: string } {
@@ -56,26 +121,28 @@ export function getPortalAdminCredentials(): { username: string; password: strin
   };
 }
 
-export function createPortalSessionToken(username: string, role: PortalRole): string {
+export async function createPortalSessionToken(username: string, role: PortalRole): Promise<string> {
   const payload = JSON.stringify({
     username,
     role,
     iat: Date.now(),
   } satisfies PortalSession);
-  const encoded = Buffer.from(payload, "utf8").toString("base64url");
-  return `${encoded}.${sign(encoded)}`;
+  const encoded = utf8ToBase64url(payload);
+  const sig = await signPayload(encoded);
+  return `${encoded}.${sig}`;
 }
 
-export function parsePortalSessionToken(token: string | undefined | null): PortalSession | null {
+export async function parsePortalSessionToken(token: string | undefined | null): Promise<PortalSession | null> {
   if (!token) return null;
 
   const [encoded, signature] = token.split(".");
   if (!encoded || !signature) return null;
 
   try {
-    if (!safeEqual(signature, sign(encoded))) return null;
+    const valid = await verifySignature(encoded, signature);
+    if (!valid) return null;
 
-    const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as PortalSession;
+    const payload = JSON.parse(base64urlToUtf8(encoded)) as PortalSession;
     if (
       typeof payload.username !== "string" ||
       (payload.role !== "admin" && payload.role !== "user") ||
@@ -93,8 +160,8 @@ export function parsePortalSessionToken(token: string | undefined | null): Porta
   }
 }
 
-export function verifyPortalSessionToken(token: string | undefined | null): boolean {
-  return parsePortalSessionToken(token) !== null;
+export async function verifyPortalSessionToken(token: string | undefined | null): Promise<boolean> {
+  return (await parsePortalSessionToken(token)) !== null;
 }
 
 export function isPortalAdmin(session: PortalSession | null): boolean {

@@ -5,7 +5,7 @@ import {
   getClientIp,
   isAllowedOrigin,
 } from "@/lib/apiSecurity";
-import { authenticatePortalUser } from "@/lib/portalUserStore";
+import { authenticatePortalUser, getPortalUserByUsername } from "@/lib/portalUserStore";
 import {
   createPortalSessionToken,
   parsePortalSessionToken,
@@ -18,11 +18,13 @@ const NO_STORE = { "Cache-Control": "no-store" };
 export async function GET() {
   const cookieStore = await cookies();
   const token = cookieStore.get(PORTAL_SESSION_COOKIE)?.value;
-  const session = parsePortalSessionToken(token);
+  const session = await parsePortalSessionToken(token);
 
   if (!session) {
     return NextResponse.json({ authenticated: false }, { headers: NO_STORE });
   }
+
+  const account = await getPortalUserByUsername(session.username);
 
   return NextResponse.json(
     {
@@ -30,6 +32,11 @@ export async function GET() {
       username: session.username,
       role: session.role,
       isAdmin: session.role === "admin",
+      partnerName: account?.partnerName ?? "",
+      partnerContact: account?.partnerContact ?? "",
+      partnerPosition: account?.partnerPosition ?? "",
+      partnerMobile: account?.partnerMobile ?? "",
+      partnerEmail: account?.partnerEmail ?? "",
     },
     { headers: NO_STORE },
   );
@@ -82,7 +89,7 @@ export async function POST(request: Request) {
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(PORTAL_SESSION_COOKIE, createPortalSessionToken(user.username, user.role), {
+  cookieStore.set(PORTAL_SESSION_COOKIE, await createPortalSessionToken(user.username, user.role), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

@@ -3,10 +3,15 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { hashPortalPassword, verifyPortalPassword } from "@/lib/portalPassword";
 import { getPortalAdminCredentials } from "@/lib/portalSession";
+import {
+  EMPTY_PARTNER_PROFILE,
+  readPartnerProfile,
+  type PartnerProfile,
+} from "@/lib/partnerProfile";
 
 export type PortalRole = "admin" | "user";
 
-export interface PortalUserRecord {
+export interface PortalUserRecord extends PartnerProfile {
   id: string;
   username: string;
   passwordHash: string;
@@ -15,7 +20,7 @@ export interface PortalUserRecord {
   updatedAt: string;
 }
 
-export interface PortalUserPublic {
+export interface PortalUserPublic extends PartnerProfile {
   id: string;
   username: string;
   role: PortalRole;
@@ -43,6 +48,7 @@ function toPublicUser(user: PortalUserRecord): PortalUserPublic {
     id: user.id,
     username: user.username,
     role: user.role,
+    ...readPartnerProfile(user),
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };
@@ -60,6 +66,7 @@ function createSeedStore(): PortalUserStoreFile {
         username,
         passwordHash: hashPortalPassword(password),
         role: "admin",
+        ...EMPTY_PARTNER_PROFILE,
         createdAt: timestamp,
         updatedAt: timestamp,
       },
@@ -84,6 +91,10 @@ async function loadStore(): Promise<PortalUserStoreFile> {
     const raw = await readFile(STORE_PATH, "utf8");
     const parsed = JSON.parse(raw) as PortalUserStoreFile;
     if (parsed?.version === 1 && Array.isArray(parsed.users)) {
+      parsed.users = parsed.users.map((user) => ({
+        ...user,
+        ...readPartnerProfile(user),
+      }));
       memoryStore = parsed;
       return parsed;
     }
@@ -115,12 +126,16 @@ export async function createPortalUser(input: {
   username: string;
   password: string;
   role: PortalRole;
-}): Promise<PortalUserPublic> {
+} & PartnerProfile): Promise<PortalUserPublic> {
   const store = await loadStore();
   const username = input.username.trim();
+  const partner = readPartnerProfile(input);
 
   if (!username) throw new Error("Username is required.");
   if (!input.password) throw new Error("Password is required.");
+  if (!partner.partnerName) {
+    throw new Error("Partner name is required.");
+  }
   if (store.users.some((user) => user.username === username)) {
     throw new Error("Username already exists.");
   }
@@ -131,6 +146,7 @@ export async function createPortalUser(input: {
     username,
     passwordHash: hashPortalPassword(input.password),
     role: input.role,
+    ...partner,
     createdAt: timestamp,
     updatedAt: timestamp,
   };
@@ -146,7 +162,7 @@ export async function updatePortalUser(
     username?: string;
     password?: string;
     role?: PortalRole;
-  },
+  } & Partial<PartnerProfile>,
   actorUsername: string,
 ): Promise<PortalUserPublic> {
   const store = await loadStore();
@@ -155,8 +171,16 @@ export async function updatePortalUser(
 
   const current = store.users[index];
   const nextUsername = input.username?.trim() || current.username;
+  const nextPartner = readPartnerProfile({
+    partnerName: input.partnerName ?? current.partnerName,
+    partnerContact: input.partnerContact ?? current.partnerContact,
+    partnerPosition: input.partnerPosition ?? current.partnerPosition,
+    partnerMobile: input.partnerMobile ?? current.partnerMobile,
+    partnerEmail: input.partnerEmail ?? current.partnerEmail,
+  });
 
   if (!nextUsername) throw new Error("Username is required.");
+  if (!nextPartner.partnerName) throw new Error("Partner name is required.");
   if (store.users.some((user) => user.id !== id && user.username === nextUsername)) {
     throw new Error("Username already exists.");
   }
@@ -177,6 +201,7 @@ export async function updatePortalUser(
     ...current,
     username: nextUsername,
     role: nextRole,
+    ...nextPartner,
     passwordHash: input.password ? hashPortalPassword(input.password) : current.passwordHash,
     updatedAt: nowIso(),
   };

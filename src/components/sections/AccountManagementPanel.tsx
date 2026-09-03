@@ -2,14 +2,16 @@
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import type { PortalRole, PortalUserPublic } from "@/lib/portalUserStore";
+import { EMPTY_PARTNER_PROFILE, type PartnerProfile } from "@/lib/partnerProfile";
 
-type UserFormState = {
+type UserFormState = PartnerProfile & {
   username: string;
   password: string;
   role: PortalRole;
 };
 
 const EMPTY_FORM: UserFormState = {
+  ...EMPTY_PARTNER_PROFILE,
   username: "",
   password: "",
   role: "user",
@@ -82,6 +84,11 @@ export default function AccountManagementPanel() {
     setEditingId(user.id);
     setEditForm({
       username: user.username,
+      partnerName: user.partnerName || "",
+      partnerContact: user.partnerContact || "",
+      partnerPosition: user.partnerPosition || "",
+      partnerMobile: user.partnerMobile || "",
+      partnerEmail: user.partnerEmail || "",
       password: "",
       role: user.role,
     });
@@ -109,6 +116,11 @@ export default function AccountManagementPanel() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: editForm.username,
+          partnerName: editForm.partnerName,
+          partnerContact: editForm.partnerContact,
+          partnerPosition: editForm.partnerPosition,
+          partnerMobile: editForm.partnerMobile,
+          partnerEmail: editForm.partnerEmail,
           role: editForm.role,
           ...(editForm.password ? { password: editForm.password } : {}),
         }),
@@ -164,7 +176,65 @@ export default function AccountManagementPanel() {
           Add a new administrator or standard user. Passwords are stored using a one-way hash.
         </p>
 
-        <form onSubmit={handleCreate} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <form onSubmit={handleCreate} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label htmlFor="create-partnerName" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+              Partner Name (ชื่อพาร์ทเนอร์)
+            </label>
+            <input
+              id="create-partnerName"
+              value={createForm.partnerName}
+              onChange={(event) => setCreateForm((prev) => ({ ...prev, partnerName: event.target.value }))}
+              required
+              className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="create-partnerContact" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+              Contact Person (ชื่อผู้ติดต่อ)
+            </label>
+            <input
+              id="create-partnerContact"
+              value={createForm.partnerContact}
+              onChange={(event) => setCreateForm((prev) => ({ ...prev, partnerContact: event.target.value }))}
+              className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="create-partnerPosition" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+              Position (ตำแหน่ง)
+            </label>
+            <input
+              id="create-partnerPosition"
+              value={createForm.partnerPosition}
+              onChange={(event) => setCreateForm((prev) => ({ ...prev, partnerPosition: event.target.value }))}
+              className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="create-partnerMobile" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+              Mobile Number (เบอร์มือถือ)
+            </label>
+            <input
+              id="create-partnerMobile"
+              type="tel"
+              value={createForm.partnerMobile}
+              onChange={(event) => setCreateForm((prev) => ({ ...prev, partnerMobile: event.target.value }))}
+              className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="create-partnerEmail" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+              Email (อีเมล)
+            </label>
+            <input
+              id="create-partnerEmail"
+              type="email"
+              value={createForm.partnerEmail}
+              onChange={(event) => setCreateForm((prev) => ({ ...prev, partnerEmail: event.target.value }))}
+              className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm"
+            />
+          </div>
           <div>
             <label htmlFor="create-username" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
               Username
@@ -231,6 +301,8 @@ export default function AccountManagementPanel() {
             <table className="min-w-full text-sm">
               <thead className="bg-[var(--bg-subtle)] text-left text-xs uppercase tracking-wider text-[var(--text-muted)]">
                 <tr>
+                  <th className="px-6 py-3 font-semibold">Partner Name</th>
+                  <th className="px-6 py-3 font-semibold">Contact</th>
                   <th className="px-6 py-3 font-semibold">Username</th>
                   <th className="px-6 py-3 font-semibold">Role</th>
                   <th className="px-6 py-3 font-semibold">Updated</th>
@@ -240,6 +312,8 @@ export default function AccountManagementPanel() {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id} className="border-t border-[var(--border)]">
+                    <td className="px-6 py-4">{user.partnerName || "—"}</td>
+                    <td className="px-6 py-4 text-[var(--text-secondary)]">{user.partnerContact || "—"}</td>
                     <td className="px-6 py-4 font-medium">{user.username}</td>
                     <td className="px-6 py-4 capitalize">{user.role}</td>
                     <td className="px-6 py-4 text-[var(--text-secondary)]">
@@ -275,7 +349,65 @@ export default function AccountManagementPanel() {
       {editingId && (
         <section className="rounded-xl border border-[var(--brand)] bg-[var(--brand-soft)] p-6">
           <h2 className="text-lg font-semibold mb-4">Edit user account</h2>
-          <form onSubmit={handleUpdate} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <form onSubmit={handleUpdate} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label htmlFor="edit-partnerName" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                Partner Name (ชื่อพาร์ทเนอร์)
+              </label>
+              <input
+                id="edit-partnerName"
+                value={editForm.partnerName}
+                onChange={(event) => setEditForm((prev) => ({ ...prev, partnerName: event.target.value }))}
+                required
+                className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm bg-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="edit-partnerContact" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                Contact Person (ชื่อผู้ติดต่อ)
+              </label>
+              <input
+                id="edit-partnerContact"
+                value={editForm.partnerContact}
+                onChange={(event) => setEditForm((prev) => ({ ...prev, partnerContact: event.target.value }))}
+                className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm bg-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="edit-partnerPosition" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                Position (ตำแหน่ง)
+              </label>
+              <input
+                id="edit-partnerPosition"
+                value={editForm.partnerPosition}
+                onChange={(event) => setEditForm((prev) => ({ ...prev, partnerPosition: event.target.value }))}
+                className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm bg-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="edit-partnerMobile" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                Mobile Number (เบอร์มือถือ)
+              </label>
+              <input
+                id="edit-partnerMobile"
+                type="tel"
+                value={editForm.partnerMobile}
+                onChange={(event) => setEditForm((prev) => ({ ...prev, partnerMobile: event.target.value }))}
+                className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm bg-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="edit-partnerEmail" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                Email (อีเมล)
+              </label>
+              <input
+                id="edit-partnerEmail"
+                type="email"
+                value={editForm.partnerEmail}
+                onChange={(event) => setEditForm((prev) => ({ ...prev, partnerEmail: event.target.value }))}
+                className="w-full rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm bg-white"
+              />
+            </div>
             <div>
               <label htmlFor="edit-username" className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
                 Username

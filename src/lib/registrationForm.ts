@@ -12,6 +12,7 @@ export interface PartnerRegistrationPayload {
   endUserPosition: string;
   endUserMobile: string;
   endUserEmail: string;
+  products: string[];
   notes?: string;
 }
 
@@ -19,8 +20,17 @@ function trimString(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
+const ALLOWED_PRODUCTS = new Set(["kyber-hci", "marsloq"]);
+
 function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function parseProducts(value: unknown): string[] {
+  const raw = Array.isArray(value) ? value : value != null ? [value] : [];
+  return raw
+    .map((item) => trimString(item))
+    .filter((item) => ALLOWED_PRODUCTS.has(item));
 }
 
 export function parseRegistrationBody(
@@ -43,6 +53,7 @@ export function parseRegistrationBody(
   const endUserPosition = trimString(raw.endUserPosition);
   const endUserMobile = trimString(raw.endUserMobile);
   const endUserEmail = trimString(raw.endUserEmail);
+  const products = parseProducts(raw.products);
   const notes = trimString(raw.notes) || undefined;
 
   if (!partnerName) return { ok: false, error: "Partner Name is required." };
@@ -58,6 +69,8 @@ export function parseRegistrationBody(
   if (!endUserMobile) return { ok: false, error: "End-User Mobile Number is required." };
   if (!endUserEmail || !isValidEmail(endUserEmail))
     return { ok: false, error: "A valid End-User Email is required." };
+  if (products.length === 0)
+    return { ok: false, error: "Please select a product." };
 
   return {
     ok: true,
@@ -73,6 +86,7 @@ export function parseRegistrationBody(
       endUserPosition,
       endUserMobile,
       endUserEmail,
+      products,
       notes,
     },
   };
@@ -110,6 +124,9 @@ export function formatRegistrationEmail(data: PartnerRegistrationPayload): {
     `Position:        ${data.endUserPosition}`,
     `Mobile:          ${data.endUserMobile}`,
     `Email:           ${data.endUserEmail}`,
+    "",
+    "═══ PRODUCT INTEREST ═══",
+    `Products:        ${data.products.join(", ")}`,
   ];
 
   if (data.notes) {
@@ -139,6 +156,9 @@ export function formatRegistrationEmail(data: PartnerRegistrationPayload): {
       <tr style="background:#f4f6f9;"><td><strong>Mobile</strong></td><td>${escapeHtml(data.endUserMobile)}</td></tr>
       <tr><td><strong>Email</strong></td><td><a href="mailto:${escapeHtml(data.endUserEmail)}">${escapeHtml(data.endUserEmail)}</a></td></tr>
     </table>
+
+    <h3 style="color:#2E7D32;font-family:sans-serif;border-bottom:2px solid #2E7D32;padding-bottom:4px;margin-top:24px;">Product Interest</h3>
+    <p style="font-family:sans-serif;font-size:14px;">${data.products.map(escapeHtml).join(", ")}</p>
 
     ${data.notes ? `<p style="margin-top:16px;font-family:sans-serif;"><strong>Notes</strong></p><p style="white-space:pre-wrap;font-family:sans-serif;">${escapeHtml(data.notes)}</p>` : ""}
   `;

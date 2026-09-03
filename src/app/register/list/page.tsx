@@ -3,20 +3,22 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import PartnerRegistrationForm from "@/components/sections/PartnerRegistrationForm";
+import RegistrationListPanel from "@/components/sections/RegistrationListPanel";
 import { getPortalSessionFromCookies } from "@/lib/portalSessionServer";
-import { REGISTER_LIST_NAV } from "@/lib/portalSession";
+import { isPortalAdmin, REGISTER_NAV, REGISTER_LIST_NAV } from "@/lib/portalSession";
 
 export const metadata: Metadata = {
-  title: "Register — KYBER",
-  description: "Partner and End-User registration form for KYBER products and services.",
+  title: `${REGISTER_LIST_NAV.label} — KYBER`,
+  description: REGISTER_LIST_NAV.description,
 };
 
-export default async function RegisterPage() {
+export default async function RegistrationListPage() {
   const session = await getPortalSessionFromCookies();
   if (!session) {
     redirect("/?login=required");
   }
+
+  const admin = isPortalAdmin(session);
 
   return (
     <main className="relative bg-[var(--bg)] min-h-screen text-[var(--text)]">
@@ -28,25 +30,26 @@ export default async function RegisterPage() {
               Partner Portal
             </p>
             <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight leading-tight">
-              Partner &amp; End-User Registration
+              {REGISTER_LIST_NAV.label}
             </h1>
             <p className="mt-3 text-sm text-[var(--text-secondary)] leading-relaxed">
-              Register a new partner and end-user for KYBER products and services.
-              All fields are required unless noted otherwise.
+              {admin
+                ? "View all partner registrations and update status: pending, approved, or closed."
+                : "Track the approval status of registrations submitted from your account."}
             </p>
           </div>
           <div className="flex flex-wrap gap-2 mb-10 text-sm">
-            <span className="rounded-md bg-[var(--brand-soft)] px-3 py-1.5 font-medium text-[var(--brand)]">
-              New Registration
-            </span>
             <Link
-              href={REGISTER_LIST_NAV.href}
+              href={REGISTER_NAV.href}
               className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--text-secondary)] hover:border-[var(--brand)] hover:text-[var(--brand)]"
             >
-              {REGISTER_LIST_NAV.label}
+              New Registration
             </Link>
+            <span className="rounded-md bg-[var(--brand-soft)] px-3 py-1.5 font-medium text-[var(--brand)]">
+              {REGISTER_LIST_NAV.label}
+            </span>
           </div>
-          <PartnerRegistrationForm />
+          <RegistrationListPanel />
         </div>
       </section>
       <Footer />
