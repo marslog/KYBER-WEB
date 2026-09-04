@@ -6,6 +6,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { gentleFloatTransition } from "@/lib/motion";
 
+const BANNER_VIDEO_SRC = "/assets/videos/platform-banner-orbit.mp4";
+
 const SHOWCASE_CARDS = [
   {
     id: "hci",
@@ -32,7 +34,23 @@ export default function PlatformShowcaseBanner() {
       className="platform-showcase-banner relative overflow-hidden border-b border-[var(--border)] pt-28 md:pt-32"
       aria-label="KYBER platform showcase"
     >
-      <div className="platform-showcase-banner__bg" aria-hidden />
+      <div className="platform-showcase-banner__bg" aria-hidden="true">
+        {!reducedMotion && (
+          <video
+            className="platform-showcase-banner__video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          >
+            <source src={BANNER_VIDEO_SRC} type="video/mp4" />
+          </video>
+        )}
+        <div className="platform-showcase-banner__video-shade" />
+        <div className="platform-showcase-banner__video-glow" />
+      </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-[5.25rem] lg:py-24">
         <div className="grid lg:grid-cols-2 gap-[2.625rem] lg:gap-14 items-center">
