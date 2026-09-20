@@ -40,7 +40,7 @@ async function loadStore(): Promise<RegistrationStoreFile> {
   if (memoryStore) return memoryStore;
 
   try {
-    const raw = await readFile(STORE_PATH, "utf8");
+    const raw = await readFile(/*turbopackIgnore: true*/ STORE_PATH, "utf8");
     const parsed = JSON.parse(raw) as RegistrationStoreFile;
     if (parsed?.version === 1 && Array.isArray(parsed.registrations)) {
       memoryStore = parsed;

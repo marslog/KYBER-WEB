@@ -15,6 +15,12 @@ export const ACCOUNT_MANAGEMENT_NAV = {
   description: "Manage user accounts, roles, and passwords (RBAC)",
 } as const;
 
+export const HARDWARE_TRACKING_NAV = {
+  label: "Hardware Tracking",
+  href: "/hardware-tracking",
+  description: "Log and track hardware details, specifications, and expiration dates",
+} as const;
+
 export const REGISTER_NAV = {
   label: "Register",
   href: "/register",
@@ -26,6 +32,25 @@ export const REGISTER_LIST_NAV = {
   href: "/register/list",
   description: "Track registration approval status",
 } as const;
+
+export const ADMIN_NAV = {
+  label: "Admin",
+  href: "/account-management",
+  description: "Administrator tools & management",
+} as const;
+
+export const ADMIN_NAV_ITEMS = [
+  {
+    label: ACCOUNT_MANAGEMENT_NAV.label,
+    href: ACCOUNT_MANAGEMENT_NAV.href,
+    description: ACCOUNT_MANAGEMENT_NAV.description,
+  },
+  {
+    label: HARDWARE_TRACKING_NAV.label,
+    href: HARDWARE_TRACKING_NAV.href,
+    description: HARDWARE_TRACKING_NAV.description,
+  },
+] as const;
 
 export const REGISTER_NAV_ITEMS = [
   {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
   ACCOUNT_MANAGEMENT_NAV,
+  HARDWARE_TRACKING_NAV,
   KNOWLEDGE_BASE_NAV,
   REGISTER_NAV,
   REGISTER_LIST_NAV,
@@ -32,7 +33,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (pathname === ACCOUNT_MANAGEMENT_NAV.href) {
+  if (pathname === ACCOUNT_MANAGEMENT_NAV.href || pathname === HARDWARE_TRACKING_NAV.href || pathname.startsWith("/hardware-tracking/")) {
     if (session?.role === "admin") return NextResponse.next();
 
     const redirectUrl = request.nextUrl.clone();
@@ -45,5 +46,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/resources/kb", "/account-management", "/register", "/register/:path*"],
+  matcher: ["/resources/kb", "/account-management", "/register", "/register/:path*", "/hardware-tracking", "/hardware-tracking/:path*"],
 };

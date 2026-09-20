@@ -9,7 +9,7 @@ import { NAV_STRUCTURE } from "@/data/platformData";
 import PortalLoginMenu from "@/components/layout/PortalLoginMenu";
 import { usePortalAuth } from "@/hooks/usePortalAuth";
 import { KNOWLEDGE_BASE_HREF } from "@/data/portalAccess";
-import { ACCOUNT_MANAGEMENT_NAV, KNOWLEDGE_BASE_NAV, REGISTER_NAV, REGISTER_NAV_ITEMS } from "@/lib/portalSession";
+import { ADMIN_NAV, ADMIN_NAV_ITEMS, KNOWLEDGE_BASE_NAV, REGISTER_NAV, REGISTER_NAV_ITEMS } from "@/lib/portalSession";
 
 type NavbarProps = {
   overDarkHero?: boolean;
@@ -103,9 +103,12 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
               </div>
             )}
             {isAdmin && (
-              <Link href={ACCOUNT_MANAGEMENT_NAV.href} className={navLinkClass(false)}>
-                {ACCOUNT_MANAGEMENT_NAV.label}
-              </Link>
+              <div onMouseEnter={() => setActiveMenu("admin")}>
+                <button type="button" className={navLinkClass(activeMenu === "admin")}>
+                  {ADMIN_NAV.label}
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === "admin" ? "rotate-180" : ""}`} />
+                </button>
+              </div>
             )}
           </nav>
 
@@ -219,6 +222,21 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
                 ))}
               </div>
             )}
+            {isAdmin && activeMenu === "admin" && (
+              <div className="grid grid-cols-2 gap-4 max-w-xl">
+                {ADMIN_NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setActiveMenu(null)}
+                    className="p-4 rounded-lg border border-[var(--border)] hover:border-[var(--brand)] hover:bg-[var(--brand-soft)] transition-colors"
+                  >
+                    <div className="text-sm font-medium">{item.label}</div>
+                    <div className="text-xs text-[var(--text-muted)] mt-1">{item.description}</div>
+                  </Link>
+                ))}
+              </div>
+            )}
             {activeMenu === "company" && (
               <div className="grid grid-cols-3 gap-4">
                 {NAV_STRUCTURE.company.map((item) => (
@@ -278,13 +296,21 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
             </div>
           )}
           {isAdmin && (
-            <Link
-              href={ACCOUNT_MANAGEMENT_NAV.href}
-              onClick={() => setMobileOpen(false)}
-              className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
-            >
-              {ACCOUNT_MANAGEMENT_NAV.label}
-            </Link>
+            <div className="space-y-3">
+              <p className={`text-xs font-semibold uppercase tracking-wider ${darkNav ? "text-white/60" : "text-[var(--text-muted)]"}`}>
+                {ADMIN_NAV.label}
+              </p>
+              {ADMIN_NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           )}
           <button
             type="button"
