@@ -7,13 +7,14 @@ import { KYBER_REF_LOGOS, type KyberRefLogo } from "@/data/kyberRefLogos";
 function LogoTile({ logo }: { logo: KyberRefLogo }) {
   return (
     <div className="kyber-ref-marquee__tile kyber-ref-tile kyber-ref__tile" title={logo.name}>
-      <div className="relative h-14 md:h-16 w-[9rem] sm:w-[10.5rem] shrink-0">
+      <div className="relative h-20 md:h-24 w-[12rem] sm:w-[14rem] shrink-0">
         <Image
           src={logo.src}
           alt={logo.name}
           fill
-          className="object-contain object-center"
-          sizes="(max-width: 640px) 40vw, 168px"
+          quality={100}
+          className="object-contain object-center kyber-ref__logo-img"
+          sizes="(max-width: 640px) 48vw, 224px"
         />
       </div>
     </div>

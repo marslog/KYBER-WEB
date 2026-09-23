@@ -420,6 +420,12 @@
   flex: none;
 }
 
+.kyber-ref__logo-img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.05) brightness(1.02);
+}
+
 .kyber-ref-marquee__fade {
   position: absolute;
   top: 0;
