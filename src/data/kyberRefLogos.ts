@@ -18,4 +18,7 @@ export const KYBER_REF_LOGOS: KyberRefLogo[] = [
   { name: "TVI", src: "/assets/references/tvi-clean.png" },
   { name: "KST Hotel Supply", src: "/assets/references/kst-hotel-supply-clean.png" },
   { name: "Leonian", src: "/assets/references/leonian-clean.png" },
+  { name: "Srisangwornsukhothai Hospital", src: "/assets/references/srisangwornsukhothai-hospital-clean.png" },
+  { name: "Phrapokklao Nursing College Chanthaburi", src: "/assets/references/phrapokklao-nursing-chanthaburi-clean.png" },
+  { name: "Suppatassana Company Limited", src: "/assets/references/suppatassana-company-clean.png" },
 ];
