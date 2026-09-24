@@ -43,6 +43,7 @@ export default function PlatformShowcaseBanner() {
             loop
             playsInline
             preload="metadata"
+            poster="/assets/screenshots/kyber-hci-hero-showcase.jpg"
             aria-hidden="true"
           >
             <source src={BANNER_VIDEO_SRC} type="video/mp4" />
@@ -64,10 +65,10 @@ export default function PlatformShowcaseBanner() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-muted)] mb-4">
               KYBER HCI & MARSLOQ
             </p>
-            <h2 className="text-[1.65rem] sm:text-[2rem] lg:text-[2.4rem] font-semibold tracking-tight leading-[1.1] text-white">
+            <h1 className="text-[1.65rem] sm:text-[2rem] lg:text-[2.4rem] font-semibold tracking-tight leading-[1.1] text-white">
               The Future of{" "}
               <span className="text-[var(--brand-light)]">Hyper-Converged</span> Infrastructure.
-            </h2>
+            </h1>
             <p className="mt-3 text-sm sm:text-base text-[var(--text-muted-on-dark)] leading-relaxed max-w-md">
               Enterprise HCI plus centralized log management — ingest syslog and infrastructure logs on any hardware.
             </p>

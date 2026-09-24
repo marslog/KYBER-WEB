@@ -9,9 +9,9 @@ import Reveal from "@/components/motion/Reveal";
 
 export default function CTASection() {
   return (
-    <section id="contact-form" className="py-24 bg-[var(--bg-dark)] text-[var(--text-on-dark)]">
+    <section id="contact-form" className="py-16 sm:py-24 bg-[var(--bg-dark)] text-[var(--text-on-dark)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
           <Reveal className="space-y-8">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted-on-dark)] mb-3">
@@ -49,7 +49,7 @@ export default function CTASection() {
             </Link>
           </Reveal>
 
-          <Reveal delay={0.1} className="bg-white text-[var(--text)] rounded-lg p-8 border border-[var(--border)]">
+          <Reveal delay={0.1} className="bg-white text-[var(--text)] rounded-lg p-6 sm:p-8 border border-[var(--border)] shadow-xl">
             <ContactForm variant="compact" id="homepage-contact-form" />
           </Reveal>
         </div>

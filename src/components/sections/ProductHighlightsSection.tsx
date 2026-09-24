@@ -39,8 +39,8 @@ export default function ProductHighlightsSection() {
         >
           <p className="enterprise-section-kicker enterprise-section-kicker--center mb-3">Platform</p>
           <h2 className="platform-showcase__title">
-            <span>Enterprise infrastructure.</span>
-            <span>&amp; observability.</span>
+            <span>Enterprise infrastructure</span>
+            <span className="platform-showcase__title-amp">& observability.</span>
           </h2>
           <p className="platform-showcase__lede">
             Two platforms, one vision — unified digital infrastructure for every workload.

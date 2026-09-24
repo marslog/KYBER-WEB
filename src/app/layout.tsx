@@ -2,19 +2,20 @@ import type { Metadata } from "next";
 import { Outfit, Inter } from "next/font/google";
 import JsonLd from "@/components/seo/JsonLd";
 import GoogleAnalytics from "@/components/seo/GoogleAnalytics";
+import AiChatWidget from "@/components/chat/AiChatWidget";
 import { ROOT_METADATA } from "@/lib/siteSeo";
 import "./globals.css";
 
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <JsonLd />
         {children}
+        <AiChatWidget />
       </body>
     </html>
   );

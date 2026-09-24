@@ -52,13 +52,13 @@ export default function ResourcesSection() {
                 className="resource-card group bg-white border border-[var(--border)] rounded-xl overflow-hidden hover:border-[var(--brand)] hover:shadow-[0_8px_24px_rgba(16,24,40,0.06)] transition-all block h-full"
               >
                 {resource.image ? (
-                  <div className="resource-card__image relative h-32 border-b border-[var(--border)] bg-[var(--bg-muted)]">
+                  <div className="resource-card__image relative h-32 border-b border-[var(--border)] bg-[var(--bg-muted)] overflow-hidden">
                     <Image
                       src={resource.image}
                       alt={resource.title}
                       fill
-                      className="object-cover object-top"
-                      sizes="25vw"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   </div>
                 ) : (

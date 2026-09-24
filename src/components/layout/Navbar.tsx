@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -10,6 +10,31 @@ import PortalLoginMenu from "@/components/layout/PortalLoginMenu";
 import { usePortalAuth } from "@/hooks/usePortalAuth";
 import { KNOWLEDGE_BASE_HREF } from "@/data/portalAccess";
 import { ADMIN_NAV, ADMIN_NAV_ITEMS, KNOWLEDGE_BASE_NAV, REGISTER_NAV, REGISTER_NAV_ITEMS } from "@/lib/portalSession";
+
+// Flat search index built from nav structure
+const SEARCH_INDEX = [
+  ...NAV_STRUCTURE.products.flatMap((cat) =>
+    cat.items.map((item) => ({ ...item, section: "Product", desc: item.desc }))
+  ),
+  ...NAV_STRUCTURE.solutions.map((item) => ({
+    name: item.title,
+    href: item.href,
+    desc: item.desc,
+    section: "Solution",
+  })),
+  ...NAV_STRUCTURE.resources.map((item) => ({
+    name: item.title,
+    href: item.href,
+    desc: item.desc,
+    section: "Resource",
+  })),
+  ...NAV_STRUCTURE.company.map((item) => ({
+    name: item.title,
+    href: item.href,
+    desc: item.desc,
+    section: "Company",
+  })),
+];
 
 type NavbarProps = {
   overDarkHero?: boolean;
@@ -21,23 +46,55 @@ function filterResourcesForAuth(authenticated: boolean) {
   );
 }
 
+const NAV_LABELS: Record<string, string> = {
+  products: "Products",
+  solutions: "Solutions",
+  resources: "Resources",
+  company: "Company",
+};
+
 function NavbarContent({ overDarkHero = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const darkNav = overDarkHero && !scrolled;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loginOpen, setLoginOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { authenticated, isAdmin, logout } = usePortalAuth();
   const searchParams = useSearchParams();
   const visibleResources = filterResourcesForAuth(authenticated);
   const showRegisterMenu = authenticated;
+
+  const searchResults = searchQuery.trim().length > 1
+    ? SEARCH_INDEX.filter(
+        (item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.desc.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 8)
+    : [];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+        if (!searchOpen) setSearchQuery("");
+      }
+      if (e.key === "Escape" && mobileOpen) {
+        setMobileOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [searchOpen, mobileOpen]);
 
   useEffect(() => {
     if (searchParams.get("login") === "required") {
@@ -84,7 +141,7 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
             {(["products", "solutions", "resources", "company"] as const).map((key) => (
               <div key={key} onMouseEnter={() => setActiveMenu(key)}>
                 <button className={navLinkClass(activeMenu === key)}>
-                  {key}
+                  {NAV_LABELS[key]}
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === key ? "rotate-180" : ""}`} />
                 </button>
               </div>
@@ -114,15 +171,21 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
 
           <div className="hidden lg:flex items-center gap-3">
             <button
-              onClick={() => setSearchOpen(true)}
-              aria-label="Search"
-              className={`p-2 transition-colors ${
+              onClick={() => { setSearchOpen(true); setSearchQuery(""); }}
+              aria-label="Search (Ctrl+K)"
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-colors text-sm ${
                 darkNav
-                  ? "text-white/70 hover:text-white"
-                  : "text-[var(--text-muted)] hover:text-[var(--text)]"
+                  ? "border-white/15 text-white/60 hover:text-white hover:border-white/30"
+                  : "border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)]"
               }`}
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-3.5 h-3.5" />
+              <span className="hidden xl:inline">Search</span>
+              <kbd className={`hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                darkNav
+                  ? "bg-white/10 text-white/50"
+                  : "bg-[var(--bg-subtle)] text-[var(--text-muted)]"
+              }`}>⌘K</kbd>
             </button>
             <Link
               href="#product-highlights"
@@ -259,16 +322,38 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
               : "bg-white border-[var(--border)]"
           }`}
         >
-          {NAV_STRUCTURE.products.flatMap((c) => c.items).slice(0, 8).map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMobileOpen(false)}
-              className={`block text-sm ${darkNav ? "text-white/90" : "text-[var(--text)]"}`}
-            >
-              {item.name}
-            </Link>
+          {NAV_STRUCTURE.products.map((cat) => (
+            <div key={cat.category} className="space-y-2">
+              <p className={`text-[10px] font-semibold uppercase tracking-wider ${darkNav ? "text-white/40" : "text-[var(--text-muted)]"}`}>
+                {cat.category}
+              </p>
+              {cat.items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block text-sm ${darkNav ? "text-white/90" : "text-[var(--text)]"}`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
           ))}
+          <div className="space-y-2">
+            <p className={`text-[10px] font-semibold uppercase tracking-wider ${darkNav ? "text-white/40" : "text-[var(--text-muted)]"}`}>
+              Solutions
+            </p>
+            {NAV_STRUCTURE.solutions.slice(0, 4).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={`block text-sm ${darkNav ? "text-white/90" : "text-[var(--text)]"}`}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </div>
           {authenticated && (
             <Link
               href={KNOWLEDGE_BASE_NAV.href}
@@ -333,20 +418,72 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
       )}
 
       {searchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-24 px-4">
-          <div className="bg-white border border-[var(--border)] rounded-lg w-full max-w-xl p-5 shadow-xl relative">
-            <button onClick={() => setSearchOpen(false)} className="absolute top-4 right-4 text-[var(--text-muted)]">
-              <X className="w-4 h-4" />
-            </button>
-            <div className="flex items-center gap-3 border-b border-[var(--border)] pb-3">
-              <Search className="w-4 h-4 text-[var(--text-muted)]" />
+        <div
+          className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-20 px-4"
+          onClick={(e) => { if (e.target === e.currentTarget) { setSearchOpen(false); setSearchQuery(""); } }}
+        >
+          <div className="bg-white border border-[var(--border)] rounded-xl w-full max-w-xl shadow-2xl relative overflow-hidden">
+            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--border)]">
+              <Search className="w-4 h-4 text-[var(--text-muted)] shrink-0" />
               <input
+                ref={searchInputRef}
                 type="text"
-                placeholder="Search KYBER products..."
-                className="bg-transparent w-full focus:outline-none text-sm"
+                placeholder="Search products, solutions, resources…"
+                className="bg-transparent w-full focus:outline-none text-sm text-[var(--text)] placeholder:text-[var(--text-muted)]"
                 autoFocus
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Escape") { setSearchOpen(false); setSearchQuery(""); } }}
               />
+              <button
+                onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors shrink-0"
+                aria-label="Close search"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
+            {searchResults.length > 0 ? (
+              <ul className="py-2 max-h-80 overflow-y-auto">
+                {searchResults.map((result) => (
+                  <li key={result.href}>
+                    <Link
+                      href={result.href}
+                      onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                      className="flex items-start gap-3 px-4 py-2.5 hover:bg-[var(--bg-subtle)] transition-colors group"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">{result.section}</span>
+                        </div>
+                        <div className="text-sm font-medium text-[var(--text)] group-hover:text-[var(--brand)] transition-colors">{result.name}</div>
+                        <div className="text-xs text-[var(--text-muted)] mt-0.5 line-clamp-1">{result.desc}</div>
+                      </div>
+                      <ArrowRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--brand)] shrink-0 mt-1.5 transition-colors" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : searchQuery.trim().length > 1 ? (
+              <div className="px-4 py-8 text-center text-sm text-[var(--text-muted)]">
+                No results for <span className="font-medium text-[var(--text)]">&ldquo;{searchQuery}&rdquo;</span>
+              </div>
+            ) : (
+              <div className="px-4 py-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2">Popular</p>
+                <div className="flex flex-wrap gap-2">
+                  {["KYBER HCI", "MARSLOQ", "KSV", "KSAN", "Log Management", "VMware Migration"].map((term) => (
+                    <button
+                      key={term}
+                      onClick={() => setSearchQuery(term)}
+                      className="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--brand)] hover:text-[var(--brand)] transition-colors"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
