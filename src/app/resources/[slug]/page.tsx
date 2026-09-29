@@ -6,6 +6,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PortalAccessPanel from "@/components/sections/PortalAccessPanel";
 import FaqAccordion from "@/components/sections/FaqAccordion";
+import ComplianceChecklist from "@/components/sections/ComplianceChecklist";
+import LogSizingCalculator from "@/components/sections/LogSizingCalculator";
 import StructuredData from "@/components/seo/StructuredData";
 import { getAllResourceSlugs, getResourcePage } from "@/data/resourcesContent";
 import { LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
@@ -85,6 +87,18 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
           <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mt-5 max-w-2xl">
             {page.intro}
           </p>
+
+          {slug === "computer-act-log-compliance" && (
+            <div className="mt-6 p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--text-secondary)]">
+              <div>
+                <span className="font-semibold text-[var(--text)]">ผู้จัดทำและตรวจทาน: </span>
+                KYBER Cybersecurity & Infrastructure Architecture Team (CISA, CISSP Certified)
+              </div>
+              <div className="text-[var(--text-muted)]">
+                อัปเดตล่าสุด: ประกาศกระทรวง ดีอี 13 ส.ค. 2564
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -110,10 +124,14 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
             ))}
           </div>
 
+          {slug === "computer-act-log-compliance" && (
+            <ComplianceChecklist />
+          )}
+
           {page.links && page.links.length > 0 && (
             <div className="mt-8 rounded-xl border border-[var(--border)] bg-white p-6">
               <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-4">
-                Related links
+                Related links & Legal References
               </h2>
               <ul className="space-y-2">
                 {page.links.map((link) => (
@@ -139,6 +157,10 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
           )}
         </div>
       </section>
+
+      {slug === "computer-act-log-compliance" && (
+        <LogSizingCalculator />
+      )}
 
       {slug === "computer-act-log-compliance" && (
         <FaqAccordion

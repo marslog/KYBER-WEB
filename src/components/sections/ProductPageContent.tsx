@@ -6,6 +6,7 @@ import { getIcon } from "@/lib/icons";
 import HciControlPlaneDiagram from "@/components/sections/diagrams/HciControlPlaneDiagram";
 import { HCI_CONTROL_PLANE } from "@/data/hciControlPlane";
 import FaqAccordion from "@/components/sections/FaqAccordion";
+import LogSizingCalculator from "@/components/sections/LogSizingCalculator";
 import { HCI_VIRTUALIZATION_FAQ, LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
 
 export default function ProductPageContent({ product }: { product: ProductPageData }) {
@@ -148,12 +149,15 @@ export default function ProductPageContent({ product }: { product: ProductPageDa
         product.slug === "marsloq" ||
         product.slug === "log-management" ||
         product.slug === "siem") && (
-        <FaqAccordion
-          items={LOG_MANAGEMENT_FAQ}
-          title="คำถามที่พบบ่อยเกี่ยวกับระบบจัดเก็บ Log ตาม พ.ร.บ. คอมพิวเตอร์ และ MARSLOQ"
-          eyebrow="Compliance & Log Management FAQ"
-          subtitle="ไขข้อข้องใจด้านกฎหมาย พ.ร.บ. คอมพิวเตอร์ มาตรา 26, ประกาศกระทรวง ดีอี 2564 และสเปกเทคนิคของ MARSLOQ"
-        />
+        <>
+          <LogSizingCalculator />
+          <FaqAccordion
+            items={LOG_MANAGEMENT_FAQ}
+            title="คำถามที่พบบ่อยเกี่ยวกับระบบจัดเก็บ Log ตาม พ.ร.บ. คอมพิวเตอร์ และ MARSLOQ"
+            eyebrow="Compliance & Log Management FAQ"
+            subtitle="ไขข้อข้องใจด้านกฎหมาย พ.ร.บ. คอมพิวเตอร์ มาตรา 26, ประกาศกระทรวง ดีอี 2564 และสเปกเทคนิคของ MARSLOQ"
+          />
+        </>
       )}
 
       {(themeKey === "kyber-hci" ||
