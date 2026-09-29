@@ -259,7 +259,9 @@ export function absoluteUrl(path = "/"): string {
 }
 
 export function googleSiteVerification(): Metadata["verification"] | undefined {
-  const token = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+  const token =
+    process.env.GOOGLE_SITE_VERIFICATION?.trim() ||
+    "4ySpTVxyemejclvK2Md-2STLKx9VQyN0i3kYCV5JAzU";
   if (!token) return undefined;
   return { google: token };
 }
