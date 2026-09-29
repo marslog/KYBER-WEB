@@ -97,13 +97,14 @@ export const NAV_STRUCTURE = {
     { title: "VMware Migration", desc: "Import OVA/OVF/VMDK workloads directly to KYBER KSV", href: "/solutions/vmware-migration" },
     { title: "Enterprise HCI", desc: "Consolidate compute and storage into a high-availability cluster", href: "/solutions/enterprise-hci" },
     { title: "Ransomware Resilience", desc: "Proactive behavioral protection and immutable backup recovery", href: "/solutions/ransomware-resilience" },
-    { title: "Security Operations & Log Management", desc: "Enterprise log management with syslog ingestion, centralized logging, and OpenSearch analytics in MARSLOQ", href: "/solutions/secops-log-management" },
+    { title: "Security Operations & Log Compliance", desc: "ระบบเก็บ Log ตาม พ.ร.บ. คอมพิวเตอร์ 2564 และ Enterprise Log Management ด้วย MARSLOQ", href: "/solutions/secops-log-management" },
     { title: "Legacy Hardware Modernization", desc: "Reuse existing x86 servers and eliminate unnecessary hardware cycles", href: "/solutions/legacy-hardware-modernization" },
   ],
   resources: [
     { title: "Documentation", desc: "Technical guides, API reference, & architecture docs", href: "/resources/docs" },
     { title: "Architecture Center", desc: "Validated reference designs & deployment patterns", href: "/resources/architecture" },
     { title: "Product Datasheets", desc: "Detailed technical specification sheets", href: "/resources/datasheets" },
+    { title: "Log Compliance Guide", desc: "คู่มือระบบเก็บ Log ตาม พ.ร.บ. คอมพิวเตอร์ 2564 (90 วัน - 2 ปี)", href: "/resources/computer-act-log-compliance" },
     { title: "Knowledge Base", desc: "Best practices & troubleshooting articles", href: "/resources/kb" },
     { title: "Downloads & Firmware", desc: "KYBER OS ISOs, tools, and agent packages", href: "/resources/downloads" },
     { title: "FAQ", desc: "Frequently asked technical and commercial questions", href: "/resources/faq" },
@@ -341,7 +342,8 @@ export const SOLUTIONS_JOURNEYS: SolutionItem[] = [
     outcomes: [
       "10x faster mean-time-to-resolution (MTTR)",
       "Unified log search and SIEM security correlation",
-      "AI-driven predictive anomaly detection",
+      "สอดคล้องตาม พ.ร.บ. คอมพิวเตอร์ มาตรา 26 (เก็บบันทึก Log 90 วัน - 2 ปี)",
+      "NTP Time Sync, SHA-256 Hashing ป้องกันการแก้ไข และรองรับเกณฑ์ PDPA",
     ],
   },
 ];

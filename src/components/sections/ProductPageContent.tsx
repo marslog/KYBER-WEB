@@ -5,6 +5,8 @@ import type { ProductPageData } from "@/lib/productCatalog";
 import { getIcon } from "@/lib/icons";
 import HciControlPlaneDiagram from "@/components/sections/diagrams/HciControlPlaneDiagram";
 import { HCI_CONTROL_PLANE } from "@/data/hciControlPlane";
+import FaqAccordion from "@/components/sections/FaqAccordion";
+import { HCI_VIRTUALIZATION_FAQ, LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
 
 export default function ProductPageContent({ product }: { product: ProductPageData }) {
   const themeKey = product.logo?.includes("marsloq")
@@ -140,6 +142,31 @@ export default function ProductPageContent({ product }: { product: ProductPageDa
             </div>
           </div>
         </section>
+      )}
+
+      {(themeKey === "marsloq" ||
+        product.slug === "marsloq" ||
+        product.slug === "log-management" ||
+        product.slug === "siem") && (
+        <FaqAccordion
+          items={LOG_MANAGEMENT_FAQ}
+          title="คำถามที่พบบ่อยเกี่ยวกับระบบจัดเก็บ Log ตาม พ.ร.บ. คอมพิวเตอร์ และ MARSLOQ"
+          eyebrow="Compliance & Log Management FAQ"
+          subtitle="ไขข้อข้องใจด้านกฎหมาย พ.ร.บ. คอมพิวเตอร์ มาตรา 26, ประกาศกระทรวง ดีอี 2564 และสเปกเทคนิคของ MARSLOQ"
+        />
+      )}
+
+      {(themeKey === "kyber-hci" ||
+        product.slug === "hci" ||
+        product.slug === "ksv" ||
+        product.slug === "ksan" ||
+        product.slug === "management") && (
+        <FaqAccordion
+          items={HCI_VIRTUALIZATION_FAQ}
+          title="คำถามที่พบบ่อยเกี่ยวกับ KYBER HCI & KSV Hypervisor"
+          eyebrow="HCI & Hypervisor FAQ"
+          subtitle="ไขข้อข้องใจเรื่องการทดแทน VMware, สเปก x86 Hardware Freedom, และระบบ KSAN Distributed Storage"
+        />
       )}
 
       <section id="get-a-quote" className="py-16 md:py-20 bg-[var(--bg-subtle)]">

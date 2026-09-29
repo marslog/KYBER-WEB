@@ -11,7 +11,7 @@ import {
   buildSoftwareApplicationJsonLd,
   buildWebPageJsonLd,
 } from "@/lib/structuredData";
-import { LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
+import { HCI_VIRTUALIZATION_FAQ, LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
 import {
   createPageMetadata,
   SOLUTION_KEYWORDS,
@@ -63,6 +63,23 @@ function solutionStructuredData(slug: string, solution: NonNullable<ReturnType<t
         url: "/products/log-management",
       }),
       buildFaqJsonLd(LOG_MANAGEMENT_FAQ),
+    );
+  }
+
+  if (
+    slug === "enterprise-hci" ||
+    slug === "vmware-migration" ||
+    slug === "virtualization-modernization"
+  ) {
+    base.push(
+      buildSoftwareApplicationJsonLd({
+        name: slug === "vmware-migration" ? "KYBER VMware Migration Solution" : "KYBER Enterprise HCI",
+        description: SOLUTION_SEO_DESCRIPTIONS[slug] ?? solution.description,
+        url: path,
+        applicationCategory: "InfrastructureSoftware",
+        operatingSystem: "x86 Standard Servers",
+      }),
+      buildFaqJsonLd(HCI_VIRTUALIZATION_FAQ),
     );
   }
 

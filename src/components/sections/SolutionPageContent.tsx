@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ChevronLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import type { SolutionPageData } from "@/lib/solutionsCatalog";
 import { getIcon } from "@/lib/icons";
+import FaqAccordion from "@/components/sections/FaqAccordion";
+import { HCI_VIRTUALIZATION_FAQ, LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
 
 export default function SolutionPageContent({ solution }: { solution: SolutionPageData }) {
   const Icon = solution.iconName ? getIcon(solution.iconName) : null;
@@ -94,6 +96,26 @@ export default function SolutionPageContent({ solution }: { solution: SolutionPa
             </div>
           </div>
         </section>
+      )}
+
+      {solution.slug === "secops-log-management" && (
+        <FaqAccordion
+          items={LOG_MANAGEMENT_FAQ}
+          title="คำถามที่พบบ่อยเกี่ยวกับระบบจัดเก็บ Log ตาม พ.ร.บ. คอมพิวเตอร์ และ SecOps"
+          eyebrow="Compliance & SecOps FAQ"
+          subtitle="ไขข้อข้องใจด้านกฎหมาย พ.ร.บ. คอมพิวเตอร์ มาตรา 26, ประกาศกระทรวง ดีอี 2564 และการทำงานร่วมกับ SecOps"
+        />
+      )}
+
+      {(solution.slug === "enterprise-hci" ||
+        solution.slug === "vmware-migration" ||
+        solution.slug === "virtualization-modernization") && (
+        <FaqAccordion
+          items={HCI_VIRTUALIZATION_FAQ}
+          title="คำถามที่พบบ่อยเกี่ยวกับ KYBER HCI & การย้ายจาก VMware"
+          eyebrow="HCI & Migration FAQ"
+          subtitle="ไขข้อข้องใจเรื่องการย้ายระบบ OVA/VMDK, การลดค่าลิขสิทธิ์, และสถาปัตยกรรม Hardware Freedom บน x86"
+        />
       )}
 
       <section id="get-a-quote" className="section-shell bg-[var(--bg-subtle)]">

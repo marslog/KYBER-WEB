@@ -46,8 +46,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const resources: MetadataRoute.Sitemap = getAllResourceSlugs().map((slug) => ({
     url: absoluteUrl(`/resources/${slug}`),
     lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.6,
+    changeFrequency: slug.includes("computer-act") ? "weekly" : "monthly",
+    priority: slug.includes("computer-act") ? 0.85 : 0.6,
   }));
 
   const company: MetadataRoute.Sitemap = getAllCompanySlugs().map((slug) => ({

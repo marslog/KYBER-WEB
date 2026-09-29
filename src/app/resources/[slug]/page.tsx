@@ -5,7 +5,15 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PortalAccessPanel from "@/components/sections/PortalAccessPanel";
+import FaqAccordion from "@/components/sections/FaqAccordion";
+import StructuredData from "@/components/seo/StructuredData";
 import { getAllResourceSlugs, getResourcePage } from "@/data/resourcesContent";
+import { LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildWebPageJsonLd,
+} from "@/lib/structuredData";
 
 interface ResourcePageProps {
   params: Promise<{ slug: string }>;
@@ -20,9 +28,24 @@ export async function generateMetadata({ params }: ResourcePageProps): Promise<M
   const page = getResourcePage(slug);
   if (!page) return { title: "Page Not Found" };
 
+  const complianceKeywords =
+    slug === "computer-act-log-compliance"
+      ? [
+          "log พรบ คอมพิวเตอร์",
+          "ระบบเก็บ log พรบ คอมพิวเตอร์",
+          "เครื่องเก็บ log พรบ คอมพิวเตอร์",
+          "log server พรบ คอมพิวเตอร์",
+          "เก็บ log 90 วัน",
+          "มาตรฐานการเก็บ log พรบ คอมพิวเตอร์ 2564",
+          "พรบ คอมพิวเตอร์ มาตรา 26",
+          "Computer Crime Act log compliance Thailand",
+        ]
+      : undefined;
+
   return {
     title: `${page.title} — KYBER Resources`,
     description: page.intro,
+    keywords: complianceKeywords,
   };
 }
 
@@ -31,8 +54,26 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
   const page = getResourcePage(slug);
   if (!page) notFound();
 
+  const structuredData: Record<string, unknown>[] = [
+    buildWebPageJsonLd({
+      name: page.title,
+      description: page.intro,
+      path: `/resources/${slug}`,
+    }),
+    buildBreadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Resources", path: "/resources" },
+      { name: page.title, path: `/resources/${slug}` },
+    ]),
+  ];
+
+  if (slug === "computer-act-log-compliance") {
+    structuredData.push(buildFaqJsonLd(LOG_MANAGEMENT_FAQ));
+  }
+
   return (
     <main className="relative bg-[var(--bg)] min-h-screen text-[var(--text)]">
+      <StructuredData data={structuredData} />
       <Navbar />
 
       <section className="pt-28 pb-14 md:pt-36 md:pb-20 bg-[var(--bg)] border-b border-[var(--border)]">
@@ -98,6 +139,15 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
           )}
         </div>
       </section>
+
+      {slug === "computer-act-log-compliance" && (
+        <FaqAccordion
+          items={LOG_MANAGEMENT_FAQ}
+          title="คำถามที่พบบ่อยเกี่ยวกับข้อกำหนด Log พ.ร.บ. คอมพิวเตอร์"
+          eyebrow="Compliance FAQ"
+          subtitle="คำตอบสำหรับคำถามที่ผู้บริหารไอทีและผู้ดูแลระบบสอบถามบ่อยที่สุดเกี่ยวกับมาตรา 26 และระบบ MARSLOQ"
+        />
+      )}
 
       <section className="section-shell bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

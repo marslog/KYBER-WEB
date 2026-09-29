@@ -17,13 +17,14 @@ import {
   PRODUCT_SEO_DESCRIPTIONS,
   PRODUCT_SEO_TITLES,
 } from "@/lib/siteSeo";
-import { LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
+import { HCI_VIRTUALIZATION_FAQ, LOG_MANAGEMENT_FAQ } from "@/data/seoFaq";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
 const LOG_PRODUCT_SLUGS = new Set(["marsloq", "log-management", "siem"]);
+const HCI_PRODUCT_SLUGS = new Set(["hci", "ksv", "ksan", "management"]);
 
 export function generateStaticParams() {
   return getAllProductSlugs().map((slug) => ({ slug }));
@@ -66,6 +67,19 @@ function productStructuredData(slug: string, product: NonNullable<ReturnType<typ
         applicationCategory: "BusinessApplication",
       }),
       buildFaqJsonLd(LOG_MANAGEMENT_FAQ),
+    );
+  }
+
+  if (HCI_PRODUCT_SLUGS.has(slug)) {
+    base.push(
+      buildSoftwareApplicationJsonLd({
+        name: slug === "ksv" ? "KYBER Server Virtualization (KSV)" : "KYBER HCI Platform",
+        description: PRODUCT_SEO_DESCRIPTIONS[slug] ?? product.description,
+        url: path,
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "x86 Standard Servers",
+      }),
+      buildFaqJsonLd(HCI_VIRTUALIZATION_FAQ),
     );
   }
 
