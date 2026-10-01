@@ -4,6 +4,7 @@ import {
   ACCOUNT_MANAGEMENT_NAV,
   HARDWARE_TRACKING_NAV,
   KNOWLEDGE_BASE_NAV,
+  ISO_DOWNLOADS_NAV,
   REGISTER_NAV,
   REGISTER_LIST_NAV,
   PORTAL_SESSION_COOKIE,
@@ -20,6 +21,15 @@ export async function middleware(request: NextRequest) {
 
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/resources";
+    redirectUrl.searchParams.set("login", "required");
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (pathname === ISO_DOWNLOADS_NAV.href || pathname.startsWith("/iso-downloads/")) {
+    if (session) return NextResponse.next();
+
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/";
     redirectUrl.searchParams.set("login", "required");
     return NextResponse.redirect(redirectUrl);
   }
@@ -46,5 +56,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/resources/kb", "/account-management", "/register", "/register/:path*", "/hardware-tracking", "/hardware-tracking/:path*"],
+  matcher: ["/resources/kb", "/account-management", "/register", "/register/:path*", "/hardware-tracking", "/hardware-tracking/:path*", "/iso-downloads", "/iso-downloads/:path*"],
 };

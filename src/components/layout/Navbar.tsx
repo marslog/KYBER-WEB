@@ -9,7 +9,7 @@ import { NAV_STRUCTURE } from "@/data/platformData";
 import PortalLoginMenu from "@/components/layout/PortalLoginMenu";
 import { usePortalAuth } from "@/hooks/usePortalAuth";
 import { KNOWLEDGE_BASE_HREF } from "@/data/portalAccess";
-import { ADMIN_NAV, ADMIN_NAV_ITEMS, KNOWLEDGE_BASE_NAV, REGISTER_NAV, REGISTER_NAV_ITEMS } from "@/lib/portalSession";
+import { ADMIN_NAV, ADMIN_NAV_ITEMS, ISO_DOWNLOADS_NAV, KNOWLEDGE_BASE_NAV, REGISTER_NAV, REGISTER_NAV_ITEMS } from "@/lib/portalSession";
 
 // Flat search index built from nav structure
 const SEARCH_INDEX = [
@@ -147,9 +147,12 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
               </div>
             ))}
             {authenticated && (
-              <Link href={KNOWLEDGE_BASE_NAV.href} className={navLinkClass(false)}>
-                {KNOWLEDGE_BASE_NAV.label}
-              </Link>
+              <div onMouseEnter={() => setActiveMenu("portal")}>
+                <button type="button" className={navLinkClass(activeMenu === "portal")}>
+                  Portal
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === "portal" ? "rotate-180" : ""}`} />
+                </button>
+              </div>
             )}
             {showRegisterMenu && (
               <div onMouseEnter={() => setActiveMenu("register")}>
@@ -270,6 +273,24 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
                 ))}
               </div>
             )}
+            {authenticated && activeMenu === "portal" && (
+              <div className="grid grid-cols-2 gap-4 max-w-xl">
+                {[
+                  { href: KNOWLEDGE_BASE_NAV.href, label: KNOWLEDGE_BASE_NAV.label, description: KNOWLEDGE_BASE_NAV.description },
+                  { href: ISO_DOWNLOADS_NAV.href, label: ISO_DOWNLOADS_NAV.label, description: ISO_DOWNLOADS_NAV.description },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setActiveMenu(null)}
+                    className="p-4 rounded-lg border border-[var(--border)] hover:border-[var(--brand)] hover:bg-[var(--brand-soft)] transition-colors"
+                  >
+                    <div className="text-sm font-medium">{item.label}</div>
+                    <div className="text-xs text-[var(--text-muted)] mt-1">{item.description}</div>
+                  </Link>
+                ))}
+              </div>
+            )}
             {showRegisterMenu && activeMenu === "register" && (
               <div className="grid grid-cols-2 gap-4 max-w-xl">
                 {REGISTER_NAV_ITEMS.map((item) => (
@@ -355,13 +376,24 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
             ))}
           </div>
           {authenticated && (
-            <Link
-              href={KNOWLEDGE_BASE_NAV.href}
-              onClick={() => setMobileOpen(false)}
-              className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
-            >
-              {KNOWLEDGE_BASE_NAV.label}
-            </Link>
+            <div className="space-y-3">
+              <p className={`text-xs font-semibold uppercase tracking-wider ${darkNav ? "text-white/60" : "text-[var(--text-muted)]"}`}>
+                Portal
+              </p>
+              {[
+                { href: KNOWLEDGE_BASE_NAV.href, label: KNOWLEDGE_BASE_NAV.label },
+                { href: ISO_DOWNLOADS_NAV.href, label: ISO_DOWNLOADS_NAV.label },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block text-sm font-medium ${darkNav ? "text-white" : "text-[var(--brand)]"}`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           )}
           {showRegisterMenu && (
             <div className="space-y-3">

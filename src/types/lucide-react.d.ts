@@ -64,6 +64,23 @@ declare module 'lucide-react' {
   export const TrendingDown: React.FC<any>;
   export const Monitor: React.FC<any>;
   export const Network: React.FC<any>;
+  // ISO Downloads panel icons
+  export const Download: React.FC<any>;
+  export const Trash2: React.FC<any>;
+  export const Plus: React.FC<any>;
+  export const Copy: React.FC<any>;
+  export const Check: React.FC<any>;
+  export const Loader2: React.FC<any>;
+  export const AlertCircle: React.FC<any>;
+  export const HardDrive: React.FC<any>;
+  export const CalendarDays: React.FC<any>;
+  export const Upload: React.FC<any>;
+  export const UploadCloud: React.FC<any>;
+  // Hardware tracking panel icons (pre-existing at runtime)
+  export const Pencil: React.FC<any>;
+  export const Save: React.FC<any>;
+  export const XCircle: React.FC<any>;
+  export const PlusCircle: React.FC<any>;
   export type LucideIcon = React.FC<any>;
   const content: any;
   export default content;

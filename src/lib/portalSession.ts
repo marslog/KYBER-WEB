@@ -33,6 +33,12 @@ export const REGISTER_LIST_NAV = {
   description: "Track registration approval status",
 } as const;
 
+export const ISO_DOWNLOADS_NAV = {
+  label: "ISO Download",
+  href: "/iso-downloads",
+  description: "Browse, download, and manage KYBER OS ISO images",
+} as const;
+
 export const ADMIN_NAV = {
   label: "Admin",
   href: "/account-management",
