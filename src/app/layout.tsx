@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import JsonLd from "@/components/seo/JsonLd";
 import GoogleAnalytics from "@/components/seo/GoogleAnalytics";
 import AiChatWidget from "@/components/chat/AiChatWidget";
@@ -37,6 +38,7 @@ export default function RootLayout({
         <JsonLd />
         {children}
         <AiChatWidget />
+        <Analytics />
       </body>
     </html>
   );
