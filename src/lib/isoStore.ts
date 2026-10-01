@@ -35,9 +35,7 @@ interface IsoStoreFile {
   items: IsoRecord[];
 }
 
-const STORE_PATH =
-  process.env.PORTAL_ISO_FILE?.trim() ||
-  path.join(process.cwd(), "data", "iso-downloads.json");
+const STORE_PATH = path.join(process.cwd(), "data", "iso-downloads.json");
 
 let memoryStore: IsoStoreFile | null = null;
 
@@ -101,7 +99,7 @@ async function persistStore(store: IsoStoreFile): Promise<void> {
   memoryStore = store;
   try {
     await mkdir(path.dirname(STORE_PATH), { recursive: true });
-    await writeFile(STORE_PATH, JSON.stringify(store, null, 2), "utf8");
+    await writeFile(/*turbopackIgnore: true*/ STORE_PATH, JSON.stringify(store, null, 2), "utf8");
   } catch {
     // Serverless read-only filesystem fallback to memory
   }
@@ -109,7 +107,7 @@ async function persistStore(store: IsoStoreFile): Promise<void> {
 
 async function loadStore(): Promise<IsoStoreFile> {
   try {
-    const raw = await readFile(STORE_PATH, "utf8");
+    const raw = await readFile(/*turbopackIgnore: true*/ STORE_PATH, "utf8");
     const parsed = JSON.parse(raw) as IsoStoreFile;
     if (parsed?.version === 1 && Array.isArray(parsed.items)) {
       memoryStore = parsed;

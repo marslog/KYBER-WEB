@@ -30,7 +30,7 @@ export async function GET(request: Request, context: RouteContext) {
   if (record.filePath) {
     const candidates = [
       record.filePath,
-      path.resolve(process.cwd(), record.filePath),
+      path.resolve(/*turbopackIgnore: true*/ process.cwd(), record.filePath),
       path.join(process.cwd(), "data", "uploads", "isos", path.basename(record.filePath)),
     ];
 
@@ -39,7 +39,7 @@ export async function GET(request: Request, context: RouteContext) {
 
     for (const cand of candidates) {
       try {
-        const s = await stat(cand);
+        const s = await stat(/*turbopackIgnore: true*/ cand);
         if (s.isFile()) {
           foundPath = cand;
           fileStat = s;
@@ -52,7 +52,7 @@ export async function GET(request: Request, context: RouteContext) {
 
     if (foundPath && fileStat) {
       try {
-        const stream = createReadStream(foundPath);
+        const stream = createReadStream(/*turbopackIgnore: true*/ foundPath);
         const webStream = Readable.toWeb(stream) as ReadableStream;
         const fallbackName = (record.name.replace(/[^a-zA-Z0-9._-]/g, "_") || "download") + ".iso";
         const downloadFilename = record.fileName || fallbackName;

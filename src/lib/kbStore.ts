@@ -28,9 +28,7 @@ interface KbStoreFile {
   items: KbPost[];
 }
 
-const STORE_PATH =
-  process.env.PORTAL_KB_FILE?.trim() ||
-  path.join(process.cwd(), "data", "kb-posts.json");
+const STORE_PATH = path.join(process.cwd(), "data", "kb-posts.json");
 
 let memoryStore: KbStoreFile | null = null;
 
@@ -286,7 +284,7 @@ async function persistStore(store: KbStoreFile): Promise<void> {
   memoryStore = store;
   try {
     await mkdir(path.dirname(STORE_PATH), { recursive: true });
-    await writeFile(STORE_PATH, JSON.stringify(store, null, 2), "utf8");
+    await writeFile(/*turbopackIgnore: true*/ STORE_PATH, JSON.stringify(store, null, 2), "utf8");
   } catch {
     // Read-only filesystem fallback
   }
@@ -294,7 +292,7 @@ async function persistStore(store: KbStoreFile): Promise<void> {
 
 export async function loadKbStore(): Promise<KbStoreFile> {
   try {
-    const raw = await readFile(STORE_PATH, "utf8");
+    const raw = await readFile(/*turbopackIgnore: true*/ STORE_PATH, "utf8");
     const parsed = JSON.parse(raw) as KbStoreFile;
     if (parsed?.version === 1 && Array.isArray(parsed.items)) {
       memoryStore = parsed;

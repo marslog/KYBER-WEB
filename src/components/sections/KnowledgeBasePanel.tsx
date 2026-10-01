@@ -3,13 +3,11 @@
 import { useState, useEffect, useMemo } from "react";
 import {
   Search,
-  BookOpen,
   Plus,
-  Edit3,
+  Pencil as Edit3,
   Trash2,
   Calendar,
-  User,
-  Tag,
+  Users as User,
   Clock,
   ArrowRight,
   Check,
@@ -21,9 +19,34 @@ import {
   Eye,
   ChevronRight,
   FileText,
-  Filter,
 } from "lucide-react";
 import type { KbPost, KbPostInput } from "@/lib/kbStore";
+
+function BookOpen(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  );
+}
+
+function Tag(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
+      <path d="M7 7h.01" />
+    </svg>
+  );
+}
+
+function Filter(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+    </svg>
+  );
+}
 
 interface KnowledgeBasePanelProps {
   isAdmin: boolean;
