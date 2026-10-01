@@ -108,18 +108,18 @@ async function persistStore(store: IsoStoreFile): Promise<void> {
 }
 
 async function loadStore(): Promise<IsoStoreFile> {
-  if (memoryStore) return memoryStore;
-
   try {
-    const raw = await readFile(/*turbopackIgnore: true*/ STORE_PATH, "utf8");
+    const raw = await readFile(STORE_PATH, "utf8");
     const parsed = JSON.parse(raw) as IsoStoreFile;
     if (parsed?.version === 1 && Array.isArray(parsed.items)) {
       memoryStore = parsed;
       return parsed;
     }
   } catch {
-    // Seed on first read
+    // fallback to memoryStore or seed
   }
+
+  if (memoryStore) return memoryStore;
 
   const seeded = createSeedStore();
   await persistStore(seeded);

@@ -5,6 +5,9 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PortalAccessPanel from "@/components/sections/PortalAccessPanel";
+import KnowledgeBasePanel from "@/components/sections/KnowledgeBasePanel";
+import { getPortalSessionFromCookies } from "@/lib/portalSessionServer";
+import { isPortalAdmin } from "@/lib/portalSession";
 import FaqAccordion from "@/components/sections/FaqAccordion";
 import ComplianceChecklist from "@/components/sections/ComplianceChecklist";
 import LogSizingCalculator from "@/components/sections/LogSizingCalculator";
@@ -56,6 +59,9 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
   const page = getResourcePage(slug);
   if (!page) notFound();
 
+  const session = await getPortalSessionFromCookies();
+  const isAdmin = isPortalAdmin(session);
+
   const structuredData: Record<string, unknown>[] = [
     buildWebPageJsonLd({
       name: page.title,
@@ -79,8 +85,15 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
       <Navbar />
 
       <section className="pt-28 pb-14 md:pt-36 md:pb-20 bg-[var(--bg)] border-b border-[var(--border)]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="section-eyebrow mb-3">{page.eyebrow}</p>
+        <div className={`${slug === "kb" ? "max-w-5xl" : "max-w-4xl"} mx-auto px-4 sm:px-6 lg:px-8`}>
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="section-eyebrow">{page.eyebrow}</span>
+            {slug === "kb" && session && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--brand-soft)] text-[var(--brand)] border border-[var(--brand)]/20">
+                Logged in as {session.username} {isAdmin ? "(Admin)" : "(User)"}
+              </span>
+            )}
+          </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight max-w-2xl">
             {page.title}
           </h1>
@@ -103,26 +116,32 @@ export default async function ResourceDetailPage({ params }: ResourcePageProps) 
       </section>
 
       <section className="section-shell bg-[var(--bg-subtle)] border-b border-[var(--border)]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {slug === "kb" && (
-            <div className="mb-8">
-              <PortalAccessPanel />
+        <div className={`${slug === "kb" ? "max-w-5xl" : "max-w-4xl"} mx-auto px-4 sm:px-6 lg:px-8`}>
+          {slug === "kb" ? (
+            <div className="space-y-6">
+              {!session ? (
+                <div className="max-w-2xl mx-auto">
+                  <PortalAccessPanel />
+                </div>
+              ) : (
+                <KnowledgeBasePanel isAdmin={isAdmin} currentUser={session.username} />
+              )}
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {page.sections.map((section) => (
+                <div
+                  key={section.heading}
+                  className="rounded-xl border border-[var(--border)] bg-white p-6"
+                >
+                  <h2 className="text-lg font-semibold mb-2">{section.heading}</h2>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                    {section.body}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
-
-          <div className="grid gap-4">
-            {page.sections.map((section) => (
-              <div
-                key={section.heading}
-                className="rounded-xl border border-[var(--border)] bg-white p-6"
-              >
-                <h2 className="text-lg font-semibold mb-2">{section.heading}</h2>
-                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                  {section.body}
-                </p>
-              </div>
-            ))}
-          </div>
 
           {slug === "computer-act-log-compliance" && (
             <ComplianceChecklist />

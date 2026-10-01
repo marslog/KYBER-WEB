@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "kb-db4858f3",
+      "title": "ติดตั้ง KYBER HCI",
+      "slug": "kyber-hci-db4858f3",
+      "category": "Installation Guide",
+      "tags": [
+        "HCI"
+      ],
+      "summary": "ทดสอบ",
+      "content": "ทดสอบ",
+      "author": "kyber",
+      "createdAt": "2026-10-01T13:03:13.903Z",
+      "updatedAt": "2026-10-01T13:03:13.903Z"
+    }
+  ]
+}

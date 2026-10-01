@@ -5,6 +5,8 @@ import { createReadStream } from "fs";
 import { stat } from "fs/promises";
 import { Readable } from "stream";
 
+import path from "path";
+
 const NO_STORE = { "Cache-Control": "no-store" };
 
 interface RouteContext {
@@ -26,26 +28,49 @@ export async function GET(request: Request, context: RouteContext) {
 
   // If there's a physical file uploaded on disk
   if (record.filePath) {
-    try {
-      const fileStat = await stat(record.filePath);
-      if (fileStat.isFile()) {
-        const stream = createReadStream(record.filePath);
+    const candidates = [
+      record.filePath,
+      path.resolve(process.cwd(), record.filePath),
+      path.join(process.cwd(), "data", "uploads", "isos", path.basename(record.filePath)),
+    ];
+
+    let foundPath: string | null = null;
+    let fileStat = null;
+
+    for (const cand of candidates) {
+      try {
+        const s = await stat(cand);
+        if (s.isFile()) {
+          foundPath = cand;
+          fileStat = s;
+          break;
+        }
+      } catch {
+        // try next candidate
+      }
+    }
+
+    if (foundPath && fileStat) {
+      try {
+        const stream = createReadStream(foundPath);
         const webStream = Readable.toWeb(stream) as ReadableStream;
         const fallbackName = (record.name.replace(/[^a-zA-Z0-9._-]/g, "_") || "download") + ".iso";
         const downloadFilename = record.fileName || fallbackName;
+        const safeAscii = downloadFilename.replace(/[^\w.-]/g, "_");
+        const encoded = encodeURIComponent(downloadFilename);
 
-        return new NextResponse(webStream, {
+        return new Response(webStream, {
           status: 200,
           headers: {
-            "Content-Type": "application/x-iso9660-image",
-            "Content-Disposition": `attachment; filename="${downloadFilename}"`,
+            "Content-Type": "application/octet-stream",
+            "Content-Disposition": `attachment; filename="${safeAscii}"; filename*=UTF-8''${encoded}`,
             "Content-Length": String(fileStat.size),
             "Cache-Control": "private, max-age=3600",
           },
         });
+      } catch (err) {
+        console.error("[Download streaming error]:", err);
       }
-    } catch {
-      // File missing on disk, fallback to downloadUrl if available
     }
   }
 
