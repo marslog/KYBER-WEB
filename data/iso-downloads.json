@@ -12,6 +12,21 @@
       "createdBy": "kyber",
       "createdAt": "2026-10-01T12:04:10.411Z",
       "updatedAt": "2026-10-01T12:04:10.411Z"
+    },
+    {
+      "id": "4c3af07d-9185-4812-a50f-84df8743f7a6",
+      "name": "kyber hci v 2 2 11",
+      "version": "2.2.11",
+      "sha256": "805892adf09ea352f9f48bc0687c901afb2ed85406635808c4bfacbd6fb29ce6",
+      "downloadUrl": "/api/iso-downloads/4c3af07d-9185-4812-a50f-84df8743f7a6/download",
+      "fileName": "kyber-hci.v.2.2.11.iso",
+      "fileSize": 2364289024,
+      "filePath": "C:\\Users\\Lenovo\\Desktop\\KYBER-WEB\\data\\uploads\\isos\\14d31449-acf4-4bb2-8011-4af9b82de428-kyber-hci.v.2.2.11.iso",
+      "uploadDate": "2026-10-01",
+      "notes": "Update Local Disk , Backup , HA , NIC , vSwitch",
+      "createdBy": "kyber",
+      "createdAt": "2026-10-01T12:44:45.398Z",
+      "updatedAt": "2026-10-01T12:44:45.398Z"
     }
   ]
 }
