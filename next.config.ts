@@ -33,6 +33,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    /** Allow ISO file uploads up to 5 GB through the proxy/middleware layer */
+    proxyClientMaxBodySize: "5gb",
+  },
   async headers() {
     return [
       {
