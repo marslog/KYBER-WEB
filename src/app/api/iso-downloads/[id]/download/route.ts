@@ -82,5 +82,11 @@ export async function GET(request: Request, context: RouteContext) {
     return NextResponse.redirect(new URL(record.downloadUrl, request.url));
   }
 
-  return NextResponse.json({ error: "Download file unavailable for this ISO image." }, { status: 404, headers: NO_STORE });
+  return NextResponse.json(
+    {
+      error: "Download file unavailable for this ISO image on this server.",
+      hint: "Please set an external Download URL (e.g. AWS S3, Cloudflare R2, Google Drive) in the Portal Admin panel.",
+    },
+    { status: 404, headers: NO_STORE }
+  );
 }

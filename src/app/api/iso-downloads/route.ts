@@ -54,6 +54,8 @@ export async function POST(request: Request) {
       version = decodeURIComponent(request.headers.get("x-iso-version") || "").trim();
       uploadDate = request.headers.get("x-iso-date") || new Date().toISOString().slice(0, 10);
       notes = decodeURIComponent(request.headers.get("x-iso-notes") || "").trim();
+      const dlHeader = request.headers.get("x-iso-downloadurl");
+      if (dlHeader) downloadUrl = decodeURIComponent(dlHeader).trim();
       const sizeHeader = request.headers.get("x-iso-filesize") || request.headers.get("content-length");
       fileSize = sizeHeader ? parseInt(sizeHeader, 10) : undefined;
 

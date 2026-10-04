@@ -42,19 +42,25 @@ interface RowProps {
   record: IsoRecord;
   isAdmin: boolean;
   onDelete: (id: string) => void;
-  onSaveNotes: (id: string, notes: string) => void;
+  onUpdateRecord: (id: string, updates: { notes?: string; downloadUrl?: string }) => Promise<void>;
 }
 
-function IsoRow({ record, isAdmin, onDelete, onSaveNotes }: RowProps) {
+function IsoRow({ record, isAdmin, onDelete, onUpdateRecord }: RowProps) {
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState(record.notes);
+  const [downloadUrl, setDownloadUrl] = useState(record.downloadUrl || "");
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
+  useEffect(() => {
+    setNotes(record.notes);
+    setDownloadUrl(record.downloadUrl || "");
+  }, [record]);
+
   const handleSave = async () => {
     setSaving(true);
-    await onSaveNotes(record.id, notes);
+    await onUpdateRecord(record.id, { notes, downloadUrl });
     setSaving(false);
   };
 
@@ -138,49 +144,82 @@ function IsoRow({ record, isAdmin, onDelete, onSaveNotes }: RowProps) {
             Uploaded: {fmtDate(record.uploadDate)}
           </div>
 
+          {/* Download URL */}
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1 flex items-center gap-1">
+              Download Link / External Cloud URL
+            </p>
+            {isAdmin ? (
+              <div>
+                <input
+                  type="text"
+                  value={downloadUrl}
+                  onChange={(e) => setDownloadUrl(e.target.value)}
+                  placeholder="e.g. https://storage.kyber-it.com/isos/... or Google Drive / S3 direct link"
+                  className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-white text-xs font-mono text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/30 focus:border-[var(--brand)] transition"
+                />
+                <p className="text-[10px] text-[var(--text-muted)] mt-1">
+                  For production downloads, paste an external URL (AWS S3, Cloudflare R2, Google Drive, or CDN).
+                </p>
+              </div>
+            ) : (
+              <p className="text-xs font-mono text-[var(--text-secondary)] truncate bg-[var(--bg)] px-3 py-1.5 rounded-lg border border-[var(--border)]">
+                {record.downloadUrl || "—"}
+              </p>
+            )}
+          </div>
+
           {/* Notes */}
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1 flex items-center gap-1">
               <FileText className="w-3 h-3" /> Notes
             </p>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-              placeholder="Add release notes or remarks…"
-              className="w-full px-3 py-2.5 rounded-lg border border-[var(--border)] bg-white text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/30 focus:border-[var(--brand)] transition resize-none"
-            />
+            {isAdmin ? (
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={3}
+                placeholder="Add release notes or remarks…"
+                className="w-full px-3 py-2.5 rounded-lg border border-[var(--border)] bg-white text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/30 focus:border-[var(--brand)] transition resize-none"
+              />
+            ) : (
+              <p className="text-xs text-[var(--text-secondary)] whitespace-pre-line bg-[var(--bg)] p-3 rounded-lg border border-[var(--border)]">
+                {record.notes || "No release notes provided."}
+              </p>
+            )}
             <div className="flex items-center justify-between mt-2">
               <span className="text-[11px] text-[var(--text-muted)]">
                 Added by <span className="font-medium">{record.createdBy}</span> · {new Date(record.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
               </span>
               <div className="flex items-center gap-2">
                 {isAdmin && (
-                  <button
-                    onClick={handleDelete}
-                    disabled={deleting}
-                    className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-colors ${
-                      confirmDelete
-                        ? "border-rose-400 bg-rose-50 text-rose-600 hover:bg-rose-100"
-                        : "border-[var(--border)] text-[var(--text-muted)] hover:border-rose-300 hover:text-rose-500"
-                    }`}
-                  >
-                    {deleting ? (
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    ) : (
-                      <Trash2 className="w-3.5 h-3.5" />
-                    )}
-                    {confirmDelete ? "Confirm remove" : "Remove"}
-                  </button>
+                  <>
+                    <button
+                      onClick={handleDelete}
+                      disabled={deleting}
+                      className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+                        confirmDelete
+                          ? "border-rose-400 bg-rose-50 text-rose-600 hover:bg-rose-100"
+                          : "border-[var(--border)] text-[var(--text-muted)] hover:border-rose-300 hover:text-rose-500"
+                      }`}
+                    >
+                      {deleting ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-3.5 h-3.5" />
+                      )}
+                      {confirmDelete ? "Confirm remove" : "Remove"}
+                    </button>
+                    <button
+                      onClick={handleSave}
+                      disabled={saving || (notes === record.notes && downloadUrl === (record.downloadUrl || ""))}
+                      className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-[var(--brand)] text-white hover:bg-[var(--brand)]/90 disabled:opacity-40 transition-colors"
+                    >
+                      {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
+                      Save changes
+                    </button>
+                  </>
                 )}
-                <button
-                  onClick={handleSave}
-                  disabled={saving || notes === record.notes}
-                  className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-[var(--brand)] text-white hover:bg-[var(--brand)]/90 disabled:opacity-40 transition-colors"
-                >
-                  {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
-                  Save notes
-                </button>
               </div>
             </div>
           </div>
@@ -273,6 +312,7 @@ function AddIsoModal({ onClose, onAdded }: AddModalProps) {
           xhr.setRequestHeader("X-ISO-Version", encodeURIComponent(form.version));
           xhr.setRequestHeader("X-ISO-Date", form.uploadDate);
           xhr.setRequestHeader("X-ISO-Notes", encodeURIComponent(form.notes));
+          xhr.setRequestHeader("X-ISO-DownloadUrl", encodeURIComponent(form.downloadUrl || ""));
           xhr.setRequestHeader("X-ISO-FileSize", String(selectedFile.size));
 
           xhr.upload.onprogress = (evt) => {
@@ -457,6 +497,20 @@ function AddIsoModal({ onClose, onAdded }: AddModalProps) {
               />
             </div>
             <div className="col-span-2">
+              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+                External Download URL <span className="text-[var(--text-muted)] font-normal">(Optional: S3 / Cloudflare R2 / Google Drive / CDN)</span>
+              </label>
+              <input
+                value={form.downloadUrl}
+                onChange={(e) => set("downloadUrl", e.target.value)}
+                placeholder="https://storage.kyber-it.com/isos/... or direct cloud link"
+                className="w-full px-3 py-2.5 rounded-lg border border-[var(--border)] text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/30 focus:border-[var(--brand)]"
+              />
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">
+                Direct link for production downloads (allows downloading files &gt; 250MB on Vercel).
+              </p>
+            </div>
+            <div className="col-span-2">
               <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">Notes</label>
               <textarea
                 value={form.notes}
@@ -566,12 +620,12 @@ export default function IsoDownloadsPanel({ isAdmin }: { isAdmin: boolean }) {
     setRecords((prev) => prev.filter((r) => r.id !== id));
   };
 
-  const handleSaveNotes = async (id: string, notes: string) => {
+  const handleUpdateRecord = async (id: string, updates: { notes?: string; downloadUrl?: string }) => {
     const res = await fetch(`/api/iso-downloads/${id}`, {
       method: "PATCH",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ notes }),
+      body: JSON.stringify(updates),
     });
     if (res.ok) {
       const data = (await res.json()) as { record: IsoRecord };
@@ -652,7 +706,7 @@ export default function IsoDownloadsPanel({ isAdmin }: { isAdmin: boolean }) {
               record={record}
               isAdmin={isAdmin}
               onDelete={handleDelete}
-              onSaveNotes={handleSaveNotes}
+              onUpdateRecord={handleUpdateRecord}
             />
           ))}
           <p className="text-xs text-center text-[var(--text-muted)] pt-2">
