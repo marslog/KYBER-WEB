@@ -212,45 +212,62 @@ export const MARSLOQ_HERO_IMAGE = "/assets/screenshots/marsloq-hero-showcase.jpg
 export const KYBER_HCI_HERO_IMAGE = "/assets/screenshots/kyber-hci-hero-showcase.jpg";
 export const HERO_PRODUCT_IMAGE = KYBER_HCI_HERO_IMAGE;
 export const FEATURED_ANNOUNCEMENT_IMAGE = "/assets/screenshots/marsloq-ai-operations-hero.jpg";
-export const MARSLOQ_LOG_APPLIANCE_IMAGE = "/assets/screenshots/marsloq-edge-studio.jpg";
-export const MARSLOQ_EDGE_IMAGE = "/assets/screenshots/marsloq-edge-studio-v2.png";
+export const KYBER_HCI_APPLIANCE_IMAGE = "/assets/screenshots/kyber-hci-appliance-studio.png";
 export const MARSLOQ_ENTERPRISE_IMAGE = "/assets/screenshots/marsloq-enterprise-studio-v2.png";
 export const APPLIANCE_SHOWCASE_ASPECT = "16/9";
 
-export const MARSLOQ_LOG_APPLIANCE = {
+export interface HardwareApplianceModel {
+  name: string;
+  formFactor: string;
+  badgeTone?: "kyber" | "marsloq";
+  image: string;
+  description: string;
+  productHref: string;
+}
+
+export const ENTERPRISE_HARDWARE_APPLIANCE = {
   eyebrow: "Hardware",
-  title: "MARSLOQ Log Appliances",
-  description: "Edge and enterprise appliances for on-premise log management, syslog ingestion, and centralized logging.",
+  title: "Enterprise Turnkey Hardware",
+  description:
+    "Production-grade rack-mount appliances for KYBER Hyper-Converged Infrastructure and MARSLOQ centralized log intelligence.",
   models: [
     {
-      name: "MARSLOQ Edge",
-      formFactor: "Compact Appliance",
-      image: MARSLOQ_EDGE_IMAGE,
+      name: "KYBER HCI Appliance",
+      formFactor: "2U Rack-Mount Server",
+      badgeTone: "kyber" as const,
+      image: KYBER_HCI_APPLIANCE_IMAGE,
       description:
-        "Branch and edge deployments with log ingestion, Grok parsing, agent collection, and forwarding to a central MARSLOQ cluster.",
+        "High-density compute and distributed storage node with 12 hot-swap enterprise drive bays, integrated KSV hypervisor, and KSAN storage mesh.",
+      productHref: "/products/hci",
     },
     {
       name: "MARSLOQ Enterprise",
       formFactor: "1U Rack-Mount Server",
+      badgeTone: "marsloq" as const,
       image: MARSLOQ_ENTERPRISE_IMAGE,
       description:
         "Data center appliance with SNMP/ICMP monitoring, 120+ device templates, AI Analyzer, MarsloqViewer, and external archive to USB, NFS, FTP, or AWS.",
+      productHref: "/products/marsloq",
     },
   ],
   highlights: [
+    "HCI Clustering",
+    "Storage Mesh",
     "Log Automation",
-    "Network Monitor",
     "AI Security",
-    "Local AI Chat",
   ],
   metrics: [
-    { value: "2", label: "Appliance tiers" },
-    { value: "On-prem", label: "Log intelligence" },
-    { value: "120+", label: "SNMP templates" },
+    { value: "2U / 1U", label: "Enterprise form factors" },
+    { value: "Turnkey", label: "Hardware deployment" },
+    { value: "Zero Lock-in", label: "Standard x86 architecture" },
   ],
   bullets: [
-    "Edge appliances forward to a central MARSLOQ cluster",
-    "Enterprise tier includes AI Analyzer and MarsloqViewer",
-    "Archive to USB, NFS, FTP, or AWS without cloud lock-in",
+    "KYBER HCI 2U: High-density compute & 12x hot-swap storage bays with KSV hypervisor",
+    "MARSLOQ Enterprise 1U: Dedicated syslog ingestion, AI Analyzer, and MarsloqViewer",
+    "Turnkey on-premises delivery with hardware warranty, support, and zero vendor lock-in",
   ],
 };
+
+// Aliases for backwards compatibility
+export const MARSLOQ_LOG_APPLIANCE = ENTERPRISE_HARDWARE_APPLIANCE;
+export const MARSLOQ_LOG_APPLIANCE_IMAGE = KYBER_HCI_APPLIANCE_IMAGE;

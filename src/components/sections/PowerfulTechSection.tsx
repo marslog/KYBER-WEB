@@ -6,26 +6,28 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import * as LucideNS from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { MARSLOQ_LOG_APPLIANCE } from "@/data/marsloqScreenshots";
+import { ENTERPRISE_HARDWARE_APPLIANCE } from "@/data/marsloqScreenshots";
 import { getIcon } from "@/lib/icons";
 
 const L = LucideNS as unknown as Record<string, LucideIcon>;
 const CheckIcon = L.Check;
 
 const HIGHLIGHT_ICONS: Record<string, string> = {
+  "HCI Clustering": "Server",
+  "Storage Mesh": "HardDrive",
   "Log Automation": "Activity",
-  "Network Monitor": "Network",
   "AI Security": "ShieldCheck",
+  "Network Monitor": "Network",
   "Local AI Chat": "MessageCircle",
 };
 
 export default function PowerfulTechSection() {
-  const appliance = MARSLOQ_LOG_APPLIANCE;
+  const appliance = ENTERPRISE_HARDWARE_APPLIANCE;
 
   return (
     <section
       id="why-kyber"
-      data-product="marsloq"
+      data-product="hardware"
       className="hardware-showcase section-shell border-b border-[var(--border)] enterprise-section"
     >
       <div className="hardware-showcase__atmosphere" aria-hidden />
@@ -44,7 +46,15 @@ export default function PowerfulTechSection() {
                 transition={{ duration: 0.45, delay: index * 0.1 }}
               >
                 <div className="hardware-showcase__stage">
-                  <span className="hardware-showcase__badge">{model.formFactor}</span>
+                  <span
+                    className={`hardware-showcase__badge ${
+                      model.badgeTone === "kyber"
+                        ? "hardware-showcase__badge--kyber"
+                        : "hardware-showcase__badge--marsloq"
+                    }`}
+                  >
+                    {model.formFactor}
+                  </span>
                   <Image
                     src={model.image}
                     alt={model.name}
@@ -100,8 +110,18 @@ export default function PowerfulTechSection() {
             <div className="hardware-showcase__tiles">
               {appliance.models.map((model) => (
                 <div key={model.name} className="hardware-showcase__tile">
-                  <h3 className="hardware-showcase__tile-title">{model.name}</h3>
-                  <span className="hardware-showcase__tile-factor">{model.formFactor}</span>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <h3 className="hardware-showcase__tile-title">{model.name}</h3>
+                    <span
+                      className={`text-[0.62rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                        model.badgeTone === "kyber"
+                          ? "bg-[var(--brand-soft)] text-[var(--brand)]"
+                          : "bg-[var(--marsloq-accent-soft)] text-[var(--marsloq-accent)]"
+                      }`}
+                    >
+                      {model.formFactor}
+                    </span>
+                  </div>
                   <p className="hardware-showcase__tile-desc">{model.description}</p>
                 </div>
               ))}
@@ -118,8 +138,12 @@ export default function PowerfulTechSection() {
               </ul>
             )}
 
-            <div className="hardware-showcase__actions">
-              <Link href="/products/marsloq" className="kyber-btn-primary gap-2">
+            <div className="hardware-showcase__actions flex flex-wrap gap-3">
+              <Link href="/products/hci" className="kyber-btn-primary gap-2">
+                Explore KYBER HCI
+                <ArrowRight className="kyber-arrow w-4 h-4" />
+              </Link>
+              <Link href="/products/marsloq" className="kyber-btn-secondary gap-2">
                 Explore MARSLOQ
                 <ArrowRight className="kyber-arrow w-4 h-4" />
               </Link>
@@ -130,3 +154,4 @@ export default function PowerfulTechSection() {
     </section>
   );
 }
+
