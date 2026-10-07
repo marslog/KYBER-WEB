@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { KYBER_REF_TITLE } from "@/data/platformData";
 import { KYBER_REF_CONTENT } from "@/data/kyberRefContent";
-import ReferenceLogoMarquee from "@/components/sections/ReferenceLogoMarquee";
+import ReferenceLogoMarquee, { EnterpriseLogoRow } from "@/components/sections/ReferenceLogoMarquee";
 
 export default function ProductsCategorySection() {
   return (
@@ -43,6 +43,18 @@ export default function ProductsCategorySection() {
           </ul>
         </motion.div>
 
+        {/* ── Enterprise Customers ── */}
+        <div className="kyber-ref__divider" aria-hidden>
+          <span className="kyber-ref__divider-line" />
+          <span className="kyber-ref__divider-label kyber-ref__divider-label--enterprise">
+            Enterprise Customers
+          </span>
+          <span className="kyber-ref__divider-line" />
+        </div>
+
+        <EnterpriseLogoRow />
+
+        {/* ── Reference Customers ── */}
         <div className="kyber-ref__divider" aria-hidden>
           <span className="kyber-ref__divider-line" />
           <span className="kyber-ref__divider-label">Reference customers</span>

@@ -383,6 +383,44 @@
   white-space: nowrap;
 }
 
+/* Enterprise-tier label variant — amber accent to signal elevated status */
+.kyber-ref__divider-label--enterprise {
+  color: #b45309;
+  letter-spacing: 0.12em;
+}
+
+/* Enterprise customers highlighted row */
+.kyber-ref-enterprise {
+  margin-bottom: 0.5rem;
+}
+
+.kyber-ref-enterprise__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Enterprise tile — larger, gold-tinted border for premium feel */
+.kyber-ref-enterprise__tile {
+  border-color: color-mix(in srgb, #b45309 18%, var(--border));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, #fef3c7 30%, #fff) 0%,
+    #fff 60%
+  );
+  box-shadow: 0 1px 6px 0 color-mix(in srgb, #b45309 8%, transparent);
+}
+
+.kyber-ref-enterprise__tile::before {
+  background: radial-gradient(
+    circle at 50% 0%,
+    color-mix(in srgb, #b45309 10%, transparent),
+    transparent 70%
+  ) !important;
+}
+
 /* Animated reference logo marquee */
 .kyber-ref-marquee {
   position: relative;
