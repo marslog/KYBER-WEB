@@ -8,6 +8,11 @@ export interface KyberRefLogo {
 /** Enterprise-tier flagship customers — displayed in a highlighted row */
 export const KYBER_ENTERPRISE_LOGOS: KyberRefLogo[] = [
   {
+    name: "Naresuan University",
+    fullName: "มหาวิทยาลัยนเรศวร (Naresuan University)",
+    src: "/assets/references/naresuan-university-clean.png",
+  },
+  {
     name: "Mitsubishi Electric",
     fullName: "Mitsubishi Electric Asia (Thailand) Co., Ltd.",
     src: "/assets/references/mitsubishi-electric-clean.jpg",
@@ -24,6 +29,16 @@ export const KYBER_ENTERPRISE_LOGOS: KyberRefLogo[] = [
 
 /** General reference customers — displayed in the scrolling marquee */
 export const KYBER_REF_LOGOS: KyberRefLogo[] = [
+  {
+    name: "Sirindhorn College of Public Health Khon Kaen",
+    fullName: "วิทยาลัยการสาธารณสุขสิรินธร จังหวัดขอนแก่น",
+    src: "/assets/references/sirindhorn-khon-kaen-clean.png",
+  },
+  {
+    name: "Boromarajonani College of Nursing Songkhla",
+    fullName: "วิทยาลัยพยาบาลบรมราชชนนี สงขลา",
+    src: "/assets/references/boromarajonani-songkhla-clean.png",
+  },
   { name: "Camel Industry", src: "/assets/references/camelindustry-clean.png" },
   { name: "Maxx World", src: "/assets/references/maxx-world-clean.png" },
   { name: "Khunhan Hospital", src: "/assets/references/khunhan-hospital-clean.png" },
