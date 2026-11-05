@@ -49,7 +49,16 @@ export default function CTASection() {
             </Link>
           </Reveal>
 
-          <Reveal delay={0.1} className="bg-white text-[var(--text)] rounded-lg p-6 sm:p-8 border border-[var(--border)] shadow-xl">
+          <Reveal
+            delay={0.1}
+            className="rounded-xl p-6 sm:p-8 border border-white/10 shadow-2xl"
+            style={{
+              background: "rgba(255,255,255,0.97)",
+              backdropFilter: "blur(12px)",
+              color: "var(--text)",
+              boxShadow: "0 24px 48px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.08)",
+            }}
+          >
             <ContactForm variant="compact" id="homepage-contact-form" />
           </Reveal>
         </div>

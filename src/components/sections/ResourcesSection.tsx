@@ -49,31 +49,36 @@ export default function ResourcesSection() {
             >
               <Link
                 href={resource.href}
-                className="resource-card group bg-white border border-[var(--border)] rounded-xl overflow-hidden hover:border-[var(--brand)] hover:shadow-[0_8px_24px_rgba(16,24,40,0.06)] transition-all block h-full"
+                className="resource-card group bg-white border border-[var(--border)] rounded-xl overflow-hidden hover:border-[var(--brand)] hover:shadow-[0_12px_32px_rgba(0,87,184,0.08)] transition-all duration-300 block h-full relative"
               >
+                {/* Brand accent line on hover */}
+                <span
+                  className="absolute inset-x-0 top-0 h-0.5 bg-[var(--brand)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                  aria-hidden
+                />
                 {resource.image ? (
-                  <div className="resource-card__image relative h-32 border-b border-[var(--border)] bg-[var(--bg-muted)] overflow-hidden">
+                  <div className="resource-card__image relative h-36 border-b border-[var(--border)] bg-[var(--bg-muted)] overflow-hidden">
                     <Image
                       src={resource.image}
                       alt={resource.title}
                       fill
-                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
+                      className="object-cover object-top group-hover:scale-[1.04] transition-transform duration-500 ease-out"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   </div>
                 ) : (
-                  <div className="flex h-32 items-center justify-center border-b border-[var(--border)] bg-[var(--bg-muted)]">
+                  <div className="flex h-36 items-center justify-center border-b border-[var(--border)] bg-[var(--bg-muted)]">
                     <FileText className="w-8 h-8 text-[var(--text-muted)]" strokeWidth={1.25} />
                   </div>
                 )}
                 <div className="p-4 flex items-center justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-[10px] font-medium uppercase tracking-wider text-[var(--text-muted)] mb-1">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--text-muted)] mb-1.5">
                       {resource.type}
                     </p>
-                    <h3 className="text-sm font-semibold leading-snug">{resource.title}</h3>
+                    <h3 className="text-sm font-semibold leading-snug group-hover:text-[var(--brand)] transition-colors duration-200">{resource.title}</h3>
                   </div>
-                  <ArrowRight className="kyber-arrow w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--brand)] shrink-0" />
+                  <ArrowRight className="kyber-arrow w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--brand)] shrink-0 transition-colors duration-200" />
                 </div>
               </Link>
             </motion.div>
