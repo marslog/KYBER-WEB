@@ -140,33 +140,65 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
           <nav className="hidden lg:flex items-center gap-1">
             {(["products", "solutions", "resources", "company"] as const).map((key) => (
               <div key={key} onMouseEnter={() => setActiveMenu(key)}>
-                <button className={navLinkClass(activeMenu === key)}>
+                <button
+                  type="button"
+                  aria-expanded={activeMenu === key}
+                  aria-haspopup="true"
+                  className={navLinkClass(activeMenu === key)}
+                >
                   {NAV_LABELS[key]}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === key ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform ${activeMenu === key ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             ))}
             {authenticated && (
               <div onMouseEnter={() => setActiveMenu("portal")}>
-                <button type="button" className={navLinkClass(activeMenu === "portal")}>
+                <button
+                  type="button"
+                  aria-expanded={activeMenu === "portal"}
+                  aria-haspopup="true"
+                  className={navLinkClass(activeMenu === "portal")}
+                >
                   Portal
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === "portal" ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform ${activeMenu === "portal" ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             )}
             {showRegisterMenu && (
               <div onMouseEnter={() => setActiveMenu("register")}>
-                <button type="button" className={navLinkClass(activeMenu === "register")}>
+                <button
+                  type="button"
+                  aria-expanded={activeMenu === "register"}
+                  aria-haspopup="true"
+                  className={navLinkClass(activeMenu === "register")}
+                >
                   {REGISTER_NAV.label}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === "register" ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform ${activeMenu === "register" ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             )}
             {isAdmin && (
               <div onMouseEnter={() => setActiveMenu("admin")}>
-                <button type="button" className={navLinkClass(activeMenu === "admin")}>
+                <button
+                  type="button"
+                  aria-expanded={activeMenu === "admin"}
+                  aria-haspopup="true"
+                  className={navLinkClass(activeMenu === "admin")}
+                >
                   {ADMIN_NAV.label}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === "admin" ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform ${activeMenu === "admin" ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             )}
@@ -174,6 +206,7 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
 
           <div className="hidden lg:flex items-center gap-3">
             <button
+              type="button"
               onClick={() => { setSearchOpen(true); setSearchQuery(""); }}
               aria-label="Search (Ctrl+K)"
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-colors text-sm ${
@@ -182,13 +215,13 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
                   : "border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)]"
               }`}
             >
-              <Search className="w-3.5 h-3.5" />
+              <Search className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden xl:inline">Search</span>
               <kbd className={`hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded ${
                 darkNav
                   ? "bg-white/10 text-white/50"
                   : "bg-[var(--bg-subtle)] text-[var(--text-muted)]"
-              }`}>⌘K</kbd>
+              }`}>⌘&nbsp;K</kbd>
             </button>
             <Link
               href="#product-highlights"
@@ -213,11 +246,17 @@ function NavbarContent({ overDarkHero = false }: NavbarProps) {
           </div>
 
           <button
+            type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
             className={`lg:hidden p-2 ${darkNav ? "text-white" : "text-[var(--text)]"}`}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileOpen ? (
+              <X className="w-5 h-5" aria-hidden="true" />
+            ) : (
+              <Menu className="w-5 h-5" aria-hidden="true" />
+            )}
           </button>
         </div>
       </div>

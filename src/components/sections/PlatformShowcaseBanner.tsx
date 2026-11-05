@@ -65,17 +65,17 @@ export default function PlatformShowcaseBanner() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-muted)] mb-4">
               KYBER HCI & MARSLOQ
             </p>
-            <h1 className="text-[1.65rem] sm:text-[2rem] lg:text-[2.4rem] font-semibold tracking-tight leading-[1.1] text-white">
+            <h1 className="text-[1.65rem] sm:text-[2rem] lg:text-[2.4rem] font-semibold tracking-tight leading-[1.1] text-white text-balance">
               The Future of{" "}
               <span className="text-[var(--brand-light)]">Hyper-Converged</span> Infrastructure.
             </h1>
-            <p className="mt-3 text-sm sm:text-base text-[var(--text-muted-on-dark)] leading-relaxed max-w-md">
+            <p className="mt-3 text-sm sm:text-base text-[var(--text-muted-on-dark)] leading-relaxed max-w-md text-pretty">
               Enterprise HCI plus centralized log management — ingest syslog and infrastructure logs on any hardware.
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-6">
               <Link href="#product-highlights" className="kyber-btn-primary gap-2">
                 Explore Products
-                <ArrowRight className="kyber-arrow w-4 h-4" />
+                <ArrowRight className="kyber-arrow w-4 h-4" aria-hidden="true" />
               </Link>
               <Link href="/products/log-management" className="kyber-btn-on-dark">
                 Log Management

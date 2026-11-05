@@ -76,6 +76,7 @@ export default function ContactForm({ variant = "full", id = "contact-form" }: C
           <CheckCircle2
             className={isCompact ? "w-10 h-10 mx-auto text-[var(--brand)]" : "w-6 h-6"}
             style={isCompact ? undefined : { color: "var(--brand)" }}
+            aria-hidden="true"
           />
         </div>
         <h3 className={`font-semibold ${isCompact ? "" : "text-lg mb-2"}`}>Message sent</h3>
@@ -158,6 +159,7 @@ export default function ContactForm({ variant = "full", id = "contact-form" }: C
             type="email"
             required
             autoComplete="email"
+            spellCheck={false}
             className="kyber-input"
             placeholder="jane@company.com"
           />
@@ -169,7 +171,7 @@ export default function ContactForm({ variant = "full", id = "contact-form" }: C
             type="tel"
             autoComplete="tel"
             className="kyber-input"
-            placeholder="+66 ..."
+            placeholder="+66 …"
           />
         </Field>
         <Field label="Topic" htmlFor={`${id}-topic`} fullWidth={isCompact}>
@@ -201,7 +203,7 @@ export default function ContactForm({ variant = "full", id = "contact-form" }: C
       </Field>
 
       {error && (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-red-600" role="alert" aria-live="polite">
           {error}{" "}
           <a href={`mailto:${CONTACT_RECIPIENT}`} className="underline">
             Email {CONTACT_RECIPIENT}
@@ -214,7 +216,7 @@ export default function ContactForm({ variant = "full", id = "contact-form" }: C
         disabled={submitting}
         className="kyber-btn-primary gap-2 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <Send className="w-4 h-4" />
+        <Send className="w-4 h-4" aria-hidden="true" />
         {submitting ? "Sending…" : "Send message"}
       </button>
     </form>

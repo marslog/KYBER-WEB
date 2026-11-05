@@ -30,7 +30,7 @@ export default function ResourcesSection() {
               className="kyber-link inline-flex items-center gap-2 text-sm font-medium text-[var(--brand)] hover:underline shrink-0"
             >
               {RESOURCES_SECTION.viewAllLabel}
-              <ArrowRight className="kyber-arrow w-4 h-4" />
+              <ArrowRight className="kyber-arrow w-4 h-4" aria-hidden="true" />
             </Link>
           </Reveal>
         </div>
@@ -68,7 +68,7 @@ export default function ResourcesSection() {
                   </div>
                 ) : (
                   <div className="flex h-36 items-center justify-center border-b border-[var(--border)] bg-[var(--bg-muted)]">
-                    <FileText className="w-8 h-8 text-[var(--text-muted)]" strokeWidth={1.25} />
+                    <FileText className="w-8 h-8 text-[var(--text-muted)]" strokeWidth={1.25} aria-hidden="true" />
                   </div>
                 )}
                 <div className="p-4 flex items-center justify-between gap-2">
@@ -78,7 +78,7 @@ export default function ResourcesSection() {
                     </p>
                     <h3 className="text-sm font-semibold leading-snug group-hover:text-[var(--brand)] transition-colors duration-200">{resource.title}</h3>
                   </div>
-                  <ArrowRight className="kyber-arrow w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--brand)] shrink-0 transition-colors duration-200" />
+                  <ArrowRight className="kyber-arrow w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--brand)] shrink-0 transition-colors duration-200" aria-hidden="true" />
                 </div>
               </Link>
             </motion.div>
